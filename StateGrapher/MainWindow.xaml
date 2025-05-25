@@ -1,0 +1,48 @@
+﻿<Window
+    x:Class="StateGrapher.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:StateGrapher"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:StateGrapher.Models"
+    xmlns:nodify="https://miroiu.github.io/nodify"
+    xmlns:viewmodels="clr-namespace:StateGrapher.ViewModels"
+    Title="MainWindow"
+    Width="800"
+    Height="450"
+    d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+    mc:Ignorable="d">
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding SaveToLastCommand}" Gesture="CTRL+S" />
+    </Window.InputBindings>
+
+    <DockPanel Background="Black">
+        <DockPanel.Resources>
+            <DataTemplate DataType="{x:Type viewmodels:StateMachineViewModel}">
+                <local:StateMachineView />
+            </DataTemplate>
+        </DockPanel.Resources>
+        <Grid Background="#f0f0f0" DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Menu>
+                <MenuItem Header="File">
+                    <MenuItem Command="{Binding SaveToFileCommand}" Header="Save graph" />
+                    <MenuItem Command="{Binding LoadCommand}" Header="Load graph" />
+                </MenuItem>
+            </Menu>
+
+            <TextBlock
+                Grid.Column="1"
+                Margin="0,0,5,0"
+                Text="{Binding LastActionHint}" />
+        </Grid>
+        <Border>
+            <ContentControl Content="{Binding FirstOrderStateMachineViewModel}" />
+        </Border>
+    </DockPanel>
+</Window>

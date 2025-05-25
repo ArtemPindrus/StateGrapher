@@ -1,0 +1,113 @@
+﻿<UserControl
+    x:Class="StateGrapher.StateMachineView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:StateGrapher"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:nodify="https://miroiu.github.io/nodify"
+    xmlns:o="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:viewmodels="clr-namespace:StateGrapher.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:StateMachineViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <ScrollViewer Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <ScrollViewer.Resources>
+            <VisualBrush
+                x:Key="GridDrawingBrush"
+                o:Freeze="True"
+                TileMode="Tile"
+                Transform="{Binding ViewportTransform, ElementName=Editor}"
+                Viewbox="0 0 30 30"
+                ViewboxUnits="Absolute"
+                Viewport="0 0 30 30"
+                ViewportUnits="Absolute">
+                <VisualBrush.Visual>
+                    <Rectangle
+                        Width="1"
+                        Height="1"
+                        Fill="White" />
+                </VisualBrush.Visual>
+            </VisualBrush>
+        </ScrollViewer.Resources>
+        <nodify:NodifyEditor
+            Name="NodeEditor"
+            Background="{StaticResource GridDrawingBrush}"
+            ContextMenu="{DynamicResource CreateContextMenu}"
+            DisableAutoPanning="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
+            DisablePanning="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
+            DisableZooming="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
+            GridCellSize="5"
+            ItemsSource="{Binding Nodes}">
+            <nodify:NodifyEditor.Resources>
+                <!--  StickyNode  -->
+                <DataTemplate DataType="{x:Type viewmodels:StickyNodeViewModel}">
+                    <Border Padding="5" Background="LightYellow">
+                        <Expander Background="LightYellow" Header="StickyNote">
+                            <Expander.Content>
+                                <TextBox Style="{StaticResource TransparentTextBox}" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" />
+                            </Expander.Content>
+                        </Expander>
+                    </Border>
+                </DataTemplate>
+
+                <!--  StateMachine  -->
+                <DataTemplate DataType="{x:Type viewmodels:StateMachineViewModel}">
+                    <nodify:GroupingNode
+                        ActualSize="{Binding Size}"
+                        CanResize="{Binding IsExpanded}"
+                        Header="{Binding}"
+                        MovementMode="Self">
+                        <local:StateMachineView IsStiff="True" />
+
+                        <nodify:GroupingNode.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox
+                                        HorizontalAlignment="Left"
+                                        AcceptsReturn="False"
+                                        AcceptsTab="False"
+                                        CaretBrush="Wheat"
+                                        Foreground="White"
+                                        Style="{StaticResource TransparentTextBox}"
+                                        Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <StackPanel
+                                        Grid.Column="1"
+                                        Margin="5,0,0,0"
+                                        Orientation="Horizontal">
+                                        <CheckBox IsChecked="{Binding IsExpanded}" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+
+                        </nodify:GroupingNode.HeaderTemplate>
+                    </nodify:GroupingNode>
+                </DataTemplate>
+            </nodify:NodifyEditor.Resources>
+
+            <!--  ItemContainerStyle  -->
+            <nodify:NodifyEditor.ItemContainerStyle>
+                <Style BasedOn="{StaticResource {x:Type nodify:ItemContainer}}" TargetType="{x:Type nodify:ItemContainer}">
+                    <Setter Property="Location" Value="{Binding Location}" />
+                    <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=DataContext}" />
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.DeleteNodeCommand}"
+                                    CommandParameter="{Binding}"
+                                    Header="Delete" />
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </nodify:NodifyEditor.ItemContainerStyle>
+        </nodify:NodifyEditor>
+    </ScrollViewer>
+</UserControl>

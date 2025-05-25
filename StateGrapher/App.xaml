@@ -1,0 +1,28 @@
+﻿<Application
+    x:Class="StateGrapher.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:StateGrapher">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles.xaml" />
+                <ResourceDictionary>
+                    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+                    <ContextMenu x:Key="CreateContextMenu">
+                        <MenuItem Header="Create">
+                            <MenuItem
+                                Command="{Binding CreateStateMachineNodeCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.MouseLocation}"
+                                Header="State" />
+                            <MenuItem
+                                Command="{Binding CreateStickyNodeCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.MouseLocation}"
+                                Header="StickyNote" />
+                        </MenuItem>
+                    </ContextMenu>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
