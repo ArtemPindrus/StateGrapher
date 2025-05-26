@@ -7,27 +7,33 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Security.Permissions;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace StateGrapher.ViewModels {
     public partial class MainViewModel : ViewModelBase {
         [ObservableProperty]
         private StateMachineViewModel firstOrderStateMachineViewModel;
 
-        public string LastActionHint => History.LastActionHint;
+        public string? LastActionHint => History.LastActionHint;
 
         public MainViewModel() {
-            StateMachine firstOrderSM = new StateMachine() { Name = "FirstOrder", IsExpanded = true };
+            StateMachine firstOrderSM = new() { Name = "FirstOrder", IsExpanded = true };
 
             StateMachineViewModel vm = new(firstOrderSM);
             FirstOrderStateMachineViewModel = vm;
 
+            //SAMPLE
+            StateMachine f = new() { Name = "First" };
+            StateMachine s = new() { Name = "Second", Location = new(500, 0) };
+
+            firstOrderSM.AddNode(f).AddNode(s).TryAddConnection(f.BottomConnector, s.BottomConnector);
 
             History.PropertyChanged += (_, e) => OnPropertyChanged(e);
         }
 
         [RelayCommand]
         private void SaveToLast() {
-            if (!GraphSerializer.SerializeToLast(FirstOrderStateMachineViewModel.StateMachine)) { 
+            if (!GraphSerializer.SerializeToLast(FirstOrderStateMachineViewModel.Node)) { 
                 SaveToFile();    
             }
         }
@@ -38,7 +44,7 @@ namespace StateGrapher.ViewModels {
 
             if (directoryPath is null) return;
 
-            GraphSerializer.SerializeToFile(directoryPath, FirstOrderStateMachineViewModel.StateMachine);
+            GraphSerializer.SerializeToFile(directoryPath, FirstOrderStateMachineViewModel.Node);
         }
 
         [RelayCommand]

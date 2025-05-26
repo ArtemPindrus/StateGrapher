@@ -1,87 +1,156 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
+using Nodify;
 using StateGrapher.Models;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Input;
 
 namespace StateGrapher.ViewModels
 {
-    public partial class StateMachineViewModel : ViewModelBase {
-        public StateMachine StateMachine { get; }
+    public partial class StateMachineViewModel : ViewModelBase, INodeViewModel<StateMachine> {
+        public StateMachine Node { get; }
+
+        StateMachine INodeViewModel<StateMachine>.Node => Node;
+
+        Models.Node INodeViewModel.Node => Node;
+
+        public ConnectorViewModel LeftConnector { get; }
+        public ConnectorViewModel TopConnector { get; }
+        public ConnectorViewModel RightConnector { get; }
+        public ConnectorViewModel BottomConnector { get; }
 
         public string? Name {
-            get => StateMachine.Name;
-            set => StateMachine.Name = value;
+            get => Node.Name;
+            set => Node.Name = value;
         }
 
         public Point Location {
-            get => StateMachine.Location;
-            set => StateMachine.Location = value;
+            get => Node.Location;
+            set => Node.Location = value;
         }
 
         public Size Size {
-            get => StateMachine.Size;
-            set => StateMachine.Size = value;
+            get => Node.Size;
+            set => Node.Size = value;
         }
 
         public bool IsExpanded {
-            get => StateMachine.IsExpanded;
-            set => StateMachine.IsExpanded = value;
+            get => Node.IsExpanded;
+            set => Node.IsExpanded = value;
         }
 
         public static readonly DependencyProperty NodesProperty =
             DependencyProperty.Register(
                 "Nodes",
-                typeof(ObservableCollection<ViewModelBase>),
+                typeof(ObservableCollection<INodeViewModel>),
                 typeof(StateMachineViewModel),
                 new PropertyMetadata(null));
 
-        public ObservableCollection<ViewModelBase> Nodes {
-            get => (ObservableCollection<ViewModelBase>)GetValue(NodesProperty);
+        public ObservableCollection<INodeViewModel> Nodes {
+            get => (ObservableCollection<INodeViewModel>)GetValue(NodesProperty);
             set => SetValue(NodesProperty, value);
         }
 
+        public ObservableCollection<ConnectionViewModel> Connections { get; }
+
         public StateMachineViewModel(StateMachine stateMachine) {
             Nodes = new();
-            this.StateMachine = stateMachine;
+            Connections = new();
+
+            Node = stateMachine;
 
             stateMachine.PropertyChanged += (object? sender, PropertyChangedEventArgs e) => OnPropertyChanged(e);
             stateMachine.PropertyChanging += (object? sender, PropertyChangingEventArgs e) => OnPropertyChanging(e);
+            stateMachine.Nodes.CollectionChanged += StateMachineNodes_CollectionChanged;
+            stateMachine.Connections.CollectionChanged += StateMachineConnections_CollectionChanged;
 
+            foreach (var node in stateMachine.Nodes) AddNodeViewModel(node);
+            foreach (var connection in stateMachine.Connections) Connections.Add(new ConnectionViewModel(connection, this));
 
-            foreach (var node in stateMachine.Nodes) AddNode(node, false);
+            LeftConnector = new(stateMachine.LeftConnector);
+            TopConnector = new(stateMachine.TopConnector);
+            RightConnector = new(stateMachine.RightConnector);
+            BottomConnector = new(stateMachine.BottomConnector);
         }
 
-        private void AddNode(Node node, bool stateMachineInclusion = true) {
-            if (stateMachineInclusion) StateMachine.Nodes.Add(node);
+        private void StateMachineConnections_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) {
+            if (e.Action == NotifyCollectionChangedAction.Add) {
+                if (e.NewItems is null) return;
 
+                foreach (var item in e.NewItems.Cast<Models.Connection>()) {
+                    Connections.Add(new(item, this));
+                }
+            } else if (e.Action == NotifyCollectionChangedAction.Remove) {
+                if (e.OldItems is null) return;
+
+                foreach (var connection in e.OldItems.Cast<Models.Connection>()) {
+                    RemoveConnectionViewModel(connection);
+                }
+            }
+        }
+
+        private void StateMachineNodes_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) {
+            if (e.Action == NotifyCollectionChangedAction.Add) {
+                if (e.NewItems is null) return;
+
+                foreach (var node in e.NewItems.Cast<Models.Node>()) AddNodeViewModel(node);
+            } else if (e.Action == NotifyCollectionChangedAction.Remove) {
+                if (e.OldItems is null) return;
+
+                foreach(var node in e.OldItems.Cast<Models.Node>()) {
+                    if (Node.Nodes.Contains(node)) return;
+
+                    RemoveNodeViewModel(node);
+                }
+            }
+        }
+
+        private void AddNodeViewModel(Models.Node node) {
             if (node is StickyNode sn) Nodes.Add(new StickyNodeViewModel(sn));
             else if (node is StateMachine sm) Nodes.Add(new StateMachineViewModel(sm));
         }
 
-        private void RemoveNodeAt(int i) {
-            StateMachine.Nodes.RemoveAt(i);
-            Nodes.RemoveAt(i);
+        private void RemoveNodeViewModel(Models.Node node) {
+            var nodeViewModel = Nodes.First(x => x.Node == node);
+            Nodes.Remove(nodeViewModel);
+        }
+
+        private void RemoveConnectionViewModel(Models.Connection connection) {
+            Connections.Remove(Connections.First(x => x.Connection == connection));
         }
 
         [RelayCommand]
-        private void DeleteNode(ViewModelBase node) {
-            int i = Nodes.IndexOf(node);
+        private void AddConnection(object o) {
+            if (o is not ValueTuple<object, object> connectors
+                || connectors.Item1 is not ConnectorViewModel from
+                || connectors.Item2 is not ConnectorViewModel to
+                || from == to) return;
 
-            RemoveNodeAt(i);
+            Node.TryAddConnection(from.Connector, to.Connector);
+        }
+
+        [RelayCommand]
+        public void DeleteConnection(ConnectionViewModel connection) {
+            Node.RemoveConnection(connection.Connection);
+        }
+
+        [RelayCommand]
+        private void DeleteNode(INodeViewModel nodeVM) {
+            Node.RemoveNode(nodeVM.Node);
         }
 
         [RelayCommand]
         private void CreateStateMachineNode(Point location) {
             StateMachine state = new() { Location = location };
-            AddNode(state);
+            Node.AddNode(state);
         }
 
         [RelayCommand]
         private void CreateStickyNode(Point location) {
             StickyNode sn = new() { Location = location };
-            AddNode(sn);
+            Node.AddNode(sn);
         }
     }
 }

@@ -1,15 +1,14 @@
 ﻿using StateGrapher.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace StateGrapher.ViewModels
 {
-    public class StickyNodeViewModel : ViewModelBase {
+    public class StickyNodeViewModel : ViewModelBase, INodeViewModel<StickyNode> {
         private readonly StickyNode node;
+
+        StickyNode INodeViewModel<StickyNode>.Node => node;
+
+        Node INodeViewModel.Node => node;
 
         public string? Text {
             get {

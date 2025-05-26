@@ -34,6 +34,8 @@
         <nodify:NodifyEditor
             Name="NodeEditor"
             Background="{StaticResource GridDrawingBrush}"
+            ConnectionCompletedCommand="{Binding AddConnectionCommand}"
+            Connections="{Binding Connections}"
             ContextMenu="{DynamicResource CreateContextMenu}"
             DisableAutoPanning="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
             DisablePanning="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
@@ -59,30 +61,66 @@
                         CanResize="{Binding IsExpanded}"
                         Header="{Binding}"
                         MovementMode="Self">
-                        <local:StateMachineView IsStiff="True" />
+                        <Grid>
+                            <local:StateMachineView IsStiff="True" />
+                            <DockPanel>
+                                <nodify:Connector
+                                    HorizontalAlignment="Right"
+                                    Anchor="{Binding Anchor, Mode=OneWayToSource}"
+                                    DataContext="{Binding RightConnector}"
+                                    DockPanel.Dock="Right"
+                                    IsConnected="{Binding IsConnected}"
+                                    Style="{StaticResource ConnectorStyle}" />
+                                <nodify:Connector
+                                    HorizontalAlignment="Left"
+                                    Anchor="{Binding Anchor, Mode=OneWayToSource}"
+                                    DataContext="{Binding LeftConnector}"
+                                    DockPanel.Dock="Left"
+                                    IsConnected="{Binding IsConnected}"
+                                    Style="{StaticResource ConnectorStyle}" />
+                                <nodify:Connector
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    Anchor="{Binding Anchor, Mode=OneWayToSource}"
+                                    DataContext="{Binding BottomConnector}"
+                                    DockPanel.Dock="Bottom"
+                                    IsConnected="{Binding IsConnected}"
+                                    Style="{StaticResource ConnectorStyle}" />
+                            </DockPanel>
+                        </Grid>
 
                         <nodify:GroupingNode.HeaderTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
+                                    <nodify:Connector
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Top"
+                                        Anchor="{Binding Anchor, Mode=OneWayToSource}"
+                                        DataContext="{Binding TopConnector}"
+                                        IsConnected="{Binding IsConnected}"
+                                        Style="{StaticResource ConnectorStyle}" />
 
-                                    <TextBox
-                                        HorizontalAlignment="Left"
-                                        AcceptsReturn="False"
-                                        AcceptsTab="False"
-                                        CaretBrush="Wheat"
-                                        Foreground="White"
-                                        Style="{StaticResource TransparentTextBox}"
-                                        Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <StackPanel
-                                        Grid.Column="1"
-                                        Margin="5,0,0,0"
-                                        Orientation="Horizontal">
-                                        <CheckBox IsChecked="{Binding IsExpanded}" />
-                                    </StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBox
+                                            HorizontalAlignment="Left"
+                                            AcceptsReturn="False"
+                                            AcceptsTab="False"
+                                            CaretBrush="Wheat"
+                                            Foreground="White"
+                                            Style="{StaticResource TransparentTextBox}"
+                                            Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <StackPanel
+                                            Grid.Column="1"
+                                            Margin="5,0,0,0"
+                                            Orientation="Horizontal">
+                                            <CheckBox IsChecked="{Binding IsExpanded}" />
+                                        </StackPanel>
+                                    </Grid>
                                 </Grid>
                             </DataTemplate>
 
@@ -108,6 +146,25 @@
                     </Setter>
                 </Style>
             </nodify:NodifyEditor.ItemContainerStyle>
+
+            <nodify:NodifyEditor.ConnectionTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:ConnectionViewModel}">
+                    <nodify:LineConnection
+                        Source="{Binding From.Anchor}"
+                        SourceOffset="0,0"
+                        SourceOffsetMode="None"
+                        Spacing="0"
+                        Target="{Binding To.Anchor}"
+                        TargetOffset="0,0"
+                        TargetOffsetMode="None">
+                        <nodify:LineConnection.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext.RemoveCommand}" Header="Delete" />
+                            </ContextMenu>
+                        </nodify:LineConnection.ContextMenu>
+                    </nodify:LineConnection>
+                </DataTemplate>
+            </nodify:NodifyEditor.ConnectionTemplate>
         </nodify:NodifyEditor>
     </ScrollViewer>
 </UserControl>
