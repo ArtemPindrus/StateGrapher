@@ -18,7 +18,7 @@
                 x:Key="GridDrawingBrush"
                 o:Freeze="True"
                 TileMode="Tile"
-                Transform="{Binding ViewportTransform, ElementName=Editor}"
+                Transform="{Binding ViewportTransform, ElementName=NodeEditor}"
                 Viewbox="0 0 30 30"
                 ViewboxUnits="Absolute"
                 Viewport="0 0 30 30"
@@ -41,7 +41,9 @@
             DisablePanning="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
             DisableZooming="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
             GridCellSize="5"
-            ItemsSource="{Binding Nodes}">
+            ItemsSource="{Binding Nodes}"
+            SelectedConnection="{Binding SelectedConnection, Mode=OneWayToSource}"
+            SelectedItem="{Binding SelectedNode, Mode=OneWayToSource}">
             <nodify:NodifyEditor.Resources>
                 <!--  StickyNode  -->
                 <DataTemplate DataType="{x:Type viewmodels:StickyNodeViewModel}">
@@ -147,22 +149,27 @@
                 </Style>
             </nodify:NodifyEditor.ItemContainerStyle>
 
+            <!--  ConnectionTemplate  -->
             <nodify:NodifyEditor.ConnectionTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:ConnectionViewModel}">
-                    <nodify:LineConnection
+                    <nodify:Connection
+                        Direction="{Binding Direction}"
+                        IsSelectable="True"
                         Source="{Binding From.Anchor}"
                         SourceOffset="0,0"
                         SourceOffsetMode="None"
+                        SourceOrientation="{Binding SourceOrientation}"
                         Spacing="0"
                         Target="{Binding To.Anchor}"
                         TargetOffset="0,0"
-                        TargetOffsetMode="None">
-                        <nodify:LineConnection.ContextMenu>
+                        TargetOffsetMode="None"
+                        TargetOrientation="{Binding TargetOrientation}">
+                        <nodify:Connection.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext.RemoveCommand}" Header="Delete" />
                             </ContextMenu>
-                        </nodify:LineConnection.ContextMenu>
-                    </nodify:LineConnection>
+                        </nodify:Connection.ContextMenu>
+                    </nodify:Connection>
                 </DataTemplate>
             </nodify:NodifyEditor.ConnectionTemplate>
         </nodify:NodifyEditor>

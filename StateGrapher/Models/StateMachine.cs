@@ -28,6 +28,13 @@ namespace StateGrapher.Models
 
         public StateMachine RemoveNode(Node node) {
             Nodes.Remove(node);
+
+            var connections = Connections
+                .Where(x => x.From.Container == node || x.To.Container == node)
+                .ToArray();
+
+            foreach (var connection in connections) RemoveConnection(connection);
+
             return this;
         }
 

@@ -1,15 +1,22 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Nodify;
 using StateGrapher.Models;
+using StateGrapher.Utilities;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Input;
 
 namespace StateGrapher.ViewModels
 {
     public partial class StateMachineViewModel : ViewModelBase, INodeViewModel<StateMachine> {
+        [ObservableProperty]
+        private INodeViewModel? selectedNode;
+
+        [ObservableProperty]
+        private INodeViewModel? selectedConnection;
+
         public StateMachine Node { get; }
 
         StateMachine INodeViewModel<StateMachine>.Node => Node;
@@ -151,6 +158,14 @@ namespace StateGrapher.ViewModels
         private void CreateStickyNode(Point location) {
             StickyNode sn = new() { Location = location };
             Node.AddNode(sn);
+        }
+
+        partial void OnSelectedNodeChanged(INodeViewModel? value) {
+            History.LastSelectedNode = value;
+        }
+
+        partial void OnSelectedConnectionChanged(INodeViewModel? value) {
+            History.LastSelectedConnection = value;
         }
     }
 }

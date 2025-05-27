@@ -2,12 +2,32 @@
     x:Class="StateGrapher.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:StateGrapher">
+    xmlns:local="clr-namespace:StateGrapher"
+    xmlns:nodify="https://miroiu.github.io/nodify"
+    xmlns:sys="clr-namespace:System;assembly=netstandard">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Styles.xaml" />
                 <ResourceDictionary>
+                    <!--  ENUMS  -->
+                    <ObjectDataProvider
+                        x:Key="ConnectionDirectionDataSource"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="nodify:ConnectionDirection" />
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                    <ObjectDataProvider
+                        x:Key="OrientationDataSource"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type TypeName="Orientation" />
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+
                     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
                     <ContextMenu x:Key="CreateContextMenu">
                         <MenuItem Header="Create">

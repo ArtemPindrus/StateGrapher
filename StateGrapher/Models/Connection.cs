@@ -1,9 +1,20 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Nodify;
 using System.Text.Json.Serialization;
+using System.Windows.Controls;
 
 namespace StateGrapher.Models
 {
-    public partial class Connection : ObservableObject, IEquatable<Connection> {
+    public partial class Connection : Node, IEquatable<Connection> {
+        [ObservableProperty]
+        private ConnectionDirection direction;
+
+        [ObservableProperty]
+        private Orientation sourceOrientation;
+
+        [ObservableProperty]
+        private Orientation targetOrientation;
+
         public Connector From { get; set; }
         public Connector To { get; set; }
 
@@ -28,5 +39,7 @@ namespace StateGrapher.Models
         public override int GetHashCode() {
             return HashCode.Combine(From, To);
         }
+
+        protected override string? ValidateName(string? name) => name;
     }
 }
