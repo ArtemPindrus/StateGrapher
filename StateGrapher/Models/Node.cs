@@ -5,6 +5,8 @@ using System.Windows;
 namespace StateGrapher.Models {
     [JsonDerivedType(typeof(StateMachine), "StateMachine")]
     [JsonDerivedType(typeof(StickyNode), "Sticky")]
+    [JsonDerivedType(typeof(InitialState), "InitialState")]
+    [JsonDerivedType(typeof(ExitNode), "ExitNode")]
     public abstract partial class Node : ObservableObject {
         [ObservableProperty]
         private string? name;

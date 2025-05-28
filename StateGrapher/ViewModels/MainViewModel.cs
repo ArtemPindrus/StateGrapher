@@ -21,7 +21,7 @@ namespace StateGrapher.ViewModels {
             StateMachine f = new() { Name = "First" };
             StateMachine s = new() { Name = "Second", Location = new(500, 0) };
 
-            firstOrderSM.AddNode(f).AddNode(s).TryAddConnection(f.BottomConnector, s.BottomConnector);
+            firstOrderSM.TryAddNode(f).TryAddNode(s).TryAddConnection(f.BottomConnector, s.BottomConnector);
 
             History.PropertyChanged += (_, e) => OnPropertyChanged(e);
         }

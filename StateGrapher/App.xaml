@@ -2,6 +2,7 @@
     x:Class="StateGrapher.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:StateGrapher.Converters"
     xmlns:local="clr-namespace:StateGrapher"
     xmlns:nodify="https://miroiu.github.io/nodify"
     xmlns:sys="clr-namespace:System;assembly=netstandard">
@@ -28,7 +29,6 @@
                         </ObjectDataProvider.MethodParameters>
                     </ObjectDataProvider>
 
-                    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
                     <ContextMenu x:Key="CreateContextMenu">
                         <MenuItem Header="Create">
                             <MenuItem
@@ -38,9 +38,21 @@
                             <MenuItem
                                 Command="{Binding CreateStickyNodeCommand}"
                                 CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.MouseLocation}"
-                                Header="StickyNote" />
+                                Header="Sticky Note" />
+                            <MenuItem
+                                Command="{Binding CreateInitialStateNodeCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.MouseLocation}"
+                                Header="Initial state" />
+                            <MenuItem
+                                Command="{Binding CreateExitNodeCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.MouseLocation}"
+                                Header="Exit" />
                         </MenuItem>
                     </ContextMenu>
+
+                    <!--  Converters  -->
+                    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+                    <converters:BoolToArrowEnds x:Key="BoolToArrowEnds" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

@@ -17,6 +17,7 @@ namespace StateGrapher.Models
         public Node? Container { get; set; }
 
         [JsonConstructor]
+        [Obsolete("This constr is intended for JsonConstructor", true)]
         public Connector() {
 
         }

@@ -13,12 +13,24 @@
     Background="#1e1e1e"
     mc:Ignorable="d">
     <UserControl.Resources>
+        <!--  StateMachineViewModel  -->
         <DataTemplate DataType="{x:Type viewmodels:StateMachineViewModel}">
             <TextBlock Foreground="White" Text="{Binding Name}" />
         </DataTemplate>
+
+        <!--  ConnectionViewModel  -->
         <DataTemplate DataType="{x:Type viewmodels:ConnectionViewModel}">
             <StackPanel Orientation="Vertical">
-                <TextBlock Foreground="White" Text="{Binding Connection.From.Container.Name}" />
+                <TextBlock Foreground="White">
+                    <Run Text="{Binding Connection.From.Container.Name}" />
+                    <Run Text="-&gt;" />
+                    <Run Text="{Binding Connection.To.Container.Name}" />
+                </TextBlock>
+
+                <CheckBox Content="Is both ways?" IsChecked="{Binding IsBothWays}" />
+
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+
                 <ComboBox
                     ItemsSource="{Binding Source={StaticResource ConnectionDirectionDataSource}}"
                     SelectedValue="{Binding Direction, Mode=TwoWay}"
@@ -32,6 +44,11 @@
                     SelectedValue="{Binding TargetOrientation, Mode=TwoWay}"
                     Text="Source Orientation" />
             </StackPanel>
+        </DataTemplate>
+
+        <!--  ExitNodeViewModel  -->
+        <DataTemplate DataType="{x:Type viewmodels:ExitNodeViewModel}">
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         </DataTemplate>
     </UserControl.Resources>
     <Grid>

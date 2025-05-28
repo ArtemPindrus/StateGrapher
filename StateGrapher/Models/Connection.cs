@@ -15,6 +15,9 @@ namespace StateGrapher.Models
         [ObservableProperty]
         private Orientation targetOrientation;
 
+        [ObservableProperty]
+        private bool isBothWays;
+
         public Connector From { get; set; }
         public Connector To { get; set; }
 

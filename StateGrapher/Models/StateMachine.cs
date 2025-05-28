@@ -7,6 +7,8 @@ namespace StateGrapher.Models
         [ObservableProperty]
         private bool isExpanded;
 
+        private InitialState? initialState;
+
         public ObservableCollection<Node> Nodes { get; set; } = new();
         public ObservableCollection<Connection> Connections { get; set; } = new();
 
@@ -29,6 +31,8 @@ namespace StateGrapher.Models
         public StateMachine RemoveNode(Node node) {
             Nodes.Remove(node);
 
+            if (node is InitialState) initialState = null;
+
             var connections = Connections
                 .Where(x => x.From.Container == node || x.To.Container == node)
                 .ToArray();
@@ -38,8 +42,13 @@ namespace StateGrapher.Models
             return this;
         }
 
-        public StateMachine AddNode(Node node) {
-            Nodes.Add(node); 
+        public StateMachine TryAddNode(Node node) {
+            if (node is InitialState instate) {
+                if (initialState != null) return this;
+                else initialState = instate;
+            }
+
+            Nodes.Add(node);
             return this;
         }
 
@@ -48,7 +57,15 @@ namespace StateGrapher.Models
 
             if (Connections.Contains(c)
                 || from.Container == to.Container
-                || Connections.Any(x => x.From.Container == from.Container && x.To.Container == to.Container)) return null;
+                || Connections.Any(x => (x.From.Container == from.Container && x.To.Container == to.Container)
+                || (x.From.Container == to.Container && x.To.Container == from.Container))) return null;
+
+            // disallow connection TO initial state
+            if (to.Container is InitialState) return null;
+            // disallow multiple connections from initial state
+            if (from.Container is InitialState fromIns && fromIns.Connector.IsConnected == true) return null;
+            // disallow connection from exit node
+            if (from.Container is ExitNode) return null;
 
             Connections.Add(c);
             from.Connections++;

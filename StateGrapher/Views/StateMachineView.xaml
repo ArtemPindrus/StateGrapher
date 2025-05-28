@@ -40,6 +40,7 @@
             DisableAutoPanning="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
             DisablePanning="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
             DisableZooming="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
+            DisplayConnectionsOnTop="True"
             GridCellSize="5"
             ItemsSource="{Binding Nodes}"
             SelectedConnection="{Binding SelectedConnection, Mode=OneWayToSource}"
@@ -56,6 +57,39 @@
                     </Border>
                 </DataTemplate>
 
+                <!--  InitialStateNode  -->
+                <DataTemplate DataType="{x:Type viewmodels:InitialStateViewModel}">
+                    <Grid>
+                        <Ellipse
+                            Width="30"
+                            Height="30"
+                            Fill="Blue" />
+
+                        <nodify:Connector DataContext="{Binding Connector}" Style="{StaticResource ConnectorStyle}" />
+                    </Grid>
+                </DataTemplate>
+
+                <!--  ExitNode  -->
+                <DataTemplate DataType="{x:Type viewmodels:ExitNodeViewModel}">
+                    <DockPanel>
+                        <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top">
+                            <Run Text="exit : " />
+                            <Run Text="{Binding Name}" />
+                        </TextBlock>
+
+                        <Grid>
+                            <Ellipse
+                                Width="30"
+                                Height="30"
+                                Fill="GreenYellow"
+                                Stroke="Green"
+                                StrokeThickness="2.5" />
+
+                            <nodify:Connector DataContext="{Binding Connector}" Style="{StaticResource ConnectorStyle}" />
+                        </Grid>
+                    </DockPanel>
+                </DataTemplate>
+
                 <!--  StateMachine  -->
                 <DataTemplate DataType="{x:Type viewmodels:StateMachineViewModel}">
                     <nodify:GroupingNode
@@ -68,25 +102,19 @@
                             <DockPanel>
                                 <nodify:Connector
                                     HorizontalAlignment="Right"
-                                    Anchor="{Binding Anchor, Mode=OneWayToSource}"
                                     DataContext="{Binding RightConnector}"
                                     DockPanel.Dock="Right"
-                                    IsConnected="{Binding IsConnected}"
                                     Style="{StaticResource ConnectorStyle}" />
                                 <nodify:Connector
                                     HorizontalAlignment="Left"
-                                    Anchor="{Binding Anchor, Mode=OneWayToSource}"
                                     DataContext="{Binding LeftConnector}"
                                     DockPanel.Dock="Left"
-                                    IsConnected="{Binding IsConnected}"
                                     Style="{StaticResource ConnectorStyle}" />
                                 <nodify:Connector
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Bottom"
-                                    Anchor="{Binding Anchor, Mode=OneWayToSource}"
                                     DataContext="{Binding BottomConnector}"
                                     DockPanel.Dock="Bottom"
-                                    IsConnected="{Binding IsConnected}"
                                     Style="{StaticResource ConnectorStyle}" />
                             </DockPanel>
                         </Grid>
@@ -97,9 +125,7 @@
                                     <nodify:Connector
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Top"
-                                        Anchor="{Binding Anchor, Mode=OneWayToSource}"
                                         DataContext="{Binding TopConnector}"
-                                        IsConnected="{Binding IsConnected}"
                                         Style="{StaticResource ConnectorStyle}" />
 
                                     <Grid>
@@ -153,8 +179,11 @@
             <nodify:NodifyEditor.ConnectionTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:ConnectionViewModel}">
                     <nodify:Connection
+                        ArrowEnds="{Binding IsBothWays, Converter={StaticResource BoolToArrowEnds}}"
                         Direction="{Binding Direction}"
                         IsSelectable="True"
+                        OutlineBrush="Transparent"
+                        OutlineThickness="3"
                         Source="{Binding From.Anchor}"
                         SourceOffset="0,0"
                         SourceOffsetMode="None"
@@ -163,7 +192,8 @@
                         Target="{Binding To.Anchor}"
                         TargetOffset="0,0"
                         TargetOffsetMode="None"
-                        TargetOrientation="{Binding TargetOrientation}">
+                        TargetOrientation="{Binding TargetOrientation}"
+                        Text="{Binding Name}">
                         <nodify:Connection.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext.RemoveCommand}" Header="Delete" />

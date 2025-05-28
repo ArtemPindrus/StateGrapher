@@ -73,7 +73,7 @@ namespace StateGrapher.ViewModels
             stateMachine.Nodes.CollectionChanged += StateMachineNodes_CollectionChanged;
             stateMachine.Connections.CollectionChanged += StateMachineConnections_CollectionChanged;
 
-            foreach (var node in stateMachine.Nodes) AddNodeViewModel(node);
+            foreach (var node in stateMachine.Nodes) TryAddNodeViewModel(node);
             foreach (var connection in stateMachine.Connections) Connections.Add(new ConnectionViewModel(connection, this));
 
             LeftConnector = new(stateMachine.LeftConnector);
@@ -102,7 +102,7 @@ namespace StateGrapher.ViewModels
             if (e.Action == NotifyCollectionChangedAction.Add) {
                 if (e.NewItems is null) return;
 
-                foreach (var node in e.NewItems.Cast<Models.Node>()) AddNodeViewModel(node);
+                foreach (var node in e.NewItems.Cast<Models.Node>()) TryAddNodeViewModel(node);
             } else if (e.Action == NotifyCollectionChangedAction.Remove) {
                 if (e.OldItems is null) return;
 
@@ -114,9 +114,13 @@ namespace StateGrapher.ViewModels
             }
         }
 
-        private void AddNodeViewModel(Models.Node node) {
+        private void TryAddNodeViewModel(Models.Node node) {
             if (node is StickyNode sn) Nodes.Add(new StickyNodeViewModel(sn));
             else if (node is StateMachine sm) Nodes.Add(new StateMachineViewModel(sm));
+            else if (node is InitialState instate) Nodes.Add(new InitialStateViewModel(instate));
+            else if (node is ExitNode en) Nodes.Add(new ExitNodeViewModel(en));
+
+            else throw new ArgumentException($"Node type is not supported. ({node.GetType().Name})");
         }
 
         private void RemoveNodeViewModel(Models.Node node) {
@@ -151,13 +155,25 @@ namespace StateGrapher.ViewModels
         [RelayCommand]
         private void CreateStateMachineNode(Point location) {
             StateMachine state = new() { Location = location };
-            Node.AddNode(state);
+            Node.TryAddNode(state);
         }
 
         [RelayCommand]
         private void CreateStickyNode(Point location) {
             StickyNode sn = new() { Location = location };
-            Node.AddNode(sn);
+            Node.TryAddNode(sn);
+        }
+
+        [RelayCommand]
+        private void CreateInitialStateNode(Point location) {
+            InitialState node = new() { Location = location };
+            Node.TryAddNode(node);
+        }
+
+        [RelayCommand]
+        private void CreateExitNode(Point location) {
+            ExitNode node = new() { Location = location };
+            Node.TryAddNode(node);
         }
 
         partial void OnSelectedNodeChanged(INodeViewModel? value) {

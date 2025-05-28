@@ -8,11 +8,13 @@
         <Setter Property="AcceptsReturn" Value="True" />
     </Style>
     <Style x:Key="ConnectorStyle" TargetType="{x:Type nodify:Connector}">
+        <Setter Property="IsConnected" Value="{Binding IsConnected}" />
+        <Setter Property="Opacity" Value="0.2" />
+        <Setter Property="Anchor" Value="{Binding Anchor, Mode=OneWayToSource}" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=nodify:GroupingNode}, Path=IsMouseOver}" Value="True">
-                <Setter Property="Visibility" Value="Visible" />
-            </DataTrigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Opacity" Value="1" />
+            </Trigger>
         </Style.Triggers>
-        <Setter Property="Visibility" Value="Hidden" />
     </Style>
 </ResourceDictionary>

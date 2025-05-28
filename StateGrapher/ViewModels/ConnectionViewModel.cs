@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using StateGrapher.Models;
+using System.Windows;
 using System.Windows.Controls;
 using ConnectionDirection = Nodify.ConnectionDirection;
 
@@ -7,6 +8,16 @@ namespace StateGrapher.ViewModels
 {
     public partial class ConnectionViewModel : ViewModelBase, INodeViewModel<Connection> {
         private readonly StateMachineViewModel machineViewModel;
+
+        public string? Name {
+            get => Connection.Name;
+            set => Connection.Name = value;
+        }
+
+        public bool IsBothWays {
+            get => Connection.IsBothWays;
+            set => Connection.IsBothWays = value;
+        }
 
         public ConnectionDirection Direction { 
             get => Connection.Direction;
@@ -26,6 +37,8 @@ namespace StateGrapher.ViewModels
         public Connection Connection { get; }
         public Connector From => Connection.From;
         public Connector To => Connection.To;
+
+        public Point Location { get => new(0, 0); set { } }
 
         Connection INodeViewModel<Connection>.Node => Connection;
 
