@@ -12,28 +12,40 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <ScrollViewer Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
-        <ScrollViewer.Resources>
-            <VisualBrush
-                x:Key="GridDrawingBrush"
-                o:Freeze="True"
+    <Grid Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Grid.Resources>
+            <GeometryDrawing
+                x:Key="SmallGridGeometry"
+                Brush="Gray"
+                Geometry="M0,0 L0,1 0.03,1 0.03,0.03 1,0.03 1,0 Z" />
+
+            <GeometryDrawing
+                x:Key="LargeGridGeometry"
+                Brush="LightGray"
+                Geometry="M0,0 L0,1 0.015,1 0.015,0.015 1,0.015 1,0 Z" />
+
+            <DrawingBrush
+                x:Key="SmallGridLinesDrawingBrush"
+                Drawing="{StaticResource SmallGridGeometry}"
                 TileMode="Tile"
                 Transform="{Binding ViewportTransform, ElementName=NodeEditor}"
-                Viewbox="0 0 30 30"
-                ViewboxUnits="Absolute"
-                Viewport="0 0 30 30"
-                ViewportUnits="Absolute">
-                <VisualBrush.Visual>
-                    <Rectangle
-                        Width="1"
-                        Height="1"
-                        Fill="White" />
-                </VisualBrush.Visual>
-            </VisualBrush>
-        </ScrollViewer.Resources>
+                Viewport="0 0 15 15"
+                ViewportUnits="Absolute" />
+
+            <DrawingBrush
+                x:Key="LargeGridLinesDrawingBrush"
+                Drawing="{StaticResource LargeGridGeometry}"
+                Opacity="0.5"
+                TileMode="Tile"
+                Transform="{Binding ViewportTransform, ElementName=NodeEditor}"
+                Viewport="0 0 150 150"
+                ViewportUnits="Absolute" />
+        </Grid.Resources>
+
+
         <nodify:NodifyEditor
             Name="NodeEditor"
-            Background="{StaticResource GridDrawingBrush}"
+            Background="{StaticResource SmallGridLinesDrawingBrush}"
             ConnectionCompletedCommand="{Binding AddConnectionCommand}"
             Connections="{Binding Connections}"
             ContextMenu="{DynamicResource CreateContextMenu}"
@@ -41,7 +53,7 @@
             DisablePanning="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
             DisableZooming="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
             DisplayConnectionsOnTop="True"
-            GridCellSize="5"
+            GridCellSize="15"
             ItemsSource="{Binding Nodes}"
             SelectedConnection="{Binding SelectedConnection, Mode=OneWayToSource}"
             SelectedItem="{Binding SelectedNode, Mode=OneWayToSource}">
@@ -92,70 +104,135 @@
 
                 <!--  StateMachine  -->
                 <DataTemplate DataType="{x:Type viewmodels:StateMachineViewModel}">
-                    <nodify:GroupingNode
-                        ActualSize="{Binding Size}"
-                        CanResize="{Binding IsExpanded}"
-                        Header="{Binding}"
-                        MovementMode="Self">
-                        <Grid>
-                            <local:StateMachineView IsStiff="True" />
-                            <DockPanel>
-                                <nodify:Connector
-                                    HorizontalAlignment="Right"
-                                    DataContext="{Binding RightConnector}"
-                                    DockPanel.Dock="Right"
-                                    Style="{StaticResource ConnectorStyle}" />
-                                <nodify:Connector
-                                    HorizontalAlignment="Left"
-                                    DataContext="{Binding LeftConnector}"
-                                    DockPanel.Dock="Left"
-                                    Style="{StaticResource ConnectorStyle}" />
-                                <nodify:Connector
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Bottom"
-                                    DataContext="{Binding BottomConnector}"
-                                    DockPanel.Dock="Bottom"
-                                    Style="{StaticResource ConnectorStyle}" />
-                            </DockPanel>
-                        </Grid>
+                    <DockPanel>
+                        <!--  Top Connectors  -->
+                        <UniformGrid
+                            Columns="3"
+                            DockPanel.Dock="Top"
+                            Rows="1">
+                            <nodify:Connector
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
+                                DataContext="{Binding Connectors.TopConnectors[0]}"
+                                Style="{StaticResource ConnectorStyle}" />
+                            <nodify:Connector
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
+                                DataContext="{Binding Connectors.TopConnectors[1]}"
+                                Style="{StaticResource ConnectorStyle}" />
+                            <nodify:Connector
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
+                                DataContext="{Binding Connectors.TopConnectors[2]}"
+                                Style="{StaticResource ConnectorStyle}" />
+                        </UniformGrid>
 
-                        <nodify:GroupingNode.HeaderTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <nodify:Connector
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Top"
-                                        DataContext="{Binding TopConnector}"
-                                        Style="{StaticResource ConnectorStyle}" />
+                        <!--  Bottom Connectors  -->
+                        <UniformGrid
+                            Columns="3"
+                            DockPanel.Dock="Bottom"
+                            Rows="1">
+                            <nodify:Connector
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
+                                DataContext="{Binding Connectors.BottomConnectors[0]}"
+                                Style="{StaticResource ConnectorStyle}" />
+                            <nodify:Connector
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
+                                DataContext="{Binding Connectors.BottomConnectors[1]}"
+                                Style="{StaticResource ConnectorStyle}" />
+                            <nodify:Connector
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
+                                DataContext="{Binding Connectors.BottomConnectors[2]}"
+                                Style="{StaticResource ConnectorStyle}" />
+                        </UniformGrid>
 
+                        <!--  Right Connectors  -->
+                        <UniformGrid
+                            Columns="1"
+                            DockPanel.Dock="Right"
+                            Rows="3">
+                            <nodify:Connector
+                                HorizontalAlignment="Center"
+                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
+                                DataContext="{Binding Connectors.RightConnectors[0]}"
+                                Style="{StaticResource ConnectorStyle}" />
+                            <nodify:Connector
+                                HorizontalAlignment="Center"
+                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
+                                DataContext="{Binding Connectors.RightConnectors[1]}"
+                                Style="{StaticResource ConnectorStyle}" />
+                            <nodify:Connector
+                                HorizontalAlignment="Center"
+                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
+                                DataContext="{Binding Connectors.RightConnectors[2]}"
+                                Style="{StaticResource ConnectorStyle}" />
+                        </UniformGrid>
+
+                        <!--  Left Connectors  -->
+                        <UniformGrid
+                            Columns="1"
+                            DockPanel.Dock="Left"
+                            Rows="3">
+                            <nodify:Connector
+                                HorizontalAlignment="Center"
+                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
+                                DataContext="{Binding Connectors.LeftConnectors[0]}"
+                                Style="{StaticResource ConnectorStyle}" />
+                            <nodify:Connector
+                                HorizontalAlignment="Center"
+                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
+                                DataContext="{Binding Connectors.LeftConnectors[1]}"
+                                Style="{StaticResource ConnectorStyle}" />
+                            <nodify:Connector
+                                HorizontalAlignment="Center"
+                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
+                                DataContext="{Binding Connectors.LeftConnectors[2]}"
+                                Style="{StaticResource ConnectorStyle}" />
+                        </UniformGrid>
+
+                        <nodify:GroupingNode
+                            ActualSize="{Binding Size}"
+                            CanResize="{Binding IsExpanded}"
+                            Header="{Binding}"
+                            MovementMode="Self">
+                            <Grid>
+                                <local:StateMachineView IsStiff="True" />
+                            </Grid>
+
+                            <nodify:GroupingNode.HeaderTemplate>
+                                <DataTemplate>
                                     <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <TextBox
-                                            HorizontalAlignment="Left"
-                                            AcceptsReturn="False"
-                                            AcceptsTab="False"
-                                            CaretBrush="Wheat"
-                                            Foreground="White"
-                                            Style="{StaticResource TransparentTextBox}"
-                                            Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <StackPanel
-                                            Grid.Column="1"
-                                            Margin="5,0,0,0"
-                                            Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal">
                                             <CheckBox IsChecked="{Binding IsExpanded}" />
+
+                                            <TextBox
+                                                HorizontalAlignment="Left"
+                                                AcceptsReturn="False"
+                                                AcceptsTab="False"
+                                                CaretBrush="Wheat"
+                                                Foreground="White"
+                                                Style="{StaticResource TransparentTextBox}"
+                                                Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
                                         </StackPanel>
                                     </Grid>
-                                </Grid>
-                            </DataTemplate>
+                                </DataTemplate>
 
-                        </nodify:GroupingNode.HeaderTemplate>
-                    </nodify:GroupingNode>
+                            </nodify:GroupingNode.HeaderTemplate>
+                        </nodify:GroupingNode>
+                    </DockPanel>
                 </DataTemplate>
             </nodify:NodifyEditor.Resources>
+
 
             <!--  ItemContainerStyle  -->
             <nodify:NodifyEditor.ItemContainerStyle>
@@ -178,7 +255,7 @@
             <!--  ConnectionTemplate  -->
             <nodify:NodifyEditor.ConnectionTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:ConnectionViewModel}">
-                    <nodify:Connection
+                    <nodify:CircuitConnection
                         ArrowEnds="{Binding IsBothWays, Converter={StaticResource BoolToArrowEnds}}"
                         Direction="{Binding Direction}"
                         IsSelectable="True"
@@ -189,19 +266,23 @@
                         SourceOffsetMode="None"
                         SourceOrientation="{Binding SourceOrientation}"
                         Spacing="0"
+                        Stroke="Wheat"
                         Target="{Binding To.Anchor}"
                         TargetOffset="0,0"
                         TargetOffsetMode="None"
                         TargetOrientation="{Binding TargetOrientation}"
-                        Text="{Binding Name}">
-                        <nodify:Connection.ContextMenu>
+                        Text="{Binding EventDisplayName}">
+                        <nodify:CircuitConnection.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext.RemoveCommand}" Header="Delete" />
                             </ContextMenu>
-                        </nodify:Connection.ContextMenu>
-                    </nodify:Connection>
+                        </nodify:CircuitConnection.ContextMenu>
+                    </nodify:CircuitConnection>
                 </DataTemplate>
             </nodify:NodifyEditor.ConnectionTemplate>
         </nodify:NodifyEditor>
-    </ScrollViewer>
+
+        <Grid Panel.ZIndex="-1" Background="{StaticResource LargeGridLinesDrawingBrush}" />
+
+    </Grid>
 </UserControl>

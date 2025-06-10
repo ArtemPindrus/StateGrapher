@@ -14,6 +14,18 @@ namespace StateGrapher.ViewModels
             set => Connection.Name = value;
         }
 
+        public string? EventDisplayName => Connection.EventDisplayName;
+
+        public string? ForwardEvent {
+            get => Connection.ForwardEvent;
+            set => Connection.ForwardEvent = value;
+        }
+
+        public string? BackEvent {
+            get => Connection.BackEvent;
+            set => Connection.BackEvent = value;
+        }
+
         public bool IsBothWays {
             get => Connection.IsBothWays;
             set => Connection.IsBothWays = value;

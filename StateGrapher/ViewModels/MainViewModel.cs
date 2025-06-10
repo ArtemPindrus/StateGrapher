@@ -3,28 +3,39 @@ using CommunityToolkit.Mvvm.Input;
 using Nodify;
 using StateGrapher.Models;
 using StateGrapher.Utilities;
+using System.Printing;
 
 namespace StateGrapher.ViewModels {
     public partial class MainViewModel : ViewModelBase {
+        // TODO: rename to root lol
         [ObservableProperty]
         private StateMachineViewModel firstOrderStateMachineViewModel;
 
         public string? LastActionHint => History.LastActionHint;
 
         public MainViewModel() {
-            StateMachine firstOrderSM = new() { Name = "FirstOrder", IsExpanded = true };
+            StateMachine firstOrderSM = new() { Name = "ROOT", IsExpanded = true };
 
             StateMachineViewModel vm = new(firstOrderSM);
             FirstOrderStateMachineViewModel = vm;
 
             //SAMPLE
-            StateMachine f = new() { Name = "First" };
-            StateMachine s = new() { Name = "Second", Location = new(500, 0) };
+            //StateMachine f = new() { Name = "First" };
+            //StateMachine s = new() { Name = "Second", Location = new(500, 0) };
 
-            firstOrderSM.TryAddNode(f).TryAddNode(s).TryAddConnection(f.BottomConnector, s.BottomConnector);
+            //firstOrderSM.TryAddNode(f).TryAddNode(s).TryAddConnection(f.Connectors.TopConnectors[0], s.Connectors.TopConnectors[0]);
+
+            GraphSerializer.DeserializeFromFile(@"C:\Users\Artem\Downloads\CrouchingGraph.json", out var env);
+
+            FirstOrderStateMachineViewModel = new(env.FirstOrderStateMachine);
+
+            StateMachineParser.GenerateCSharpClass(FirstOrderStateMachineViewModel.Node);
 
             History.PropertyChanged += (_, e) => OnPropertyChanged(e);
         }
+
+        [RelayCommand]
+        private void TestParse() => StateMachineParser.GenerateCSharpClass(firstOrderStateMachineViewModel.Node);
 
         [RelayCommand]
         private void SaveToLast() {

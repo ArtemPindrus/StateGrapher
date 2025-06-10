@@ -12,16 +12,10 @@ namespace StateGrapher.Models
         public ObservableCollection<Node> Nodes { get; set; } = new();
         public ObservableCollection<Connection> Connections { get; set; } = new();
 
-        public Connector LeftConnector { get; set; }
-        public Connector TopConnector { get; set; }
-        public Connector RightConnector { get; set; }
-        public Connector BottomConnector { get; set; }
+        public ConnectorsCollection Connectors { get; set; }
 
         public StateMachine() {
-            LeftConnector = new(this);
-            TopConnector = new(this);
-            RightConnector = new(this);
-            BottomConnector = new(this);
+            Connectors = new(this, 3);
         }
 
         protected override string ValidateName(string? name) {
@@ -56,9 +50,7 @@ namespace StateGrapher.Models
             Connection c = new(from, to);
 
             if (Connections.Contains(c)
-                || from.Container == to.Container
-                || Connections.Any(x => (x.From.Container == from.Container && x.To.Container == to.Container)
-                || (x.From.Container == to.Container && x.To.Container == from.Container))) return null;
+                || from.Container == to.Container) return null;
 
             // disallow connection TO initial state
             if (to.Container is InitialState) return null;
