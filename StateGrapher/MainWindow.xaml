@@ -18,13 +18,13 @@
         <KeyBinding Command="{Binding SaveToLastCommand}" Gesture="CTRL+S" />
     </Window.InputBindings>
 
-    <DockPanel Background="Black">
-        <DockPanel.Resources>
-            <DataTemplate DataType="{x:Type viewmodels:StateMachineViewModel}">
-                <local:StateMachineView />
-            </DataTemplate>
-        </DockPanel.Resources>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewmodels:StateMachineViewModel}">
+            <local:StateMachineView />
+        </DataTemplate>
+    </Window.Resources>
 
+    <DockPanel Background="Black">
         <!--  Menu Bar  -->
         <Grid Background="#f0f0f0" DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
@@ -36,6 +36,7 @@
                 <MenuItem Header="File">
                     <MenuItem Command="{Binding SaveToFileCommand}" Header="Save graph" />
                     <MenuItem Command="{Binding LoadCommand}" Header="Load graph" />
+                    <MenuItem Command="{Binding TestParseCommand}" Header="Test command" />
                 </MenuItem>
             </Menu>
 
@@ -50,13 +51,13 @@
             <ContentControl Grid.Column="1" Content="{Binding FirstOrderStateMachineViewModel}" />
 
             <!--  Side Panel  -->
-            <Grid>
+            <Grid DockPanel.Dock="Left">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="5*" />
                 </Grid.ColumnDefinitions>
 
-                <views:NodeDetailsView>
+                <views:NodeDetailsView Grid.Column="0">
                     <views:NodeDetailsView.DataContext>
                         <viewmodels:NodeDetailsViewModel />
                     </views:NodeDetailsView.DataContext>

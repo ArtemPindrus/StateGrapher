@@ -14,7 +14,7 @@ namespace StateGrapher.Models
 
         public bool IsConnected => Connections > 0;
 
-        public Node? Container { get; set; }
+        public Node Container { get; set; }
 
         [JsonConstructor]
         [Obsolete("This constr is intended for JsonConstructor", true)]

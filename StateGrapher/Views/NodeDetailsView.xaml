@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:StateGrapher.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="clr-namespace:System;assembly=netstandard"
     xmlns:ut="clr-namespace:StateGrapher.Utilities"
     xmlns:viewmodels="clr-namespace:StateGrapher.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodels:NodeDetailsViewModel}"
@@ -15,7 +16,9 @@
     <UserControl.Resources>
         <!--  StateMachineViewModel  -->
         <DataTemplate DataType="{x:Type viewmodels:StateMachineViewModel}">
-            <TextBlock Foreground="White" Text="{Binding Name}" />
+            <StackPanel Orientation="Vertical">
+                <TextBlock Foreground="White" Text="{Binding Name}" />
+            </StackPanel>
         </DataTemplate>
 
         <!--  ConnectionViewModel  -->
@@ -29,7 +32,15 @@
 
                 <CheckBox Content="Is both ways?" IsChecked="{Binding IsBothWays}" />
 
-                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                <StackPanel>
+                    <TextBlock Foreground="White" Text="Forward event:" />
+                    <TextBox Text="{Binding ForwardEvent, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+
+                <StackPanel Visibility="{Binding IsBothWays, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Foreground="White" Text="Back event:" />
+                    <TextBox Text="{Binding BackEvent, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
 
                 <ComboBox
                     ItemsSource="{Binding Source={StaticResource ConnectionDirectionDataSource}}"

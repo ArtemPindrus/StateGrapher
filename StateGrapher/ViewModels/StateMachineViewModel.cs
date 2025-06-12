@@ -23,10 +23,7 @@ namespace StateGrapher.ViewModels
 
         Models.Node INodeViewModel.Node => Node;
 
-        public ConnectorViewModel LeftConnector { get; }
-        public ConnectorViewModel TopConnector { get; }
-        public ConnectorViewModel RightConnector { get; }
-        public ConnectorViewModel BottomConnector { get; }
+        public ConnectorsCollectionViewModel Connectors { get; }
 
         public string? Name {
             get => Node.Name;
@@ -76,10 +73,7 @@ namespace StateGrapher.ViewModels
             foreach (var node in stateMachine.Nodes) TryAddNodeViewModel(node);
             foreach (var connection in stateMachine.Connections) Connections.Add(new ConnectionViewModel(connection, this));
 
-            LeftConnector = new(stateMachine.LeftConnector);
-            TopConnector = new(stateMachine.TopConnector);
-            RightConnector = new(stateMachine.RightConnector);
-            BottomConnector = new(stateMachine.BottomConnector);
+            Connectors = new(stateMachine.Connectors);
         }
 
         private void StateMachineConnections_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) {
