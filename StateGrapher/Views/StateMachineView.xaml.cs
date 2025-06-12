@@ -20,11 +20,17 @@ namespace StateGrapher
     /// </summary>
     public partial class StateMachineView : UserControl
     {
+        public Point ContextMenuLocation { get; private set; }
+
         public bool IsStiff { get; set; }
 
         public StateMachineView()
         {
             InitializeComponent();
+        }
+
+        private void EditorContextMenuOpened(object sender, RoutedEventArgs e) {
+            ContextMenuLocation = NodeEditor.MouseLocation;
         }
     }
 }

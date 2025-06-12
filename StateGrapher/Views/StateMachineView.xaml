@@ -48,7 +48,7 @@
             Background="{StaticResource SmallGridLinesDrawingBrush}"
             ConnectionCompletedCommand="{Binding AddConnectionCommand}"
             Connections="{Binding Connections}"
-            ContextMenu="{DynamicResource CreateContextMenu}"
+            ContextMenuOpening="EditorContextMenuOpened"
             DisableAutoPanning="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
             DisablePanning="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
             DisableZooming="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
@@ -56,7 +56,8 @@
             GridCellSize="15"
             ItemsSource="{Binding Nodes}"
             SelectedConnection="{Binding SelectedConnection, Mode=OneWayToSource}"
-            SelectedItem="{Binding SelectedNode, Mode=OneWayToSource}">
+            SelectedItem="{Binding SelectedNode, Mode=OneWayToSource}"
+            Tag="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}}">
             <nodify:NodifyEditor.Resources>
                 <!--  StickyNode  -->
                 <DataTemplate DataType="{x:Type viewmodels:StickyNodeViewModel}">
@@ -279,6 +280,30 @@
                     </nodify:CircuitConnection>
                 </DataTemplate>
             </nodify:NodifyEditor.ConnectionTemplate>
+
+            <!--  Context Menu  -->
+            <nodify:NodifyEditor.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Create">
+                        <MenuItem
+                            Command="{Binding CreateStateMachineNodeCommand}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.ContextMenuLocation}"
+                            Header="State" />
+                        <MenuItem
+                            Command="{Binding CreateStickyNodeCommand}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.ContextMenuLocation}"
+                            Header="Sticky Note" />
+                        <MenuItem
+                            Command="{Binding CreateInitialStateNodeCommand}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.ContextMenuLocation}"
+                            Header="Initial state" />
+                        <MenuItem
+                            Command="{Binding CreateExitNodeCommand}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.Tag.ContextMenuLocation}"
+                            Header="Exit" />
+                    </MenuItem>
+                </ContextMenu>
+            </nodify:NodifyEditor.ContextMenu>
         </nodify:NodifyEditor>
 
         <Grid Panel.ZIndex="-1" Background="{StaticResource LargeGridLinesDrawingBrush}" />

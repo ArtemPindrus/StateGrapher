@@ -29,27 +29,6 @@
                         </ObjectDataProvider.MethodParameters>
                     </ObjectDataProvider>
 
-                    <ContextMenu x:Key="CreateContextMenu">
-                        <MenuItem Header="Create">
-                            <MenuItem
-                                Command="{Binding CreateStateMachineNodeCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.MouseLocation}"
-                                Header="State" />
-                            <MenuItem
-                                Command="{Binding CreateStickyNodeCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.MouseLocation}"
-                                Header="Sticky Note" />
-                            <MenuItem
-                                Command="{Binding CreateInitialStateNodeCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.MouseLocation}"
-                                Header="Initial state" />
-                            <MenuItem
-                                Command="{Binding CreateExitNodeCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.MouseLocation}"
-                                Header="Exit" />
-                        </MenuItem>
-                    </ContextMenu>
-
                     <!--  Converters  -->
                     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
                     <converters:BoolToArrowEnds x:Key="BoolToArrowEnds" />
