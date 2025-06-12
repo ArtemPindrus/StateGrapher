@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Nodify;
-using StateGrapher.Utilities;
 using System.Text.Json.Serialization;
 using System.Windows.Controls;
 
@@ -49,6 +48,7 @@ namespace StateGrapher.Models
         public Connector From { get; set; }
         public Connector To { get; set; }
 
+        [Obsolete("For Json.")]
         [JsonConstructor]
         public Connection() {
 
@@ -58,40 +58,7 @@ namespace StateGrapher.Models
             From = from;
             To = to;
         }
-
-        /// <summary>
-        /// Used to extract two connections if this connection <see cref="IsBothWays"/>.
-        /// </summary>
-        /// <returns>Bool indicating whether succeded extracting.</returns>
-        public bool ExtractBoth(out (Connection, Connection) connections) {
-            connections = (null!, null!); // set to null by default. caller should handle returned boolean.
-
-            if (!IsBothWays || string.IsNullOrEmpty(Name)) {
-                return false;
-            }
-
-            // check if simple
-            if (!Name.Contains('/')) {
-                IsBothWays = false;
-                var reverse = new Connection(To, From) { Name = Name };
-
-                connections = (this, reverse);
-                return true;
-            }
-
-            // process complex connection
-            var match = RegexUtil.MatchTwoWayConnection(Name);
-
-            if (!match.IsValid) return false;
-
-            IsBothWays = false;
-            Name = match.From_To_ToEventName;
-            var other = new Connection(To, From) { Name = match.To_To_FromEventName };
-
-            connections = (this, other);
-            return true;
-        }
-
+        
         public bool Equals(Connection? other) => other != null 
             && From == other.From 
             && To == other.To;

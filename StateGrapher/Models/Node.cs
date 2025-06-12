@@ -9,6 +9,9 @@ namespace StateGrapher.Models {
     [JsonDerivedType(typeof(ExitNode), "ExitNode")]
     public abstract partial class Node : ObservableObject {
         [ObservableProperty]
+        private bool isVisible;
+
+        [ObservableProperty]
         private string? name;
 
         [ObservableProperty]
@@ -17,10 +20,21 @@ namespace StateGrapher.Models {
         [ObservableProperty]
         private Size size;
 
+        [ObservableProperty]
+        private StateMachine? container;
+
         public Size DesiredSize { get; set; }
 
         public Node() {
             name = ValidateName(name);
+        }
+
+        public virtual void ReactToConnectionAdded(ConnectionSource connectionSource, Connection connection) {
+
+        }
+
+        public virtual void ReactToConnectionRemoved() {
+
         }
 
         partial void OnSizeChanged(Size value) {
@@ -32,5 +46,10 @@ namespace StateGrapher.Models {
         }
 
         protected abstract string? ValidateName(string? name);
+    }
+
+    public enum ConnectionSource {
+        From,
+        To,
     }
 }

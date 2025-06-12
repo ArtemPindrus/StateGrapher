@@ -7,9 +7,10 @@ namespace StateGrapher.Models
         [ObservableProperty]
         private bool isExpanded;
 
-        private InitialState? initialState;
+        public InitialState? InitialState { get; set; }
 
         public ObservableCollection<Node> Nodes { get; set; } = new();
+
         public ObservableCollection<Connection> Connections { get; set; } = new();
 
         public ConnectorsCollection Connectors { get; set; }
@@ -25,7 +26,7 @@ namespace StateGrapher.Models
         public StateMachine RemoveNode(Node node) {
             Nodes.Remove(node);
 
-            if (node is InitialState) initialState = null;
+            if (node is InitialState) InitialState = null;
 
             var connections = Connections
                 .Where(x => x.From.Container == node || x.To.Container == node)
@@ -38,18 +39,23 @@ namespace StateGrapher.Models
 
         public StateMachine TryAddNode(Node node) {
             if (node is InitialState instate) {
-                if (initialState != null) return this;
-                else initialState = instate;
+                if (InitialState != null) return this;
+                else InitialState = instate;
             }
 
             Nodes.Add(node);
+
+            node.Container = this;
+
             return this;
         }
 
         public Connection? TryAddConnection(Connector from, Connector to) {
             Connection c = new(from, to);
 
-            if (Connections.Contains(c)
+            if (from.Container == null
+                || to.Container == null
+                || Connections.Contains(c)
                 || from.Container == to.Container) return null;
 
             // disallow connection TO initial state
@@ -59,9 +65,14 @@ namespace StateGrapher.Models
             // disallow connection from exit node
             if (from.Container is ExitNode) return null;
 
+            from.Container.ReactToConnectionAdded(ConnectionSource.From, c);
+            to.Container.ReactToConnectionAdded(ConnectionSource.To, c);
+
             Connections.Add(c);
             from.Connections++;
             to.Connections++;
+
+            c.Container = this;
 
             return c;
         }
@@ -70,6 +81,9 @@ namespace StateGrapher.Models
             Connections.Remove(c);
             c.From.Connections--;
             c.To.Connections--;
+
+            c.From.Container?.ReactToConnectionRemoved();
+            c.To.Container?.ReactToConnectionRemoved();
         }
 
         partial void OnIsExpandedChanged(bool value) {

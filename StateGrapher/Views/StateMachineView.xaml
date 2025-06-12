@@ -262,16 +262,15 @@
                         OutlineBrush="Transparent"
                         OutlineThickness="3"
                         Source="{Binding From.Anchor}"
-                        SourceOffset="0,0"
                         SourceOffsetMode="None"
                         SourceOrientation="{Binding SourceOrientation}"
                         Spacing="0"
                         Stroke="Wheat"
                         Target="{Binding To.Anchor}"
-                        TargetOffset="0,0"
                         TargetOffsetMode="None"
                         TargetOrientation="{Binding TargetOrientation}"
-                        Text="{Binding EventDisplayName}">
+                        Text="{Binding EventDisplayName}"
+                        Visibility="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <nodify:CircuitConnection.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext.RemoveCommand}" Header="Delete" />

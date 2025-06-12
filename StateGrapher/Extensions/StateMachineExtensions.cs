@@ -3,6 +3,12 @@
 namespace StateGrapher.Extensions
 {
     public static class StateMachineExtensions {
+        /// <summary>
+        /// Get all <see cref="StateMachine"/> nodes.
+        /// </summary>
+        /// <param name="sm"></param>
+        /// <param name="includeSelf">Whether to include self (<paramref name="sm"/>).</param>
+        /// <returns></returns>
         public static IEnumerable<StateMachine> GetHierarchyNodes(this StateMachine sm, bool includeSelf = false) {
             if (includeSelf) yield return sm;
 
