@@ -46,6 +46,16 @@ namespace StateGrapher.ViewModels {
         }
 
         [RelayCommand]
+        private void GenerateCSharpClass() {
+            string? path = FolderDialog.RequestSaveCSharpClassPath();
+
+            if (path == null) return;
+
+            var classString = StateMachineClassGenerator.GenerateCSharpClass(FirstOrderStateMachineViewModel.Node);
+            File.WriteAllText(path, classString);
+        }
+
+        [RelayCommand]
         private void SaveToFile() {
             string? directoryPath = FolderDialog.RequestSaveGraphPath();
 
