@@ -18,7 +18,11 @@ namespace StateGrapher.Utilities
 
             // open class
             IndentedStringBuilder classString = new IndentedStringBuilder()
-                .AppendLine($"public partial class {name} {{")
+                .AppendLines($$"""
+                using System;
+
+                public partial class {{name}} {
+                """)
                 .IncrementIndent();
 
             var allStates = rootSm.GetHierarchyNodes(true).ToArray();
