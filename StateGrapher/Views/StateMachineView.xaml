@@ -250,6 +250,12 @@
                             </ContextMenu>
                         </Setter.Value>
                     </Setter>
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ToHightlight}" Value="True">
+                            <Setter Property="BorderBrush" Value="Red" />
+                        </DataTrigger>
+                    </Style.Triggers>
                 </Style>
             </nodify:NodifyEditor.ItemContainerStyle>
 

@@ -21,6 +21,7 @@ namespace StateGrapher.ViewModels
             set => exitNode.Location = value;
         }
 
+        public bool ToHightlight => false;
 
         public ExitNodeViewModel(ExitNode exitNode) {
             this.exitNode = exitNode;

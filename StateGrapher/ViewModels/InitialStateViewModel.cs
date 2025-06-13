@@ -17,6 +17,8 @@ namespace StateGrapher.ViewModels
         InitialState INodeViewModel<InitialState>.Node => Node;
         Node INodeViewModel.Node => Node;
 
+        public bool ToHightlight => false;
+
         public InitialStateViewModel(InitialState node) {
             Node = node;
 

@@ -17,6 +17,9 @@ namespace StateGrapher.ViewModels
         [ObservableProperty]
         private INodeViewModel? selectedConnection;
 
+        [ObservableProperty]
+        public bool toHightlight;
+
         public StateMachine Node { get; }
 
         StateMachine INodeViewModel<StateMachine>.Node => Node;

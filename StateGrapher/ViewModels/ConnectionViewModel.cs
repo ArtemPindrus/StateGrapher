@@ -56,6 +56,8 @@ namespace StateGrapher.ViewModels
 
         Node INodeViewModel.Node => Connection;
 
+        public bool ToHightlight => false;
+
         public ConnectionViewModel(Connection connection, StateMachineViewModel machineViewModel) {
             Connection = connection;
             this.machineViewModel = machineViewModel;

@@ -7,6 +7,8 @@ namespace StateGrapher.ViewModels
         public Node Node { get; }
 
         public Point Location { get; set; }
+
+        public bool ToHightlight { get; }
     }
 
     public interface INodeViewModel<out T> : INodeViewModel where T : Node {

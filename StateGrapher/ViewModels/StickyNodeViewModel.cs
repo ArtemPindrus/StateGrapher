@@ -26,6 +26,8 @@ namespace StateGrapher.ViewModels
             }
         }
 
+        public bool ToHightlight => false;
+
         public StickyNodeViewModel(StickyNode node) {
             this.node = node;
         }

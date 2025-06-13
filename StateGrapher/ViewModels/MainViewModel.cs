@@ -1,14 +1,27 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Nodify;
 using StateGrapher.Extensions;
 using StateGrapher.Models;
 using StateGrapher.Utilities;
+using System.IO;
+using System.Runtime.Loader;
 
 namespace StateGrapher.ViewModels {
     public partial class MainViewModel : ViewModelBase {
         // TODO: rename to root lol
         [ObservableProperty]
         private StateMachineViewModel firstOrderStateMachineViewModel;
+        
+        [ObservableProperty]
+        private TestingEnvironment? testingEnvironment;
+
+        [ObservableProperty]
+        private StateMachineViewModel? currentTestState;
+
+        public int DispatchEventID { get; set; }
 
         public string? LastActionHint => History.LastActionHint;
 
@@ -18,24 +31,29 @@ namespace StateGrapher.ViewModels {
             StateMachineViewModel vm = new(firstOrderSM);
             FirstOrderStateMachineViewModel = vm;
 
-            //SAMPLE
-            //StateMachine f = new() { Name = "First" };
-            //StateMachine s = new() { Name = "Second", Location = new(500, 0) };
-
-            //firstOrderSM.TryAddNode(f).TryAddNode(s).TryAddConnection(f.Connectors.TopConnectors[0], s.Connectors.TopConnectors[0]);
-
-            //GraphSerializer.DeserializeFromFile(@"C:\Users\Artem\Downloads\CrouchingGraph.json", out var env);
-
-            //FirstOrderStateMachineViewModel = new(env.FirstOrderStateMachine);
-
-            //StateMachineParser.GenerateCSharpClass(FirstOrderStateMachineViewModel.Node);
-
             History.PropertyChanged += (_, e) => OnPropertyChanged(e);
         }
 
         [RelayCommand]
-        private void TestParse() {
-            StateMachineClassGenerator.GenerateCSharpClass(firstOrderStateMachineViewModel.Node);
+        private void CreateTestingEnvironment() {
+            string classString = StateMachineClassGenerator.GenerateCSharpClass(FirstOrderStateMachineViewModel.Node);
+
+            TestingEnvironment = TestingEnvironment.FromGeneratedClass(classString);
+
+            if (TestingEnvironment == null) return;
+
+            CurrentTestState = FirstOrderStateMachineViewModel
+                .GetHierarchyNodes().FirstOrDefault(x => x.Name == TestingEnvironment.CurrentState);
+        }
+
+        [RelayCommand]
+        private void DispatchTestingEvent() {
+            if (TestingEnvironment == null) return;
+
+            TestingEnvironment.DispatchEvent(DispatchEventID);
+
+            CurrentTestState = FirstOrderStateMachineViewModel
+                .GetHierarchyNodes().FirstOrDefault(x => x.Name == TestingEnvironment.CurrentState);
         }
 
         [RelayCommand]
@@ -73,6 +91,11 @@ namespace StateGrapher.ViewModels {
             GraphSerializer.DeserializeFromFile(filePath, out Utilities.Environment env);
 
             FirstOrderStateMachineViewModel = new(env.FirstOrderStateMachine);
+        }
+
+        partial void OnCurrentTestStateChanged(StateMachineViewModel? oldValue, StateMachineViewModel? newValue) {
+            if (oldValue != null) oldValue.ToHightlight = false;
+            if (newValue != null) newValue.ToHightlight = true;
         }
     }
 }

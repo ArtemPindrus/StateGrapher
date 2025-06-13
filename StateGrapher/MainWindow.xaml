@@ -36,7 +36,9 @@
                 <MenuItem Header="File">
                     <MenuItem Command="{Binding SaveToFileCommand}" Header="Save graph" />
                     <MenuItem Command="{Binding LoadCommand}" Header="Load graph" />
-                    <MenuItem Command="{Binding TestParseCommand}" Header="Test command" />
+                    <MenuItem Command="{Binding GenerateCSharpClassCommand}" Header="Generate C# class" />
+                    <MenuItem Command="{Binding CreateTestingEnvironmentCommand}" Header="Create testing environment." />
+
                 </MenuItem>
             </Menu>
 
@@ -51,7 +53,7 @@
             <ContentControl Grid.Column="1" Content="{Binding FirstOrderStateMachineViewModel}" />
 
             <!--  Side Panel  -->
-            <Grid DockPanel.Dock="Left">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="5*" />
@@ -64,6 +66,17 @@
                 </views:NodeDetailsView>
 
                 <GridSplitter Grid.Column="0" Width="5" />
+
+                <!--  Testing environment controls  -->
+                <StackPanel
+                    Grid.Column="1"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+                    <ComboBox ItemsSource="{Binding TestingEnvironment.EventIDs, Mode=OneWay}" SelectedIndex="{Binding DispatchEventID}" />
+                    <Button Command="{Binding DispatchTestingEventCommand}" Content="Dispatch" />
+                </StackPanel>
             </Grid>
         </Grid>
     </DockPanel>
