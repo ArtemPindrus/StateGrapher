@@ -1,4 +1,5 @@
 ﻿using StateGrapher.Models;
+using StateGrapher.ViewModels;
 
 namespace StateGrapher.Extensions
 {
@@ -13,6 +14,22 @@ namespace StateGrapher.Extensions
             if (includeSelf) yield return sm;
 
             foreach (var node in sm.Nodes.OfType<StateMachine>()) {
+                yield return node;
+
+                foreach (var child in GetHierarchyNodes(node)) yield return child;
+            }
+        }
+
+        /// <summary>
+        /// Get all <see cref="StateMachine"/> nodes.
+        /// </summary>
+        /// <param name="sm"></param>
+        /// <param name="includeSelf">Whether to include self (<paramref name="sm"/>).</param>
+        /// <returns></returns>
+        public static IEnumerable<StateMachineViewModel> GetHierarchyNodes(this StateMachineViewModel sm, bool includeSelf = false) {
+            if (includeSelf) yield return sm;
+
+            foreach (var node in sm.Nodes.OfType<StateMachineViewModel>()) {
                 yield return node;
 
                 foreach (var child in GetHierarchyNodes(node)) yield return child;
