@@ -13,9 +13,7 @@ namespace StateGrapher.Utilities
         /// Generates C# state-machine class based on <see cref="StateMachine"/> instance.
         /// </summary>
         /// <param name="rootSm"></param>
-        /// <returns></returns>
         public static string GenerateCSharpClass(StateMachine rootSm) {
-            List<GenerationError> errors = new();
             string name = rootSm.Name ?? "StateMachine";
 
             // open class
@@ -96,6 +94,8 @@ namespace StateGrapher.Utilities
         }
 
         private static IndentedStringBuilder AppendStartMethod(IndentedStringBuilder sb, StateMachine rootSm) {
+            if (rootSm.InitialState == null) return sb;
+
             sb.AppendLines($$"""
                 public void Start() {
                     ROOT_Enter();
@@ -160,52 +160,43 @@ namespace StateGrapher.Utilities
                 """);
 
             foreach (var transition in transitions.Where(x => x.From == sm)) {
-                sb.AppendLines($$"""
-                    private void {{sm.Name}}_{{transition.Name}}() {
+                sb.AppendBlock($"private void {sm.Name}_{transition.Name}()", (sb) => {
+                    sb.AppendLines($"""
                         // exit to the Least Common Ancestor
-                        {{sm.Name}}_Exit();
-                    """)
-                    .IncrementIndent();
+                        {sm.Name}_Exit();
+                        """);
 
-                // exit to the LCA
-                var lca = StateMachineUtility.GetLeastCommonAncestor(transition);
-                var container = sm.Container;
-                while (container != lca) {
-                    sb.AppendLine($"{container.Name}_Exit();");
-                    container = container.Container;
-                }
+                    // exit to the LCA
+                    var lca = StateMachineUtility.GetLeastCommonAncestor(transition);
+                    var container = sm.Container;
+                    while (container != lca) {
+                        sb.AppendLine($"{container.Name}_Exit();");
+                        container = container.Container;
+                    }
 
-                sb.AppendLine();
+                    sb.AppendLine();
 
-                // perform transition action
-                sb.AppendLines($"""
+                    // perform transition action
+                    sb.AppendLines($"""
                     // perform transition action
                     On{sm.Name}_{transition.Name}();
 
                     """);
 
-                // enter other state
-                var current = transition.To;
+                    // enter other state
+                    var current = transition.To;
 
-                string enterTree = "";
-                while(current != lca && current != null) {
-                    enterTree = enterTree.Insert(0, $"{current.Name}_Enter();\n");
-                    current = current.Container;
-                }
+                    string enterTree = "";
+                    while (current != lca && current != null) {
+                        enterTree = enterTree.Insert(0, $"{current.Name}_Enter();\n");
+                        current = current.Container;
+                    }
 
-                sb.AppendLines($"""
+                    sb.AppendLines($"""
                     // enter other state
                     {enterTree}
                     """);
-
-
-                // CLOSE
-                sb.DecrementIndent()
-                    .AppendLines($$"""
-                    }
-                    partial void On{{sm.Name}}_{{transition.Name}}();
-
-                    """);
+                }).AppendLine($"partial void On{sm.Name}_{transition.Name}();");
             }
 
             // close region
@@ -225,9 +216,5 @@ namespace StateGrapher.Utilities
 
             return sb;
         }
-    }
-
-    public class GenerationError {
-
     }
 }
