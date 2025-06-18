@@ -64,28 +64,21 @@
 
                 <!--  Side Panel  -->
                 <Grid Background="#1e1e1e">
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-
-                    <GridSplitter
-                        Grid.Row="0"
-                        Height="5"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Bottom"
-                        ResizeBehavior="CurrentAndNext"
-                        ResizeDirection="Rows" />
-
-                    <views:NodeDetailsView Grid.Column="0">
-                        <views:NodeDetailsView.DataContext>
-                            <viewmodels:NodeDetailsViewModel />
-                        </views:NodeDetailsView.DataContext>
-                    </views:NodeDetailsView>
-
-                    <ContentPresenter Grid.Row="1" Content="{Binding OptionsViewModel}" />
-
-
+                    <TabControl Background="#1e1e1e">
+                        <TabItem Header="Node edit">
+                            <views:NodeDetailsView Grid.Column="0" Margin="5">
+                                <views:NodeDetailsView.DataContext>
+                                    <viewmodels:NodeDetailsViewModel />
+                                </views:NodeDetailsView.DataContext>
+                            </views:NodeDetailsView>
+                        </TabItem>
+                        <TabItem Header="Graph options">
+                            <ContentPresenter
+                                Grid.Row="1"
+                                Margin="5"
+                                Content="{Binding OptionsViewModel}" />
+                        </TabItem>
+                    </TabControl>
                 </Grid>
 
                 <GridSplitter Grid.Column="0" Width="5" />
