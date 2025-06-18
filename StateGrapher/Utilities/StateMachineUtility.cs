@@ -4,10 +4,22 @@ using System.Text.RegularExpressions;
 
 namespace StateGrapher.Utilities {
     public static class StateMachineUtility {
-        public static StateMachine GetLeastCommonAncestor(Transition transition) {
-            if (transition.To is ExitNode) {
-                return transition.Container.Container;
-            } else return transition.Container;
+        public static StateMachine? GetLeastCommonAncestor(Transition transition) {
+            var fromParentTree = transition.From.GetParentTree().ToArray();
+            var toParentTree = transition.To.GetParentTree().ToArray();
+
+            if (fromParentTree.Length > toParentTree.Length) return Traverse(fromParentTree, toParentTree);
+            else return Traverse(toParentTree, fromParentTree);
+
+                StateMachine? Traverse(IEnumerable<StateMachine> bigger, IEnumerable<StateMachine> smaller) {
+                    foreach (var i in bigger) {
+                        var found = smaller.FirstOrDefault(x => x == i);
+
+                        if (found != null) return found;
+                    }
+
+                    return null;
+                }
         }
 
         public static List<Transition> ToTransitions(IEnumerable<Connection> allConnections) {
