@@ -146,8 +146,12 @@
                             <nodify:GroupingNode.HeaderTemplate>
                                 <DataTemplate>
                                     <Grid>
-                                        <StackPanel Orientation="Horizontal">
-                                            <CheckBox IsChecked="{Binding IsExpanded}" />
+                                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                            <CheckBox IsChecked="{Binding IsExpanded}">
+                                                <CheckBox.LayoutTransform>
+                                                    <ScaleTransform ScaleX="0.75" ScaleY="0.75"/>
+                                                </CheckBox.LayoutTransform>
+                                            </CheckBox>
 
                                             <TextBox
                                                 HorizontalAlignment="Left"
@@ -182,7 +186,7 @@
             <!--  ItemContainerStyle  -->
             <nodify:NodifyEditor.ItemContainerStyle>
                 <Style BasedOn="{StaticResource {x:Type nodify:ItemContainer}}" TargetType="{x:Type nodify:ItemContainer}">
-                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="BorderThickness" Value="1" />
                     <Setter Property="Location" Value="{Binding Location}" />
                     <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=DataContext}" />
                     <Setter Property="ContextMenu">

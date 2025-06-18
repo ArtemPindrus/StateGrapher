@@ -27,9 +27,9 @@
         </DataTemplate>
     </Window.Resources>
 
-    <DockPanel Background="Black">
+    <DockPanel>
         <!--  Menu Bar  -->
-        <Grid Background="#f0f0f0" DockPanel.Dock="Top">
+        <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -42,7 +42,6 @@
                     <MenuItem Command="{Binding LoadCommand}" Header="Load graph" />
                     <MenuItem Command="{Binding GenerateCSharpClassCommand}" Header="Generate C# class" />
                     <MenuItem Command="{Binding CreateTestingEnvironmentCommand}" Header="Create testing environment" />
-
                 </MenuItem>
             </Menu>
 
@@ -58,8 +57,8 @@
 
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="5*" />
                 </Grid.ColumnDefinitions>
 
                 <!--  Side Panel  -->
