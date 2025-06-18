@@ -2,6 +2,7 @@
     x:Class="StateGrapher.StateMachineView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:StateGrapher.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:StateGrapher"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -106,98 +107,32 @@
                 <DataTemplate DataType="{x:Type viewmodels:StateMachineViewModel}">
                     <DockPanel>
                         <!--  Top Connectors  -->
-                        <UniformGrid
+                        <controls:ConnectorsUniform
                             Columns="3"
+                            DataContext="{Binding Connectors.TopConnectors}"
                             DockPanel.Dock="Top"
-                            Rows="1">
-                            <nodify:Connector
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Top"
-                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
-                                DataContext="{Binding Connectors.TopConnectors[0]}"
-                                Style="{StaticResource ConnectorStyle}" />
-                            <nodify:Connector
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Top"
-                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
-                                DataContext="{Binding Connectors.TopConnectors[1]}"
-                                Style="{StaticResource ConnectorStyle}" />
-                            <nodify:Connector
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Top"
-                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
-                                DataContext="{Binding Connectors.TopConnectors[2]}"
-                                Style="{StaticResource ConnectorStyle}" />
-                        </UniformGrid>
+                            Rows="1" />
 
                         <!--  Bottom Connectors  -->
-                        <UniformGrid
+                        <controls:ConnectorsUniform
                             Columns="3"
+                            DataContext="{Binding Connectors.BottomConnectors}"
                             DockPanel.Dock="Bottom"
-                            Rows="1">
-                            <nodify:Connector
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Top"
-                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
-                                DataContext="{Binding Connectors.BottomConnectors[0]}"
-                                Style="{StaticResource ConnectorStyle}" />
-                            <nodify:Connector
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Top"
-                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
-                                DataContext="{Binding Connectors.BottomConnectors[1]}"
-                                Style="{StaticResource ConnectorStyle}" />
-                            <nodify:Connector
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Top"
-                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
-                                DataContext="{Binding Connectors.BottomConnectors[2]}"
-                                Style="{StaticResource ConnectorStyle}" />
-                        </UniformGrid>
+                            Rows="1" />
 
                         <!--  Right Connectors  -->
-                        <UniformGrid
+                        <controls:ConnectorsUniform
                             Columns="1"
+                            DataContext="{Binding Connectors.RightConnectors}"
                             DockPanel.Dock="Right"
-                            Rows="3">
-                            <nodify:Connector
-                                HorizontalAlignment="Center"
-                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
-                                DataContext="{Binding Connectors.RightConnectors[0]}"
-                                Style="{StaticResource ConnectorStyle}" />
-                            <nodify:Connector
-                                HorizontalAlignment="Center"
-                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
-                                DataContext="{Binding Connectors.RightConnectors[1]}"
-                                Style="{StaticResource ConnectorStyle}" />
-                            <nodify:Connector
-                                HorizontalAlignment="Center"
-                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
-                                DataContext="{Binding Connectors.RightConnectors[2]}"
-                                Style="{StaticResource ConnectorStyle}" />
-                        </UniformGrid>
+                            Rows="3" />
 
                         <!--  Left Connectors  -->
-                        <UniformGrid
+                        <controls:ConnectorsUniform
                             Columns="1"
+                            DataContext="{Binding Connectors.LeftConnectors}"
                             DockPanel.Dock="Left"
-                            Rows="3">
-                            <nodify:Connector
-                                HorizontalAlignment="Center"
-                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
-                                DataContext="{Binding Connectors.LeftConnectors[0]}"
-                                Style="{StaticResource ConnectorStyle}" />
-                            <nodify:Connector
-                                HorizontalAlignment="Center"
-                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
-                                DataContext="{Binding Connectors.LeftConnectors[1]}"
-                                Style="{StaticResource ConnectorStyle}" />
-                            <nodify:Connector
-                                HorizontalAlignment="Center"
-                                Anchor="{Binding Anchor, Mode=OneWayToSource}"
-                                DataContext="{Binding Connectors.LeftConnectors[2]}"
-                                Style="{StaticResource ConnectorStyle}" />
-                        </UniformGrid>
+                            Rows="3" />
 
                         <nodify:GroupingNode
                             ActualSize="{Binding Size}"
