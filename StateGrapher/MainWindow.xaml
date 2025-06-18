@@ -40,7 +40,7 @@
                     <MenuItem Command="{Binding SaveToFileCommand}" Header="Save graph" />
                     <MenuItem Command="{Binding LoadCommand}" Header="Load graph" />
                     <MenuItem Command="{Binding GenerateCSharpClassCommand}" Header="Generate C# class" />
-                    <MenuItem Command="{Binding CreateTestingEnvironmentCommand}" Header="Create testing environment." />
+                    <MenuItem Command="{Binding CreateTestingEnvironmentCommand}" Header="Create testing environment" />
 
                 </MenuItem>
             </Menu>
