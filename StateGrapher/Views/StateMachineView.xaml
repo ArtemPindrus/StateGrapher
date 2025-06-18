@@ -45,13 +45,12 @@
 
         <nodify:NodifyEditor
             Name="NodeEditor"
-            Background="{StaticResource SmallGridLinesDrawingBrush}"
             ConnectionCompletedCommand="{Binding AddConnectionCommand}"
             Connections="{Binding Connections}"
             ContextMenuOpening="EditorContextMenuOpened"
-            DisableAutoPanning="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
-            DisablePanning="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
-            DisableZooming="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsStiff}"
+            DisableAutoPanning="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsNested}"
+            DisablePanning="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsNested}"
+            DisableZooming="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsNested}"
             DisplayConnectionsOnTop="True"
             GridCellSize="15"
             ItemsSource="{Binding Nodes}"
@@ -206,7 +205,7 @@
                             Header="{Binding}"
                             MovementMode="Self">
                             <Grid>
-                                <local:StateMachineView IsStiff="True" />
+                                <local:StateMachineView IsNested="True" />
                             </Grid>
 
                             <nodify:GroupingNode.HeaderTemplate>
@@ -234,6 +233,16 @@
                 </DataTemplate>
             </nodify:NodifyEditor.Resources>
 
+            <nodify:NodifyEditor.Style>
+                <Style TargetType="nodify:NodifyEditor">
+                    <Setter Property="Background" Value="{StaticResource SmallGridLinesDrawingBrush}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsNested}" Value="True">
+                            <Setter Property="Background" Value="Transparent" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </nodify:NodifyEditor.Style>
 
             <!--  ItemContainerStyle  -->
             <nodify:NodifyEditor.ItemContainerStyle>
@@ -311,7 +320,10 @@
             </nodify:NodifyEditor.ContextMenu>
         </nodify:NodifyEditor>
 
-        <Grid Panel.ZIndex="-1" Background="{StaticResource LargeGridLinesDrawingBrush}" />
+        <Grid
+            Panel.ZIndex="-1"
+            Background="{StaticResource LargeGridLinesDrawingBrush}"
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=IsNotNested, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
     </Grid>
 </UserControl>

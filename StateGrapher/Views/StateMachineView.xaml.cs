@@ -22,7 +22,9 @@ namespace StateGrapher
     {
         public Point ContextMenuLocation { get; private set; }
 
-        public bool IsStiff { get; set; }
+        public bool IsNested { get; set; }
+
+        public bool IsNotNested => !IsNested;
 
         public StateMachineView()
         {
