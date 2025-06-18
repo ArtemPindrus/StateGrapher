@@ -105,33 +105,33 @@
 
                 <!--  StateMachine  -->
                 <DataTemplate DataType="{x:Type viewmodels:StateMachineViewModel}">
-                    <DockPanel>
+                    <Grid>
                         <!--  Top Connectors  -->
                         <controls:ConnectorsUniform
+                            VerticalAlignment="Top"
                             Columns="3"
                             DataContext="{Binding Connectors.TopConnectors}"
-                            DockPanel.Dock="Top"
                             Rows="1" />
 
                         <!--  Bottom Connectors  -->
                         <controls:ConnectorsUniform
+                            VerticalAlignment="Bottom"
                             Columns="3"
                             DataContext="{Binding Connectors.BottomConnectors}"
-                            DockPanel.Dock="Bottom"
                             Rows="1" />
 
                         <!--  Right Connectors  -->
                         <controls:ConnectorsUniform
+                            HorizontalAlignment="Right"
                             Columns="1"
                             DataContext="{Binding Connectors.RightConnectors}"
-                            DockPanel.Dock="Right"
                             Rows="3" />
 
                         <!--  Left Connectors  -->
                         <controls:ConnectorsUniform
+                            HorizontalAlignment="Left"
                             Columns="1"
                             DataContext="{Binding Connectors.LeftConnectors}"
-                            DockPanel.Dock="Left"
                             Rows="3" />
 
                         <nodify:GroupingNode
@@ -164,7 +164,7 @@
 
                             </nodify:GroupingNode.HeaderTemplate>
                         </nodify:GroupingNode>
-                    </DockPanel>
+                    </Grid>
                 </DataTemplate>
             </nodify:NodifyEditor.Resources>
 
@@ -182,6 +182,7 @@
             <!--  ItemContainerStyle  -->
             <nodify:NodifyEditor.ItemContainerStyle>
                 <Style BasedOn="{StaticResource {x:Type nodify:ItemContainer}}" TargetType="{x:Type nodify:ItemContainer}">
+                    <Setter Property="BorderThickness" Value="1"/>
                     <Setter Property="Location" Value="{Binding Location}" />
                     <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource AncestorType=local:StateMachineView}, Path=DataContext}" />
                     <Setter Property="ContextMenu">
@@ -206,7 +207,7 @@
             <!--  ConnectionTemplate  -->
             <nodify:NodifyEditor.ConnectionTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:ConnectionViewModel}">
-                    <nodify:CircuitConnection
+                    <nodify:StepConnection
                         ArrowEnds="{Binding IsBothWays, Converter={StaticResource BoolToArrowEnds}}"
                         Direction="{Binding Direction}"
                         IsSelectable="True"
@@ -221,12 +222,12 @@
                         TargetOffsetMode="None"
                         TargetOrientation="{Binding TargetOrientation}"
                         Text="{Binding EventDisplayName}">
-                        <nodify:CircuitConnection.ContextMenu>
+                        <nodify:StepConnection.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Command="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext.RemoveCommand}" Header="Delete" />
                             </ContextMenu>
-                        </nodify:CircuitConnection.ContextMenu>
-                    </nodify:CircuitConnection>
+                        </nodify:StepConnection.ContextMenu>
+                    </nodify:StepConnection>
                 </DataTemplate>
             </nodify:NodifyEditor.ConnectionTemplate>
 
