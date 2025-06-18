@@ -37,6 +37,7 @@
 
             <Menu>
                 <MenuItem Header="File">
+                    <MenuItem Command="{Binding NewGraphCommand}" Header="New Graph" />
                     <MenuItem Command="{Binding SaveToFileCommand}" Header="Save graph" />
                     <MenuItem Command="{Binding LoadCommand}" Header="Load graph" />
                     <MenuItem Command="{Binding GenerateCSharpClassCommand}" Header="Generate C# class" />
@@ -76,11 +77,11 @@
                         ResizeBehavior="CurrentAndNext"
                         ResizeDirection="Rows" />
 
-                <views:NodeDetailsView Grid.Column="0">
-                    <views:NodeDetailsView.DataContext>
-                        <viewmodels:NodeDetailsViewModel />
-                    </views:NodeDetailsView.DataContext>
-                </views:NodeDetailsView>
+                    <views:NodeDetailsView Grid.Column="0">
+                        <views:NodeDetailsView.DataContext>
+                            <viewmodels:NodeDetailsViewModel />
+                        </views:NodeDetailsView.DataContext>
+                    </views:NodeDetailsView>
 
                     <ContentPresenter Grid.Row="1" Content="{Binding OptionsViewModel}" />
 
