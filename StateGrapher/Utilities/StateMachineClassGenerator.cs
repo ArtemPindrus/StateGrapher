@@ -59,6 +59,8 @@ namespace StateGrapher.Utilities
                     sb.AppendLine($"\"{t.Name}\" => EventId.{t.Name},");
                 }
 
+                sb.AppendLine($"\"Update\" => EventId.Update,");
+
                 sb.AppendLine($"_ => throw new ArgumentException(\"Failed to find EventId.\"),");
             }, ";").AppendLine();
 
@@ -84,6 +86,8 @@ namespace StateGrapher.Utilities
                                 foreach (var t in stateTransitions) {
                                     sb.AppendLine($"case EventId.{t.Name}: {state.Name}_{t.Name}(); break;");
                                 }
+
+                                sb.AppendLine($"case EventId.Update: {state.Name}_Update(); break;");
                             });
                         }
 
@@ -153,6 +157,15 @@ namespace StateGrapher.Utilities
                  
                 """);
 
+            // update handler
+            sb.AppendLines($$"""
+                private void {{sm.Name}}_Update() {
+                    On{{sm.Name}}_Update();
+                }
+                partial void On{{sm.Name}}_Update();
+                 
+                """);
+
             // exit handler
             sb.AppendLines($$"""
                 private void {{sm.Name}}_Exit() {
@@ -210,7 +223,13 @@ namespace StateGrapher.Utilities
         }
 
         private static IndentedStringBuilder AppendEventIdEnum(IndentedStringBuilder sb, IEnumerable<Transition> transitions) {
-            sb.AppendEnum("public", "EventId", transitions.DistinctBy(x => x.Name).Select(x => x.Name));
+            sb.AppendBlock("public enum EventId", (sb) => {
+                foreach (var t in transitions.DistinctBy(x => x.Name)) {
+                    sb.AppendLine($"{t.Name},");
+                }
+
+                sb.AppendLine("Update,");
+            });
 
             return sb;
         }
