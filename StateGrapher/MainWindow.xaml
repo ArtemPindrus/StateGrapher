@@ -10,8 +10,8 @@
     xmlns:viewmodels="clr-namespace:StateGrapher.ViewModels"
     xmlns:views="clr-namespace:StateGrapher.Views"
     Title="MainWindow"
-    Width="800"
-    Height="450"
+    Width="1280"
+    Height="720"
     d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
     mc:Ignorable="d">
     <Window.InputBindings>
@@ -21,6 +21,9 @@
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewmodels:StateMachineViewModel}">
             <local:StateMachineView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:OptionsViewModel}">
+            <views:OptionsView />
         </DataTemplate>
     </Window.Resources>
 
@@ -50,20 +53,39 @@
 
         <!--  Main Content  -->
         <Grid>
-            <ContentControl Grid.Column="1" Content="{Binding FirstOrderStateMachineViewModel}" />
+            <ContentControl Grid.Column="1" Content="{Binding RootStateMachineViewModel}" />
 
-            <!--  Side Panel  -->
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="5*" />
                 </Grid.ColumnDefinitions>
 
+                <!--  Side Panel  -->
+                <Grid Background="#1e1e1e">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <GridSplitter
+                        Grid.Row="0"
+                        Height="5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Bottom"
+                        ResizeBehavior="CurrentAndNext"
+                        ResizeDirection="Rows" />
+
                 <views:NodeDetailsView Grid.Column="0">
                     <views:NodeDetailsView.DataContext>
                         <viewmodels:NodeDetailsViewModel />
                     </views:NodeDetailsView.DataContext>
                 </views:NodeDetailsView>
+
+                    <ContentPresenter Grid.Row="1" Content="{Binding OptionsViewModel}" />
+
+
+                </Grid>
 
                 <GridSplitter Grid.Column="0" Width="5" />
 
@@ -73,7 +95,8 @@
                     Margin="10"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Orientation="Horizontal">
+                    Orientation="Horizontal"
+                    Visibility="{Binding TestingEnvironment, Converter={StaticResource NullToVisibilityConverter}}">
                     <ComboBox ItemsSource="{Binding TestingEnvironment.EventIDs, Mode=OneWay}" SelectedIndex="{Binding DispatchEventID}" />
                     <Button Command="{Binding DispatchTestingEventCommand}" Content="Dispatch" />
                 </StackPanel>

@@ -1,0 +1,23 @@
+﻿<UserControl
+    x:Class="StateGrapher.Views.OptionsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:StateGrapher.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:StateGrapher.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:OptionsViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="200"
+    mc:Ignorable="d">
+    <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Foreground="White" Text="Class Name" />
+            <TextBox Width="100" Text="{Binding ClassName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Foreground="White" Text="Namespace" />
+            <TextBox Width="100" Text="{Binding Namespace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

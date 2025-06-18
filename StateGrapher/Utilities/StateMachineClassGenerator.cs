@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using StateGrapher.Extensions;
 using StateGrapher.Models;
 using System.Buffers;
+using System.Printing;
 using System.Security.Permissions;
 
 namespace StateGrapher.Utilities
@@ -10,46 +11,57 @@ namespace StateGrapher.Utilities
     public static class StateMachineClassGenerator
     {
         /// <summary>
-        /// Generates C# state-machine class based on <see cref="StateMachine"/> instance.
+        /// Generates C# state-machine class based on <see cref="Graph"/> instance.
         /// </summary>
         /// <param name="rootSm"></param>
-        public static string GenerateCSharpClass(StateMachine rootSm) {
-            string name = rootSm.Name ?? "StateMachine";
+        public static string GenerateCSharpClass(Graph graph) {
+            var rootSm = graph.RootStateMachine;
+            var options = graph.Options;
 
-            // open class
-            IndentedStringBuilder classString = new IndentedStringBuilder()
-                .AppendLines($$"""
-                using System;
+            string name = (string.IsNullOrWhiteSpace(options.ClassName) ? rootSm.Name : options.ClassName) 
+                ?? "STATE";
 
-                public partial class {{name}} {
-                """)
-                .IncrementIndent();
+            IndentedStringBuilder classBuilder = new();
 
-            var allStates = rootSm.GetHierarchyNodes(true).ToArray();
-            var allConnections = rootSm.GetHierarchyConnections().ToArray();
-            var allTransitions = StateMachineUtility.ToTransitions(allConnections);
+            AppendUsings(classBuilder);
+            AppendNamespace(classBuilder, options);
 
-            AppendEventIdEnum(classString, allTransitions).AppendLine();
-            AppendStateIdEnum(classString, allStates).AppendLine();
-            
-            classString.AppendLine("public StateId stateId;")
-                .AppendLine();
+            classBuilder.AppendBlock($"public partial class {name}", (sb) => {
+                var allStates = rootSm.GetHierarchyNodes(true).ToArray();
+                var allConnections = rootSm.GetHierarchyConnections().ToArray();
+                var allTransitions = StateMachineUtility.ToTransitions(allConnections);
 
-            AppendConstructor(classString, rootSm);
-            AppendStartMethod(classString, rootSm);
-            AppendDispatchEventsMethod(classString, allStates, allTransitions);
-            AppendStringToEventIdMethod(classString, allTransitions);
+                AppendEventIdEnum(sb, allTransitions).AppendLine();
+                AppendStateIdEnum(sb, allStates).AppendLine();
 
-            foreach (var s in allStates) {
-                AppendEventHandlers(classString, s, allTransitions);
-            }
+                sb.AppendLine("public StateId stateId;")
+                    .AppendLine();
 
-            // close class
-            classString.DecrementIndent()
-                .AppendLine("}");
+                AppendStartMethod(sb, rootSm);
+                AppendDispatchEventsMethod(sb, allStates, allTransitions);
+                AppendStringToEventIdMethod(sb, allTransitions);
 
-            var str = classString.ToString();
+                foreach (var s in allStates) {
+                    AppendEventHandlers(sb, s, allTransitions);
+                }
+            });
+
+            var str = classBuilder.ToString();
             return str;
+        }
+
+        private static void AppendNamespace(IndentedStringBuilder sb, Options options) {
+            if (!string.IsNullOrWhiteSpace(options.NamespaceName)) {
+                sb.AppendLine($"namespace {options.NamespaceName};")
+                    .AppendLine();
+            }
+        }
+
+        private static void AppendUsings(IndentedStringBuilder sb) {
+            sb.AppendLines("""
+                using System;
+                 
+                """);
         }
 
         private static IndentedStringBuilder AppendStringToEventIdMethod(IndentedStringBuilder sb,
@@ -108,16 +120,6 @@ namespace StateGrapher.Utilities
                 public void Start() {
                     ROOT_Enter();
                     {{rootSm.InitialState.Connection.To.Container.Name}}_Enter();
-                }
-                 
-                """);
-
-            return sb;
-        }
-
-        private static IndentedStringBuilder AppendConstructor(IndentedStringBuilder sb, StateMachine sm) {
-            sb.AppendLines($$"""
-                public {{sm.Name}}(){
                 }
                  
                 """);

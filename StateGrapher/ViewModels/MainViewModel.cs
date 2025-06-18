@@ -1,19 +1,18 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Nodify;
 using StateGrapher.Extensions;
 using StateGrapher.Models;
 using StateGrapher.Utilities;
 using System.IO;
-using System.Runtime.Loader;
 
 namespace StateGrapher.ViewModels {
     public partial class MainViewModel : ViewModelBase {
-        // TODO: rename to root lol
         [ObservableProperty]
-        private StateMachineViewModel firstOrderStateMachineViewModel;
+        private StateMachineViewModel rootStateMachineViewModel;
+
+        [ObservableProperty]
+        private OptionsViewModel optionsViewModel;
         
         [ObservableProperty]
         private TestingEnvironment? testingEnvironment;
@@ -26,23 +25,33 @@ namespace StateGrapher.ViewModels {
         public string? LastActionHint => History.LastActionHint;
 
         public MainViewModel() {
-            StateMachine firstOrderSM = new() { Name = "ROOT", IsExpanded = true };
-
-            StateMachineViewModel vm = new(firstOrderSM);
-            FirstOrderStateMachineViewModel = vm;
+            NewGraph();
 
             History.PropertyChanged += (_, e) => OnPropertyChanged(e);
         }
 
         [RelayCommand]
+        private void NewGraph() {
+            StateMachine root = new() { Name = "ROOT", IsExpanded = true };
+            StateMachineViewModel vm = new(root);
+            RootStateMachineViewModel = vm;
+
+            Options op = new();
+            OptionsViewModel = new(op);
+
+            TestingEnvironment = null;
+            CurrentTestState = null;
+        }
+
+        [RelayCommand]
         private void CreateTestingEnvironment() {
-            string classString = StateMachineClassGenerator.GenerateCSharpClass(FirstOrderStateMachineViewModel.Node);
+            string classString = StateMachineClassGenerator.GenerateCSharpClass(new(RootStateMachineViewModel.Node, OptionsViewModel.Options));
 
             TestingEnvironment = TestingEnvironment.FromGeneratedClass(classString);
 
             if (TestingEnvironment == null) return;
 
-            CurrentTestState = FirstOrderStateMachineViewModel
+            CurrentTestState = RootStateMachineViewModel
                 .GetHierarchyNodes().FirstOrDefault(x => x.Name == TestingEnvironment.CurrentState);
         }
 
@@ -52,13 +61,13 @@ namespace StateGrapher.ViewModels {
 
             TestingEnvironment.DispatchEvent(DispatchEventID);
 
-            CurrentTestState = FirstOrderStateMachineViewModel
+            CurrentTestState = RootStateMachineViewModel
                 .GetHierarchyNodes().FirstOrDefault(x => x.Name == TestingEnvironment.CurrentState);
         }
 
         [RelayCommand]
         private void SaveToLast() {
-            if (!GraphSerializer.SerializeToLast(FirstOrderStateMachineViewModel.Node)) { 
+            if (!GraphSerializer.SerializeToLast(new(RootStateMachineViewModel.Node, OptionsViewModel.Options))) { 
                 SaveToFile();    
             }
         }
@@ -69,7 +78,7 @@ namespace StateGrapher.ViewModels {
 
             if (path == null) return;
 
-            var classString = StateMachineClassGenerator.GenerateCSharpClass(FirstOrderStateMachineViewModel.Node);
+            var classString = StateMachineClassGenerator.GenerateCSharpClass(new(RootStateMachineViewModel.Node, OptionsViewModel.Options));
             File.WriteAllText(path, classString);
         }
 
@@ -79,7 +88,7 @@ namespace StateGrapher.ViewModels {
 
             if (directoryPath is null) return;
 
-            GraphSerializer.SerializeToFile(directoryPath, FirstOrderStateMachineViewModel.Node);
+            GraphSerializer.SerializeToFile(directoryPath, new(RootStateMachineViewModel.Node, OptionsViewModel.Options));
         }
 
         [RelayCommand]
@@ -88,9 +97,13 @@ namespace StateGrapher.ViewModels {
 
             if (filePath is null) return;
 
-            GraphSerializer.DeserializeFromFile(filePath, out Utilities.Environment env);
+            GraphSerializer.DeserializeFromFile(filePath, out Graph? graph);
 
-            FirstOrderStateMachineViewModel = new(env.FirstOrderStateMachine);
+            if (graph is not Graph validGraph
+                || validGraph.RootStateMachine == null) return;
+
+            RootStateMachineViewModel = new(validGraph.RootStateMachine);
+            OptionsViewModel = new(validGraph.Options);
         }
 
         partial void OnCurrentTestStateChanged(StateMachineViewModel? oldValue, StateMachineViewModel? newValue) {

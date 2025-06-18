@@ -11,16 +11,15 @@ namespace StateGrapher.Utilities
 
         public static string? LastSerializationPath { get; private set; }
 
-        public static bool SerializeToLast(StateMachine firstOrderStateMachine) {
+        public static bool SerializeToLast(Graph graph) {
             if (LastSerializationPath == null) return false;
 
-            SerializeToFile(LastSerializationPath, firstOrderStateMachine);
+            SerializeToFile(LastSerializationPath, graph);
             return true;
         }
 
-        public static void SerializeToFile(string path, StateMachine firstOrderStateMachine) {
-            Environment env = new Environment() { FirstOrderStateMachine = firstOrderStateMachine };
-            string ser = JsonSerializer.Serialize<Environment>(env, jsonOptions);
+        public static void SerializeToFile(string path, Graph graph) {
+            string ser = JsonSerializer.Serialize<Graph>(graph, jsonOptions);
 
             if (!string.IsNullOrEmpty(ser)) {
                 File.WriteAllText(path, ser);
@@ -32,23 +31,19 @@ namespace StateGrapher.Utilities
             }
         }
 
-        public static bool DeserializeFromFile(string path, out Environment? environment) {
+        public static bool DeserializeFromFile(string path, out Graph? graph) {
             if (!File.Exists(path) || Path.GetExtension(path) != ".json") {
-                environment = default;
+                graph = default;
                 return false;
             }
 
             string json = File.ReadAllText(path);
-            environment = JsonSerializer.Deserialize<Environment>(json, jsonOptions);
+            graph = JsonSerializer.Deserialize<Graph>(json, jsonOptions);
 
             LastSerializationPath = path;
             History.LastActionHint = $"Deserialized graph \"{Path.GetFileNameWithoutExtension(path)}\"";
 
             return true;
         }
-    }
-
-    public class Environment {
-        public StateMachine? FirstOrderStateMachine { get; set; }
     }
 }

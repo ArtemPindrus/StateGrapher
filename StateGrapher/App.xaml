@@ -33,6 +33,7 @@
                     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
                     <converters:BoolToArrowEnds x:Key="BoolToArrowEnds" />
                     <converters:NumberGreaterThanConverter x:Key="NumberGreaterThanConverter" />
+                    <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
