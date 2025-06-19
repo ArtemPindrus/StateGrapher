@@ -56,7 +56,7 @@ namespace StateGrapher.ViewModels {
         private void CreateTestingEnvironment() {
             string classString = StateMachineClassGenerator.GenerateCSharpClass(new(RootStateMachineViewModel.Node, OptionsViewModel.Options));
 
-            TestingEnvironment = TestingEnvironment.FromGeneratedClass(classString);
+            TestingEnvironment = TestingEnvironment.FromGeneratedClass(classString, OptionsViewModel.ClassFullName);
 
             if (TestingEnvironment == null) return;
 

@@ -80,7 +80,7 @@
                         <TabItem Header="Transitions">
                             <StackPanel Orientation="Vertical">
                                 <Button Command="{Binding RefreshTransitionsCommand}" Content="Refresh" />
-                                <ListBox ItemsSource="{Binding Transitions}"/>
+                                <ListBox ItemsSource="{Binding Transitions}" />
                             </StackPanel>
                         </TabItem>
 
