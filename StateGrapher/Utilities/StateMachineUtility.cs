@@ -29,6 +29,18 @@ namespace StateGrapher.Utilities {
                 ConnectionToTransition(connection, allConnections, result);
             }
 
+            // consume ancestor events
+            var same = result.GroupBy(x => new { x.From, x.Name })
+                .Where(g => g.Count() > 1);
+
+            foreach (var key in same) {
+                var mostNested = GetMostNested(key.Select(x => x.To));
+
+                foreach (var t in key) {
+                    if (t.To != mostNested) result.Remove(t);
+                }
+            }
+
             return result;
         }
 
@@ -110,6 +122,10 @@ namespace StateGrapher.Utilities {
             }
         }
     
+        public static StateMachine GetMostNested(IEnumerable<StateMachine> states) {
+            return states.OrderByDescending(x => x.GetParentTree().Count()).First();
+        }
+
         public static StateMachine? GetEntry(StateMachine stateMachine) {
             if (stateMachine.Nodes.Count == 0) {
                 return stateMachine;
