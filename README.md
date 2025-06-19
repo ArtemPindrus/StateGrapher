@@ -1,22 +1,48 @@
 # StateGrapher
-## Terminology
-Connection:
-A connection between nodes.
+## Description
+This is a tool used to graph Hierarchical State Machines.
+Based on the graphs, C# state-machine classes are generated.
+![](/docs/img/AppPreview.png)
 
-## State
-State types:
-- Simple state - state without sub-states.
-- State Machine (Composite state) - a state containing other states.
+Made with WPF with a great contribution of [nodify](https://github.com/miroiu/nodify).
+
+## Generated State Machine
+General structure of generated class is inspired by what [StateSmith](https://github.com/StateSmith/StateSmith) does.
+The main difference is that the graph itself DOESN'T contain ANY code logic, only states and transitions.
+The generated class will have a bunch of partial methods without definition that can be defined to provide actual logic.
+
+## Terminology
+### Connection
+A connection between nodes in graph.
+
+#### Two-way connections
+TODO
 
 ### Transition
 Change of one state to the other due to an event.
-All transitions derive from connections, but not every connection is a transition.
 
-While connection describes visual connection of nodes in graph, transition describes actual state change in code.
+#### Initial transition
+TODO
 
-Transition types:
-- Direct transition - transition between two simple states. (SimpleState > SimpleState)
-- Initial transition - transition from a state to initial state of a State Machine. (State > StateMachine)
-- Entry transition - transition from a state to an entry of StateMachine. (State > StateMachine > State)
-- Exit transition - transition from StateMachine to a State through exit node. (State > StateMachine > State)
-- General exit transition - transition from any sub-state of a StateMachine to another excluded state. (Any state > StateMachine > State)
+#### Exit transition
+TODO
+
+### Connection VS Transition 
+Connection is visual. It's what's being created in the graph. It doesn't *necessary* reflect transition.
+
+Let's look at some examples.
+
+![ConnectionVSTransition](docs/img/ConnectionVSTransition.png)
+
+Here, the "Do" connection connects "Left" state with "Right" state, but the state machine generator recognizes it as a transition from "Left" to "Sub" through "Do".
+
+![ConnectionVSTransition1](docs/img/ConnectionVSTransition1.png)
+
+Here, the "MoveOut" connection connects "Composite" to "Simple", but the state machine generator recognizes:
+- Transition from "Left" to "Simple" through "MoveOut", and
+- Transition from "Right" to "Simple" through "MoveOut"
+
+### State
+State types:
+- Simple state - state without sub-states.
+- State Machine (Composite state) - a state containing other states.
