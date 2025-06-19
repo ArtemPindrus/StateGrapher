@@ -22,7 +22,13 @@ TODO
 Change of one state to the other due to an event.
 
 #### Initial transition
-TODO
+Initial transition describes a transition from a state to an Initial State of a State Machine.
+![Initial transition](docs/img/InitialTransition.png)
+
+Requires: 
+- Connection from a State to a State Machine (SM).
+- An Initial State node (I) in SM.
+- Connection of I to a Sub-state of SM.
 
 #### Exit transition
 TODO
