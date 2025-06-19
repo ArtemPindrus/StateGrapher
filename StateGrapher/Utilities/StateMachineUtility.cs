@@ -112,9 +112,16 @@ namespace StateGrapher.Utilities {
                             }
                         } else { // from state machine
                             if (GetEntry(to) is StateMachine entry) {
-                                foreach (var n in from.GetHierarchyNodes().OfType<StateMachine>()) {
-                                    transitions.Add(new(eventName, n, entry, connection.Container));
-                                }
+                                AddNested(from, entry);
+                            }
+                        }
+                    }
+
+                    void AddNested(StateMachine from, StateMachine to) {
+                        foreach (var n in from.Nodes.OfType<StateMachine>()) {
+                            if (n.Nodes.Count == 0) transitions.Add(new(eventName, n, to, connection.Container));
+                            else {
+                                AddNested(n, to);
                             }
                         }
                     }
