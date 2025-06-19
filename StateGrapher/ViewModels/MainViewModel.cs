@@ -20,6 +20,9 @@ namespace StateGrapher.ViewModels {
         [ObservableProperty]
         private StateMachineViewModel? currentTestState;
 
+        [ObservableProperty]
+        private Transition[] transitions;
+
         public int DispatchEventID { get; set; }
 
         public string? LastActionHint => History.LastActionHint;
@@ -28,6 +31,12 @@ namespace StateGrapher.ViewModels {
             NewGraph();
 
             History.PropertyChanged += (_, e) => OnPropertyChanged(e);
+        }
+
+        [RelayCommand]
+        private void RefreshTransitions() {
+            Transitions = StateMachineUtility.ToTransitions(RootStateMachineViewModel.Node.GetHierarchyConnections())
+                .ToArray();
         }
 
         [RelayCommand]

@@ -57,8 +57,8 @@
 
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="3*" />
                 </Grid.ColumnDefinitions>
 
                 <!--  Side Panel  -->
@@ -77,6 +77,39 @@
                                 Margin="5"
                                 Content="{Binding OptionsViewModel}" />
                         </TabItem>
+                        <TabItem Header="Transitions">
+                            <StackPanel Orientation="Vertical">
+                                <Button Command="{Binding RefreshTransitionsCommand}" Content="Refresh" />
+                                <ListBox ItemsSource="{Binding Transitions}"/>
+                            </StackPanel>
+                        </TabItem>
+
+                        <TabControl.Template>
+                            <ControlTemplate TargetType="TabControl">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
+                                        <TabPanel
+                                            x:Name="HeaderPanel"
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            Margin="2,2,2,0"
+                                            Panel.ZIndex="1"
+                                            IsItemsHost="true"
+                                            KeyboardNavigation.TabIndex="1" />
+                                    </ScrollViewer>
+                                    <ContentPresenter
+                                        x:Name="PART_SelectedContentHost"
+                                        Grid.Row="1"
+                                        Margin="{TemplateBinding Padding}"
+                                        ContentSource="SelectedContent"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                </Grid>
+                            </ControlTemplate>
+                        </TabControl.Template>
                     </TabControl>
                 </Grid>
 
