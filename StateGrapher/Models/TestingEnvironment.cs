@@ -31,7 +31,7 @@ namespace StateGrapher.Models
             CurrentState = StateIDs[(int)stateIdField.GetValue(classInstance)];
         }
 
-        public static TestingEnvironment? FromGeneratedClass(string classString) {
+        public static TestingEnvironment? FromGeneratedClass(string classString, string className) {
             var syntaxTree = CSharpSyntaxTree.ParseText(classString);
             var assemblyName = "DynamicAssembly_" + Guid.NewGuid();
             var compilation = CSharpCompilation.Create(assemblyName,
@@ -48,7 +48,7 @@ namespace StateGrapher.Models
             var assembly = AssemblyLoadContext.Default.LoadFromStream(ms);
 
             // Create instance
-            var classType = assembly.GetType("ROOT"); // name!!!
+            var classType = assembly.GetType(className);
 
             if (classType == null) return null;
 

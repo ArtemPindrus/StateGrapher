@@ -4,7 +4,7 @@ namespace StateGrapher.ViewModels {
     public class OptionsViewModel : ViewModelBase {
         public readonly Options Options;
 
-        public string? ClassName { 
+        public string ClassName { 
             get => Options.ClassName; 
             set => Options.ClassName = value;
         }
@@ -13,6 +13,8 @@ namespace StateGrapher.ViewModels {
             get => Options.NamespaceName;
             set => Options.NamespaceName = value;
         }
+
+        public string ClassFullName => Options.ClassFullName;
 
         public OptionsViewModel(Options options) {
             this.Options = options;
