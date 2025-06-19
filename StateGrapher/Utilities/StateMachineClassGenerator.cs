@@ -142,6 +142,13 @@ namespace StateGrapher.Utilities
                         stateId = StateId.ROOT;
                     }
 
+                    private void ROOT_Update() {
+                        OnROOT_Update();
+                    }
+                    partial void OnROOT_Update();
+                    """);
+
+                sb.AppendLines("""
                     #endregion
                      
                     """);
@@ -162,7 +169,11 @@ namespace StateGrapher.Utilities
             // update handler
             sb.AppendLines($$"""
                 private void {{sm.Name}}_Update() {
+                    // Call User handler
                     On{{sm.Name}}_Update();
+
+                    // Update ancestor
+                    {{sm.Container.Name}}_Update();
                 }
                 partial void On{{sm.Name}}_Update();
                  
