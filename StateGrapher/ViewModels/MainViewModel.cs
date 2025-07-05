@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.CodeAnalysis;
 using StateGrapher.Extensions;
 using StateGrapher.Models;
+using StateGrapher.Serialization;
 using StateGrapher.Testing;
 using StateGrapher.Utilities;
 using StateGrapher.Views;

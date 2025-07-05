@@ -1,9 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Mapster;
 
 namespace StateGrapher.Models {
     /// <summary>
     /// Represents a public bool field within a state machine.
     /// </summary>
+    [AdaptTo("[name]DTO")]
     public partial class StateMachineBool : ObservableObject {
         const string DefaultName = "UnnamedCondition";
 

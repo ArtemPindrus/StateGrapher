@@ -1,10 +1,13 @@
-﻿using StateGrapher.Models;
+﻿using Mapster;
+using StateGrapher.Models;
+using StateGrapher.Serialization.DTOs;
+using StateGrapher.Utilities;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace StateGrapher.Utilities
+namespace StateGrapher.Serialization
 {
     public static class GraphSerializer {
         private static readonly JsonSerializerOptions jsonOptions = new() { WriteIndented = true, ReferenceHandler = ReferenceHandler.Preserve };
@@ -19,7 +22,9 @@ namespace StateGrapher.Utilities
         }
 
         public static void SerializeToFile(string path, Graph graph) {
-            string ser = JsonSerializer.Serialize<Graph>(graph, jsonOptions);
+            GraphDTO graphDto = graph.Adapt<GraphDTO>();
+
+            string ser = JsonSerializer.Serialize(graphDto, jsonOptions);
 
             if (!string.IsNullOrEmpty(ser)) {
                 File.WriteAllText(path, ser);
@@ -38,12 +43,29 @@ namespace StateGrapher.Utilities
             }
 
             string json = File.ReadAllText(path);
-            graph = JsonSerializer.Deserialize<Graph>(json, jsonOptions);
+            var graphDto = JsonSerializer.Deserialize<GraphDTO>(json, jsonOptions);
+
+            var options = MapOptions(graphDto.Options);
+
+            graph = new(null, options);
 
             LastSerializationPath = path;
             History.LastActionHint = $"Deserialized graph \"{Path.GetFileNameWithoutExtension(path)}\"";
 
             return true;
+        }
+
+        public static Options MapOptions(OptionsDTO dto) {
+            Options options = new() {
+                ClassName = dto.ClassName,
+                NamespaceName = dto.NamespaceName
+            };
+
+            foreach (var b in dto.StateMachineBooleans) {
+                options.StateMachineBooleans.Add(b.Adapt<StateMachineBool>());
+            }
+
+            return options;
         }
     }
 }

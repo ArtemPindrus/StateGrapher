@@ -1,10 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Mapster;
 using StateGrapher.Extensions;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
 namespace StateGrapher.Models
 {
+    [AdaptTo("[name]DTO")]
     public partial class Options : ObservableObject {
         private const string DefaultClassName = "StateMachine";
 
@@ -13,22 +15,18 @@ namespace StateGrapher.Models
 
         [ObservableProperty]
         private string? namespaceName;
-        private ObservableCollection<StateMachineBool> stateMachineBooleans = new();
 
-        public ObservableCollection<StateMachineBool> StateMachineBooleans {
-            get => stateMachineBooleans;
-            set {
-                stateMachineBooleans = value;
-
-                stateMachineBooleans.CollectionChanged += OnStateMachineBooleansChanged;
-            }
-        }
+        public ObservableCollection<StateMachineBool> StateMachineBooleans { get; }
 
         public string ClassFullName {
             get {
                 if (!string.IsNullOrWhiteSpace(NamespaceName)) return $"{NamespaceName}.{ClassName}";
                 else return ClassName;
             }
+        }
+
+        public Options(ObservableCollection<StateMachineBool>? stateMachineBooleans = null) {
+            StateMachineBooleans = stateMachineBooleans ?? new();
         }
 
         partial void OnClassNameChanged(string value) {

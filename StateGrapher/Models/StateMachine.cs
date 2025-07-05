@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Mapster;
 using System.Collections.ObjectModel;
 
 namespace StateGrapher.Models
 {
+    [AdaptTo("[name]DTO")]
     public partial class StateMachine : Node {
         [ObservableProperty]
         private bool isExpanded;
