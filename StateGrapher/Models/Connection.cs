@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Nodify;
+using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 using System.Windows.Controls;
 
@@ -45,20 +46,34 @@ namespace StateGrapher.Models
             }
         }
 
+        public ObservableCollection<ConnectionCondition> ForwardConditions { get; set; } = new();
+        public ObservableCollection<ConnectionCondition> BackwardsConditions { get; set; } = new();
+
         public Connector From { get; set; }
         public Connector To { get; set; }
 
-        [Obsolete("For Json.")]
+        /// <summary>
+        /// For json constructor only!
+        /// </summary>
         [JsonConstructor]
         public Connection() {
-
         }
 
         public Connection(Connector from, Connector to) {
             From = from;
             To = to;
         }
-        
+
+        public void RemoveCondition(StateMachineBool boolean) {
+            if (ForwardConditions.FirstOrDefault(x => x.SmBoolean == boolean) is ConnectionCondition cc) {
+                ForwardConditions.Remove(cc);
+            }
+
+            if (BackwardsConditions.FirstOrDefault(x => x.SmBoolean == boolean) is ConnectionCondition cc1) {
+                BackwardsConditions.Remove(cc1);
+            }
+        }
+
         public bool Equals(Connection? other) => other != null 
             && From == other.From 
             && To == other.To;

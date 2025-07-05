@@ -3,11 +3,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:StateGrapher.Views"
+    xmlns:local="clr-namespace:StateGrapher"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:StateGrapher.Models"
     xmlns:system="clr-namespace:System;assembly=netstandard"
     xmlns:ut="clr-namespace:StateGrapher.Utilities"
     xmlns:viewmodels="clr-namespace:StateGrapher.ViewModels"
+    xmlns:views="clr-namespace:StateGrapher.Views"
     d:DataContext="{d:DesignInstance Type=viewmodels:NodeDetailsViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="200"
@@ -40,6 +42,65 @@
                     <TextBlock Foreground="White" Text="Back event:" />
                     <TextBox Text="{Binding BackEvent, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
+
+                <!--  Forward Conditions  -->
+                <TextBlock Text="Forward Conditions" />
+
+                <ListBox
+                    MinHeight="100"
+                    MaxHeight="300"
+                    ItemsSource="{Binding ForwardConditions}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="models:ConnectionCondition">
+                            <CheckBox Content="{Binding SmBoolean.Name}" IsChecked="{Binding ShouldBeTrue}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <!--  Backwards Conditions  -->
+                <TextBlock Text="Backwards Conditions" />
+
+                <ListBox
+                    MinHeight="100"
+                    MaxHeight="300"
+                    ItemsSource="{Binding BackwardsConditions}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="models:ConnectionCondition">
+                            <CheckBox Content="{Binding SmBoolean.Name}" IsChecked="{Binding ShouldBeTrue}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <!--  Add Conditions  -->
+
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox ItemsSource="{Binding Path=(local:App.StateMachineBooleans)}" SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=views:NodeDetailsView}, Path=DataContext.SelectedBoolean, Mode=OneWayToSource}" />
+                    <Button
+                        Command="{Binding AddForwardConditionCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=views:NodeDetailsView}, Path=DataContext.SelectedBoolean}"
+                        Content="Add forward condition" />
+
+                    <Button
+                        Command="{Binding AddBackwardsConditionCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=views:NodeDetailsView}, Path=DataContext.SelectedBoolean}"
+                        Content="Add back condition" />
+                </StackPanel>
+
+
+
+                <!--<TextBlock Text="Conditions" />
+                <ListBox ItemsSource="{Binding Conditions}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="models:Condition">
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>-->
+
+                <!--<StackPanel>
+                    <ComboBox ItemsSource="{Binding}" />
+                    <Button Content="Add condition" />
+                </StackPanel>-->
 
                 <ComboBox
                     ItemsSource="{Binding Source={StaticResource ConnectionDirectionDataSource}}"

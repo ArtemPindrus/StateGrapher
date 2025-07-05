@@ -3,8 +3,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using StateGrapher.Extensions;
 using StateGrapher.Models;
 using System.Buffers;
-using System.Printing;
-using System.Security.Permissions;
+using System.Text;
 
 namespace StateGrapher.Utilities
 {
@@ -31,6 +30,7 @@ namespace StateGrapher.Utilities
                 var allConnections = rootSm.GetHierarchyConnections().ToArray();
                 var allTransitions = StateMachineUtility.ToTransitions(allConnections);
 
+                AppendBoolFields(sb, options.StateMachineBooleans);
                 AppendEventIdEnum(sb, allTransitions).AppendLine();
                 AppendStateIdEnum(sb, allStates).AppendLine();
 
@@ -48,6 +48,14 @@ namespace StateGrapher.Utilities
 
             var str = classBuilder.ToString();
             return str;
+        }
+
+        private static void AppendBoolFields(IndentedStringBuilder sb, IEnumerable<StateMachineBool> bools) {
+            foreach (var boolean in bools) {
+                sb.AppendLine($"public bool {boolean.Name} = {boolean.InitialState.ToString().ToLower()};");
+            }
+
+            sb.AppendLine();
         }
 
         private static void AppendNamespace(IndentedStringBuilder sb, Options options) {
@@ -96,7 +104,23 @@ namespace StateGrapher.Utilities
                             && stateTransitions.Any()) {
                             sb.AppendBlock("switch (eventId)", (sb) => {
                                 foreach (var t in stateTransitions) {
-                                    sb.AppendLine($"case EventId.{t.Name}: {state.Name}_{t.Name}(); break;");
+                                    StringBuilder? ifString = new();
+
+                                    if (t.Conditions.Count > 0) {
+                                        ifString.Append("if (");
+
+                                        bool firstIteration = true;
+                                        foreach (var condition in t.Conditions) {
+                                            if (!firstIteration) ifString.Append(" && ");
+
+                                            if (!condition.ShouldBeTrue) ifString.Append("!");
+                                            ifString.Append(condition.SmBoolean.Name);
+                                        }
+
+                                        ifString.Append(")");
+                                    }
+
+                                    sb.AppendLine($"case EventId.{t.Name}: {ifString} {state.Name}_{t.Name}(); break;");
                                 }
 
                                 sb.AppendLine($"case EventId.Update: {state.Name}_Update(); break;");

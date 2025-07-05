@@ -1,4 +1,5 @@
 ﻿using StateGrapher.Models;
+using System.Collections.ObjectModel;
 
 namespace StateGrapher.ViewModels {
     public class OptionsViewModel : ViewModelBase {
@@ -13,6 +14,8 @@ namespace StateGrapher.ViewModels {
             get => Options.NamespaceName;
             set => Options.NamespaceName = value;
         }
+
+        public ObservableCollection<StateMachineBool> StateMachineBooleans => Options.StateMachineBooleans;
 
         public string ClassFullName => Options.ClassFullName;
 

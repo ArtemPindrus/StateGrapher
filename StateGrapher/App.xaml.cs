@@ -1,6 +1,8 @@
 ﻿using StateGrapher.Models;
+using StateGrapher.Utilities;
 using StateGrapher.ViewModels;
 using System.Collections;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
@@ -18,6 +20,8 @@ namespace StateGrapher
         private static Graph currentGraph;
 
         public static event EventHandler<PropertyChangedEventArgs>? StaticPropertyChanged;
+
+        public static ObservableCollection<StateMachineBool>? StateMachineBooleans => CurrentGraph.Options.StateMachineBooleans;
 
         public static Graph CurrentGraph {
             get => currentGraph;

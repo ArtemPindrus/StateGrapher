@@ -83,7 +83,7 @@ namespace StateGrapher.Utilities {
 
                     var to = (StateMachine)exitConnection.To.Container;
 
-                    return new Transition(connection.ForwardEvent, from, to, connection.Container);
+                    return new Transition(connection.ForwardEvent, from, to, connection.Container, connection.ForwardConditions);
                 }
 
                 return null;
@@ -96,32 +96,32 @@ namespace StateGrapher.Utilities {
 
                 // forward event
                 if (!string.IsNullOrEmpty(connection.ForwardEvent)) {
-                    Try_Internal(from, to, connection.ForwardEvent);
+                    Try_Internal(from, to, connection.ForwardEvent, connection.ForwardConditions);
                 }
 
                 // back event
                 if (!string.IsNullOrEmpty(connection.BackEvent)) {
-                    Try_Internal(to, from, connection.BackEvent);
+                    Try_Internal(to, from, connection.BackEvent, connection.BackwardsConditions);
                 }
 
-                void Try_Internal(StateMachine from, StateMachine to, string eventName) {
+                void Try_Internal(StateMachine from, StateMachine to, string eventName, IList<ConnectionCondition> conditions) {
                     if (!string.IsNullOrEmpty(connection.ForwardEvent)) {
                         if (from.Nodes.Count == 0) { // from simple
                             if (GetEntry(to) is StateMachine entry) {
-                                transitions.Add(new(eventName, from, entry, connection.Container));
+                                transitions.Add(new(eventName, from, entry, connection.Container, conditions));
                             }
                         } else { // from state machine
                             if (GetEntry(to) is StateMachine entry) {
-                                AddNested(from, entry);
+                                AddNested(from, entry, conditions);
                             }
                         }
                     }
 
-                    void AddNested(StateMachine from, StateMachine to) {
+                    void AddNested(StateMachine from, StateMachine to, IList<ConnectionCondition> conditions) {
                         foreach (var n in from.Nodes.OfType<StateMachine>()) {
-                            if (n.Nodes.Count == 0) transitions.Add(new(eventName, n, to, connection.Container));
+                            if (n.Nodes.Count == 0) transitions.Add(new(eventName, n, to, connection.Container, conditions));
                             else {
-                                AddNested(n, to);
+                                AddNested(n, to, conditions);
                             }
                         }
                     }

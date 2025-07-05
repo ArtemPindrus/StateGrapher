@@ -12,46 +12,45 @@
     mc:Ignorable="d">
     <StackPanel Orientation="Vertical">
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <TextBlock
-                Margin="0,0,5,0"
-                Foreground="White"
-                Text="Class Name" />
-            <TextBox Grid.Column="1" Text="{Binding ClassName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <!--  Basic Options  -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-            <TextBlock
-                Grid.Row="1"
-                Margin="0,0,5,0"
-                Foreground="White"
-                Text="Namespace" />
-            <TextBox
-                Grid.Row="1"
-                Grid.Column="1"
-                Text="{Binding Namespace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Margin="0,0,5,0"
+                    Foreground="White"
+                    Text="Class Name" />
+                <TextBox Grid.Column="1" Text="{Binding ClassName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock
+                    Grid.Row="1"
+                    Margin="0,0,5,0"
+                    Foreground="White"
+                    Text="Namespace" />
+                <TextBox
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Text="{Binding Namespace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+
+            <!--  StateMachineBools  -->
+            <StackPanel Grid.Row="2">
+                <TextBlock Text="StateMachine Booleans" ToolTip="TODO" />
+                <DataGrid ItemsSource="{Binding StateMachineBooleans}" />
+            </StackPanel>
         </Grid>
-
-        <!--<StackPanel Orientation="Horizontal">
-            <TextBlock
-                Margin="0,0,5,0"
-                Foreground="White"
-                Text="Class Name" />
-            <TextBox Width="100" Text="{Binding ClassName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock
-                Margin="0,0,5,0"
-                Foreground="White"
-                Text="Namespace" />
-            <TextBox Width="100" Text="{Binding Namespace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        </StackPanel>-->
     </StackPanel>
 </UserControl>
