@@ -7,15 +7,6 @@ using System.Windows.Controls;
 namespace StateGrapher.Models
 {
     public partial class Connection : Node, IEquatable<Connection> {
-        [ObservableProperty]
-        private ConnectionDirection direction;
-
-        [ObservableProperty]
-        private Orientation sourceOrientation;
-
-        [ObservableProperty]
-        private Orientation targetOrientation;
-
         [NotifyPropertyChangedFor(nameof(EventDisplayName))]
         [ObservableProperty]
         private bool isBothWays;
@@ -34,6 +25,14 @@ namespace StateGrapher.Models
         [ObservableProperty]
         private string? backEvent;
 
+
+        public ObservableCollection<ConnectionCondition> ForwardConditions { get; } = [];
+        public ObservableCollection<ConnectionCondition> BackwardsConditions { get; } = [];
+
+
+        public Connector From { get; }
+        public Connector To { get; }
+
         public string? EventDisplayName {
             get {
                 if (IsBothWays) {
@@ -46,18 +45,6 @@ namespace StateGrapher.Models
             }
         }
 
-        public ObservableCollection<ConnectionCondition> ForwardConditions { get; set; } = new();
-        public ObservableCollection<ConnectionCondition> BackwardsConditions { get; set; } = new();
-
-        public Connector From { get; set; }
-        public Connector To { get; set; }
-
-        /// <summary>
-        /// For json constructor only!
-        /// </summary>
-        [JsonConstructor]
-        public Connection() {
-        }
 
         public Connection(Connector from, Connector to) {
             From = from;

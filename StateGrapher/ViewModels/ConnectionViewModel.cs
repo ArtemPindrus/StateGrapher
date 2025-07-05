@@ -2,8 +2,6 @@
 using StateGrapher.Models;
 using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
-using ConnectionDirection = Nodify.ConnectionDirection;
 
 namespace StateGrapher.ViewModels
 {
@@ -30,21 +28,6 @@ namespace StateGrapher.ViewModels
         public bool IsBothWays {
             get => Connection.IsBothWays;
             set => Connection.IsBothWays = value;
-        }
-
-        public ConnectionDirection Direction { 
-            get => Connection.Direction;
-            set => Connection.Direction = value;
-        }
-
-        public Orientation SourceOrientation {
-            get => Connection.SourceOrientation;
-            set => Connection.SourceOrientation = value;
-        }
-
-        public Orientation TargetOrientation {
-            get => Connection.TargetOrientation;
-            set => Connection.TargetOrientation = value;
         }
 
         public ConnectionCondition SelectedForwardCondition { get; set; }
