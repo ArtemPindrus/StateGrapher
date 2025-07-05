@@ -1,7 +1,10 @@
 ﻿using StateGrapher.Models;
 using StateGrapher.ViewModels;
+using System.Collections;
+using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,8 +15,21 @@ namespace StateGrapher
     /// </summary>
     public partial class App : Application
     {
+        private static Graph currentGraph;
+
+        public static event EventHandler<PropertyChangedEventArgs>? StaticPropertyChanged;
+
+        public static Graph CurrentGraph {
+            get => currentGraph;
+            private set {
+                SetStaticProperty(ref currentGraph, value);
+            }
+        }
+
         protected override void OnStartup(StartupEventArgs e) {
-            MainViewModel mainViewModel = new MainViewModel();
+            CreateNewGraph();
+
+            MainViewModel mainViewModel = new MainViewModel(CurrentGraph);
 
             MainWindow mainWindow = new() {
                 DataContext = mainViewModel
@@ -22,6 +38,22 @@ namespace StateGrapher
             mainWindow.Show();
 
             base.OnStartup(e);
+        }
+
+        public static void CreateNewGraph() {
+            StateMachine root = new() { Name = "ROOT", IsExpanded = true };
+
+            Options op = new();
+
+            CurrentGraph = new(root, op);
+        }
+
+        protected static void SetStaticProperty<T>(ref T property, T value, [CallerArgumentExpression(nameof(property))] string? propertyName = null) {
+            if (EqualityComparer<T>.Default.Equals(property, value)) return;
+
+            property = value;
+
+            StaticPropertyChanged?.Invoke(null, new(propertyName));
         }
     }
 }

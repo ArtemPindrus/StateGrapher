@@ -9,11 +9,11 @@ using System.IO;
 namespace StateGrapher.ViewModels {
     public partial class MainViewModel : ViewModelBase {
         [ObservableProperty]
-        private StateMachineViewModel rootStateMachineViewModel;
+        private StateMachineViewModel? rootStateMachineViewModel;
 
         [ObservableProperty]
-        private OptionsViewModel optionsViewModel;
-        
+        private OptionsViewModel? optionsViewModel;
+
         [ObservableProperty]
         private TestingEnvironment? testingEnvironment;
 
@@ -21,16 +21,29 @@ namespace StateGrapher.ViewModels {
         private StateMachineViewModel? currentTestState;
 
         [ObservableProperty]
-        private Transition[] transitions;
+        private Transition[]? transitions;
 
         public int DispatchEventID { get; set; }
 
         public string? LastActionHint => History.LastActionHint;
 
-        public MainViewModel() {
-            NewGraph();
-
+        public MainViewModel(Graph graph) {
             History.PropertyChanged += (_, e) => OnPropertyChanged(e);
+            App.StaticPropertyChanged += App_StaticPropertyChanged;
+
+            OnNewGraphCreated(graph);
+        }
+
+        private void App_StaticPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) {
+            if (e.PropertyName == nameof(App.CurrentGraph)) OnNewGraphCreated(App.CurrentGraph);
+        }
+
+        private void OnNewGraphCreated(Graph graph) {
+            RootStateMachineViewModel = new(graph.RootStateMachine);
+            OptionsViewModel = new(graph.Options);
+
+            TestingEnvironment = null;
+            CurrentTestState = null;
         }
 
         [RelayCommand]
@@ -40,17 +53,7 @@ namespace StateGrapher.ViewModels {
         }
 
         [RelayCommand]
-        private void NewGraph() {
-            StateMachine root = new() { Name = "ROOT", IsExpanded = true };
-            StateMachineViewModel vm = new(root);
-            RootStateMachineViewModel = vm;
-
-            Options op = new();
-            OptionsViewModel = new(op);
-
-            TestingEnvironment = null;
-            CurrentTestState = null;
-        }
+        private void NewGraph() => App.CreateNewGraph();
 
         [RelayCommand]
         private void CreateTestingEnvironment() {
