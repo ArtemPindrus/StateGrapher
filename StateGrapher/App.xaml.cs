@@ -48,7 +48,20 @@ namespace StateGrapher
             CurrentGraph = new(root, op);
         }
 
-        protected static void SetStaticProperty<T>(ref T property, T value, [CallerArgumentExpression(nameof(property))] string? propertyName = null) {
+        public static void LoadGraph() {
+            string? filePath = FolderDialog.RequestGraphPath();
+
+            if (filePath is null) return;
+
+            GraphSerializer.DeserializeFromFile(filePath, out Graph? graph);
+
+            if (graph is not Graph validGraph
+                || validGraph.RootStateMachine == null) return;
+
+            CurrentGraph = validGraph;
+        }
+
+        protected static void SetStaticProperty<T>(ref T property, T value, [CallerMemberName] string? propertyName = null) {
             if (EqualityComparer<T>.Default.Equals(property, value)) return;
 
             property = value;

@@ -104,19 +104,7 @@ namespace StateGrapher.ViewModels {
         }
 
         [RelayCommand]
-        private void Load() { 
-            string? filePath = FolderDialog.RequestGraphPath();
-
-            if (filePath is null) return;
-
-            GraphSerializer.DeserializeFromFile(filePath, out Graph? graph);
-
-            if (graph is not Graph validGraph
-                || validGraph.RootStateMachine == null) return;
-
-            RootStateMachineViewModel = new(validGraph.RootStateMachine);
-            OptionsViewModel = new(validGraph.Options);
-        }
+        private void Load() => App.LoadGraph();
 
         partial void OnCurrentTestStateChanged(StateMachineViewModel? oldValue, StateMachineViewModel? newValue) {
             if (oldValue != null) oldValue.ToHightlight = false;
