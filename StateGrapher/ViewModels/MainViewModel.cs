@@ -3,7 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.CodeAnalysis;
 using StateGrapher.Extensions;
 using StateGrapher.Models;
+using StateGrapher.Testing;
 using StateGrapher.Utilities;
+using StateGrapher.Views;
 using System.IO;
 
 namespace StateGrapher.ViewModels {
@@ -15,7 +17,7 @@ namespace StateGrapher.ViewModels {
         private OptionsViewModel? optionsViewModel;
 
         [ObservableProperty]
-        private TestingEnvironment? testingEnvironment;
+        private TestingViewModel? testingViewModel;
 
         [ObservableProperty]
         private StateMachineViewModel? currentTestState;
@@ -36,14 +38,26 @@ namespace StateGrapher.ViewModels {
 
         private void App_StaticPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) {
             if (e.PropertyName == nameof(App.CurrentGraph)) OnNewGraphCreated(App.CurrentGraph);
+            else if (e.PropertyName == nameof(App.TestingEnvironment)) OnNewTestingEnvironmentCreated(App.TestingEnvironment);
         }
 
         private void OnNewGraphCreated(Graph graph) {
             RootStateMachineViewModel = new(graph.RootStateMachine);
             OptionsViewModel = new(graph.Options);
 
-            TestingEnvironment = null;
+            TestingViewModel = null;
             CurrentTestState = null;
+            Transitions = null;
+        }
+
+        private void OnNewTestingEnvironmentCreated(TestingEnvironment? testing) {
+            if (testing == null) {
+                TestingViewModel = null;
+            } else {
+                TestingViewModel = new(testing);
+
+                UpdateCurrentTestState(TestingViewModel.CurrentState);
+            }
         }
 
         [RelayCommand]
@@ -56,25 +70,20 @@ namespace StateGrapher.ViewModels {
         private void NewGraph() => App.CreateNewGraph();
 
         [RelayCommand]
-        private void CreateTestingEnvironment() {
-            string classString = StateMachineClassGenerator.GenerateCSharpClass(new(RootStateMachineViewModel.Node, OptionsViewModel.Options));
-
-            TestingEnvironment = TestingEnvironment.FromGeneratedClass(classString, OptionsViewModel.ClassFullName);
-
-            if (TestingEnvironment == null) return;
-
-            CurrentTestState = RootStateMachineViewModel
-                .GetHierarchyNodes().FirstOrDefault(x => x.Name == TestingEnvironment.CurrentState);
-        }
+        private void RefreshTestingEnvironment() => App.RefreshTestingEnvironment();
 
         [RelayCommand]
         private void DispatchTestingEvent() {
-            if (TestingEnvironment == null) return;
+            if (TestingViewModel == null) return;
 
-            TestingEnvironment.DispatchEvent(DispatchEventID);
+            TestingViewModel.DispatchTestingEvent(DispatchEventID);
 
+            UpdateCurrentTestState(TestingViewModel.CurrentState);
+        }
+
+        private void UpdateCurrentTestState(string stateName) {
             CurrentTestState = RootStateMachineViewModel
-                .GetHierarchyNodes().FirstOrDefault(x => x.Name == TestingEnvironment.CurrentState);
+                .GetHierarchyNodes().FirstOrDefault((Func<StateMachineViewModel, bool>)(x => x.Name == stateName));
         }
 
         [RelayCommand]

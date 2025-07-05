@@ -25,6 +25,9 @@
         <DataTemplate DataType="{x:Type viewmodels:OptionsViewModel}">
             <views:OptionsView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:TestingViewModel}">
+            <views:TestingView />
+        </DataTemplate>
     </Window.Resources>
 
     <DockPanel>
@@ -41,7 +44,6 @@
                     <MenuItem Command="{Binding SaveToFileCommand}" Header="Save graph" />
                     <MenuItem Command="{Binding LoadCommand}" Header="Load graph" />
                     <MenuItem Command="{Binding GenerateCSharpClassCommand}" Header="Generate C# class" />
-                    <MenuItem Command="{Binding CreateTestingEnvironmentCommand}" Header="Create testing environment" />
                 </MenuItem>
             </Menu>
 
@@ -83,8 +85,14 @@
                                 <ListBox ItemsSource="{Binding Transitions}" />
                             </StackPanel>
                         </TabItem>
+                        <TabItem Header="Testing">
+                            <StackPanel>
+                                <Button Command="{Binding RefreshTestingEnvironmentCommand}" Content="Refresh testing environment" />
+                                <ContentPresenter Content="{Binding TestingViewModel}" />
+                            </StackPanel>
+                        </TabItem>
 
-                        <TabControl.Template>
+                        <!--<TabControl.Template>
                             <ControlTemplate TargetType="TabControl">
                                 <Grid>
                                     <Grid.RowDefinitions>
@@ -109,7 +117,7 @@
                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                 </Grid>
                             </ControlTemplate>
-                        </TabControl.Template>
+                        </TabControl.Template>-->
                     </TabControl>
                 </Grid>
 
@@ -122,8 +130,8 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Orientation="Horizontal"
-                    Visibility="{Binding TestingEnvironment, Converter={StaticResource NullToVisibilityConverter}}">
-                    <ComboBox ItemsSource="{Binding TestingEnvironment.EventIDs, Mode=OneWay}" SelectedIndex="{Binding DispatchEventID}" />
+                    Visibility="{Binding TestingViewModel, Converter={StaticResource NullToVisibilityConverter}}">
+                    <ComboBox ItemsSource="{Binding TestingViewModel.EventIds, Mode=OneWay}" SelectedIndex="{Binding DispatchEventID}" />
                     <Button Command="{Binding DispatchTestingEventCommand}" Content="Dispatch" />
                 </StackPanel>
             </Grid>

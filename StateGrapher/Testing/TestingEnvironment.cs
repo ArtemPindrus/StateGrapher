@@ -4,31 +4,35 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
 
-namespace StateGrapher.Models
+namespace StateGrapher.Testing
 {
     public class TestingEnvironment {
-        private readonly object classInstance;
         private readonly FieldInfo stateIdField;
         private readonly MethodInfo dispatchEventMethod;
+
+        public object ClassInstance { get; }
+
+        public FieldInfo[] BooleanFields { get; }
 
         public string CurrentState { get; private set; }
 
         public string[] EventIDs { get; private set; }
         public string[] StateIDs { get; private set; }
 
-        public TestingEnvironment(object classInstance, FieldInfo stateIdField, MethodInfo dispatchEventMethod, string[] eventIDs, string[] stateIDs, string currentState) {
-            this.classInstance = classInstance;
+        public TestingEnvironment(object classInstance, FieldInfo stateIdField, MethodInfo dispatchEventMethod, string[] eventIDs, string[] stateIDs, string currentState, FieldInfo[] booleanFields) {
+            this.ClassInstance = classInstance;
             this.stateIdField = stateIdField;
             this.dispatchEventMethod = dispatchEventMethod;
             EventIDs = eventIDs;
             CurrentState = currentState;
             StateIDs = stateIDs;
+            this.BooleanFields = booleanFields;
         }
 
         public void DispatchEvent(int eventId) {
-            dispatchEventMethod.Invoke(classInstance, [eventId]);
+            dispatchEventMethod.Invoke(ClassInstance, [eventId]);
 
-            CurrentState = StateIDs[(int)stateIdField.GetValue(classInstance)];
+            CurrentState = StateIDs[(int)stateIdField.GetValue(ClassInstance)];
         }
 
         public static TestingEnvironment? FromGeneratedClass(string classString, string className) {
@@ -37,7 +41,7 @@ namespace StateGrapher.Models
             var compilation = CSharpCompilation.Create(assemblyName,
                 [syntaxTree],
                 options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
-                .AddReferences(CompilationReference.CreateFromFile(typeof(object).Assembly.Location));
+                .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location));
 
             using var ms = new MemoryStream();
             var result = compilation.Emit(ms);
@@ -57,8 +61,8 @@ namespace StateGrapher.Models
             if (classInstance == null) return null;
 
             var startMethod = classType.GetMethod("Start",
-                System.Reflection.BindingFlags.Public
-                | System.Reflection.BindingFlags.Instance);
+                BindingFlags.Public
+                | BindingFlags.Instance);
 
             if (startMethod == null) return null;
 
@@ -74,19 +78,26 @@ namespace StateGrapher.Models
             string[] stateIdMembers = stateIdType.GetEnumNames();
 
             var stateIdField = classType.GetField("stateId",
-                System.Reflection.BindingFlags.Public
-                | System.Reflection.BindingFlags.Instance);
+                BindingFlags.Public | BindingFlags.Instance);
 
             var dispatchEventMethod = classType.GetMethod("DispatchEvent",
-                System.Reflection.BindingFlags.Public
-                | System.Reflection.BindingFlags.Instance);
+                BindingFlags.Public | BindingFlags.Instance);
 
             if (dispatchEventMethod == null) return null;
 
-            var currentState = stateIdMembers[(int)stateIdField.GetValue(classInstance)];
-            var testingEnv = new TestingEnvironment(classInstance, stateIdField, dispatchEventMethod, eventIdMembers, stateIdMembers, currentState);
+            var booleans = classType.GetFields(BindingFlags.Public | BindingFlags.Instance)
+                .Where(x => x.FieldType == typeof(bool)).ToArray();
 
-            return testingEnv;    
+            var currentState = stateIdMembers[(int)stateIdField.GetValue(classInstance)];
+            var testingEnv = new TestingEnvironment(classInstance, 
+                stateIdField, 
+                dispatchEventMethod, 
+                eventIdMembers, 
+                stateIdMembers, 
+                currentState, 
+                booleans);
+
+            return testingEnv;
         }
     }
 }

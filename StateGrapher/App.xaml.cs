@@ -1,4 +1,5 @@
 ﻿using StateGrapher.Models;
+using StateGrapher.Testing;
 using StateGrapher.Utilities;
 using StateGrapher.ViewModels;
 using System.Collections;
@@ -18,16 +19,21 @@ namespace StateGrapher
     public partial class App : Application
     {
         private static Graph currentGraph;
+        private static TestingEnvironment? testingEnvironment;
+
 
         public static event EventHandler<PropertyChangedEventArgs>? StaticPropertyChanged;
 
         public static ObservableCollection<StateMachineBool>? StateMachineBooleans => CurrentGraph.Options.StateMachineBooleans;
 
         public static Graph CurrentGraph {
-            get => currentGraph;
-            private set {
-                SetStaticProperty(ref currentGraph, value);
-            }
+            get => currentGraph; 
+            private set => SetStaticProperty(ref currentGraph, value);
+        }
+
+        public static TestingEnvironment? TestingEnvironment { 
+            get => testingEnvironment; 
+            private set => SetStaticProperty(ref testingEnvironment, value);
         }
 
         protected override void OnStartup(StartupEventArgs e) {
@@ -50,6 +56,12 @@ namespace StateGrapher
             Options op = new();
 
             CurrentGraph = new(root, op);
+        }
+
+        public static void RefreshTestingEnvironment() {
+            string classString = StateMachineClassGenerator.GenerateCSharpClass(new(CurrentGraph.RootStateMachine, CurrentGraph.Options));
+
+            TestingEnvironment = TestingEnvironment.FromGeneratedClass(classString, CurrentGraph.Options.ClassFullName);
         }
 
         public static void LoadGraph() {
