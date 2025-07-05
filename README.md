@@ -24,6 +24,7 @@ Change of one state to the other due to an event.
 #### Initial transition
 Initial transition describes a transition from a state to an Initial State of a State Machine.
 ![Initial transition](docs/img/InitialTransition.png)
+(Transition "Left" to "Sub" through "Move")
 
 Requires: 
 - Connection from a State to a State Machine (SM).
