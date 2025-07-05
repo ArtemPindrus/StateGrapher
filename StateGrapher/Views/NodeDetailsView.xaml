@@ -49,12 +49,21 @@
                 <ListBox
                     MinHeight="100"
                     MaxHeight="300"
-                    ItemsSource="{Binding ForwardConditions}">
+                    ItemsSource="{Binding ForwardConditions}"
+                    SelectedValue="{Binding SelectedForwardCondition}">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="models:ConnectionCondition">
                             <CheckBox Content="{Binding SmBoolean.Name}" IsChecked="{Binding ShouldBeTrue}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem
+                                Command="{Binding DeleteForwardConditionCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext.SelectedForwardCondition}"
+                                Header="Delete" />
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
                 </ListBox>
 
                 <!--  Backwards Conditions  -->
@@ -63,12 +72,21 @@
                 <ListBox
                     MinHeight="100"
                     MaxHeight="300"
-                    ItemsSource="{Binding BackwardsConditions}">
+                    ItemsSource="{Binding BackwardsConditions}"
+                    SelectedValue="{Binding SelectedBackwardsCondition}">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="models:ConnectionCondition">
                             <CheckBox Content="{Binding SmBoolean.Name}" IsChecked="{Binding ShouldBeTrue}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem
+                                Command="{Binding DeleteBackwardsConditionCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext.SelectedBackwardsCondition}"
+                                Header="Delete" />
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
                 </ListBox>
 
                 <!--  Add Conditions  -->

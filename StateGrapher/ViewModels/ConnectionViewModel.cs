@@ -47,6 +47,9 @@ namespace StateGrapher.ViewModels
             set => Connection.TargetOrientation = value;
         }
 
+        public ConnectionCondition SelectedForwardCondition { get; set; }
+        public ConnectionCondition SelectedBackwardsCondition { get; set; }
+
         public ObservableCollection<ConnectionCondition> ForwardConditions => Connection.ForwardConditions;
         public ObservableCollection<ConnectionCondition> BackwardsConditions => Connection.BackwardsConditions;
 
@@ -84,6 +87,12 @@ namespace StateGrapher.ViewModels
 
             Connection.BackwardsConditions.Add(new(false, boolean));
         }
+
+        [RelayCommand]
+        private void DeleteForwardCondition(ConnectionCondition c) => Connection.ForwardConditions.Remove(c);
+
+        [RelayCommand]
+        private void DeleteBackwardsCondition(ConnectionCondition c) => Connection.BackwardsConditions.Remove(c);
 
         public void RemoveCondition(StateMachineBool boolean) {
             Connection.RemoveCondition(boolean);
