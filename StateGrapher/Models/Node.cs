@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Numerics;
 using System.Text.Json.Serialization;
 using System.Windows;
 
@@ -26,8 +25,6 @@ namespace StateGrapher.Models {
         [ObservableProperty]
         private StateMachine? container;
 
-        public Size DesiredSize { get; set; }
-
         public Node() {
             name = ValidateName(name);
         }
@@ -40,20 +37,18 @@ namespace StateGrapher.Models {
 
         }
 
-        partial void OnSizeChanged(Size value) {
-            if (value != new Size(0,0)) {
-                double correctedWidth = ((int)value.Width / SnappingSize) * SnappingSize;
-                double correctedHeight = ((int)value.Height / SnappingSize) * SnappingSize;
-
-                DesiredSize = new(correctedWidth, correctedHeight);
-            }
-        }
-
         partial void OnNameChanged(string? value) {
             Name = ValidateName(value);
         }
 
         protected abstract string? ValidateName(string? name);
+
+        partial void OnSizeChanged(Size value) {
+            var correctedWidth = Math.Ceiling(value.Width / SnappingSize) * SnappingSize;
+            var correctedHeight = Math.Ceiling(value.Height / SnappingSize) * SnappingSize;
+
+            Size = new(correctedWidth, correctedHeight);
+        }
     }
 
     public enum ConnectionSource {

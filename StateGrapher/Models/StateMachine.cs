@@ -4,9 +4,6 @@ using System.Collections.ObjectModel;
 namespace StateGrapher.Models
 {
     public partial class StateMachine : Node {
-        [ObservableProperty]
-        private bool isExpanded;
-
         public InitialState? InitialState { get; set; }
 
         public ObservableCollection<Node> Nodes { get; set; } = new();
@@ -84,11 +81,6 @@ namespace StateGrapher.Models
 
             c.From.Container?.ReactToConnectionRemoved();
             c.To.Container?.ReactToConnectionRemoved();
-        }
-
-        partial void OnIsExpandedChanged(bool value) {
-            if (!value) Size = new(0, 0);
-            else Size = DesiredSize;
         }
     }
 }

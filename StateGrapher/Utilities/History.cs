@@ -1,4 +1,5 @@
-﻿using StateGrapher.ViewModels;
+﻿using StateGrapher.Models;
+using StateGrapher.ViewModels;
 using System.ComponentModel;
 
 namespace StateGrapher.Utilities
@@ -11,7 +12,7 @@ namespace StateGrapher.Utilities
 
         private static string? lastActionHint;
         private static NodeViewModel? lastSelectedNode;
-        private static NodeViewModel? lastSelectedConnection;
+        private static ConnectionViewModel? lastSelectedConnection;
 
         public static string? LastActionHint {
             get => lastActionHint;
@@ -28,19 +29,23 @@ namespace StateGrapher.Utilities
 
                 LastSelectedNodeChanged?.Invoke(null, EventArgs.Empty);
                 LastSelectedObjectChanged?.Invoke(null, EventArgs.Empty);
+
+                if (value != null) LastSelectedObject = value;
             }
         }
 
-        public static NodeViewModel? LastSelectedConnection {
+        public static ConnectionViewModel? LastSelectedConnection {
             get => lastSelectedConnection;
             set {
                 lastSelectedConnection = value;
 
                 LastSelectedConnectionChanged?.Invoke(null, EventArgs.Empty);
                 LastSelectedObjectChanged?.Invoke(null, EventArgs.Empty);
+
+                if (value != null) LastSelectedObject = value;
             }
         }
 
-        public static NodeViewModel? LastSelectedObject => LastSelectedNode ?? LastSelectedConnection;
+        public static ViewModelBase? LastSelectedObject { get; private set; }
     }
 }

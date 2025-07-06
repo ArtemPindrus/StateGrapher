@@ -10,6 +10,16 @@ namespace StateGrapher.ViewModels {
             set => Node.Location = value;
         }
 
+        public string? Name {
+            get => Node.Name;
+            set => Node.Name = value;
+        }
+
+        public Size Size {
+            get => Node.Size;
+            set => Node.Size = value;
+        }
+
         public NodeViewModel(Node node) {
             Node = node;
         }

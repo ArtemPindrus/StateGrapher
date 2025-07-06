@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Nodify;
 using StateGrapher.Models;
 using StateGrapher.Utilities;
 using System.Collections.ObjectModel;
@@ -15,29 +14,14 @@ namespace StateGrapher.ViewModels
         private NodeViewModel? selectedNode;
 
         [ObservableProperty]
-        private NodeViewModel? selectedConnection;
+        private ConnectionViewModel? selectedConnection;
 
         [ObservableProperty]
-        public bool toHightlight;
+        private bool toHightlight;
 
         public new StateMachine Node { get; }
 
         public ConnectorsCollectionViewModel Connectors { get; }
-
-        public string? Name {
-            get => Node.Name;
-            set => Node.Name = value;
-        }
-
-        public Size Size {
-            get => Node.Size;
-            set => Node.Size = value;
-        }
-
-        public bool IsExpanded {
-            get => Node.IsExpanded;
-            set => Node.IsExpanded = value;
-        }
 
         // TODO: why dependency property?
 
@@ -170,7 +154,7 @@ namespace StateGrapher.ViewModels
             History.LastSelectedNode = value;
         }
 
-        partial void OnSelectedConnectionChanged(NodeViewModel? value) {
+        partial void OnSelectedConnectionChanged(ConnectionViewModel? value) {
             History.LastSelectedConnection = value;
         }
     }

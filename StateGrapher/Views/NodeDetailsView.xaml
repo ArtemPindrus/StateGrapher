@@ -104,35 +104,6 @@
                         CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=views:NodeDetailsView}, Path=DataContext.SelectedBoolean}"
                         Content="Add back condition" />
                 </StackPanel>
-
-
-
-                <!--<TextBlock Text="Conditions" />
-                <ListBox ItemsSource="{Binding Conditions}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate DataType="models:Condition">
-                            <TextBlock Text="{Binding Name}" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>-->
-
-                <!--<StackPanel>
-                    <ComboBox ItemsSource="{Binding}" />
-                    <Button Content="Add condition" />
-                </StackPanel>-->
-
-                <ComboBox
-                    ItemsSource="{Binding Source={StaticResource ConnectionDirectionDataSource}}"
-                    SelectedValue="{Binding Direction, Mode=TwoWay}"
-                    Text="Direction" />
-                <ComboBox
-                    ItemsSource="{Binding Source={StaticResource OrientationDataSource}}"
-                    SelectedValue="{Binding SourceOrientation, Mode=TwoWay}"
-                    Text="Source Orientation" />
-                <ComboBox
-                    ItemsSource="{Binding Source={StaticResource OrientationDataSource}}"
-                    SelectedValue="{Binding TargetOrientation, Mode=TwoWay}"
-                    Text="Source Orientation" />
             </StackPanel>
         </DataTemplate>
 

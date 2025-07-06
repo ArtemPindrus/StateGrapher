@@ -61,13 +61,17 @@
             <nodify:NodifyEditor.Resources>
                 <!--  StickyNode  -->
                 <DataTemplate DataType="{x:Type viewmodels:StickyNodeViewModel}">
-                    <Border Padding="5" Background="LightYellow">
-                        <Expander Background="LightYellow" Header="StickyNote">
-                            <Expander.Content>
-                                <TextBox Style="{StaticResource TransparentTextBox}" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" />
-                            </Expander.Content>
-                        </Expander>
-                    </Border>
+                    <nodify:GroupingNode
+                        MinWidth="75"
+                        MinHeight="75"
+                        ActualSize="{Binding Size, Mode=TwoWay}"
+                        Header="StickyNode">
+                        <TextBox
+                            Foreground="White"
+                            Style="{StaticResource TransparentTextBox}"
+                            Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
+                            TextWrapping="Wrap" />
+                    </nodify:GroupingNode>
                 </DataTemplate>
 
                 <!--  InitialStateNode  -->
@@ -84,29 +88,39 @@
 
                 <!--  ExitNode  -->
                 <DataTemplate DataType="{x:Type viewmodels:ExitNodeViewModel}">
-                    <nodify:Node
-                        MinWidth="60"
-                        MinHeight="60"
-                        Margin="0"
-                        Padding="0">
-                        <DockPanel>
-                            <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top">
-                                <Run Text="exit : " />
-                                <Run Text="{Binding Name}" />
-                            </TextBlock>
-
+                    <Grid>
+                        <Border
+                            MinWidth="60"
+                            MinHeight="60"
+                            Panel.ZIndex="10"
+                            Background="Red">
                             <Grid>
-                                <Ellipse
-                                    Width="30"
-                                    Height="30"
-                                    Fill="GreenYellow"
-                                    Stroke="Green"
-                                    StrokeThickness="2.5" />
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Name}" />
 
-                                <nodify:Connector DataContext="{Binding Connector}" Style="{StaticResource ConnectorStyle}" />
+                                <nodify:Connector
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Panel.ZIndex="12"
+                                    DataContext="{Binding Connector}"
+                                    Style="{StaticResource ConnectorStyle}" />
                             </Grid>
-                        </DockPanel>
-                    </nodify:Node>
+                        </Border>
+
+                        <nodify:GroupingNode
+                            MinWidth="60"
+                            MinHeight="60"
+                            Panel.ZIndex="11"
+                            ActualSize="{Binding Size}"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            HeaderBrush="Transparent"
+                            MovementMode="Self" />
+                    </Grid>
+
+
                 </DataTemplate>
 
                 <!--  StateMachine  -->
@@ -141,8 +155,9 @@
                             Rows="3" />
 
                         <nodify:GroupingNode
-                            ActualSize="{Binding Size}"
-                            CanResize="{Binding IsExpanded}"
+                            MinWidth="150"
+                            MinHeight="60"
+                            ActualSize="{Binding Size, Mode=TwoWay}"
                             Header="{Binding}"
                             MovementMode="Self">
                             <Grid>
@@ -153,12 +168,6 @@
                                 <DataTemplate>
                                     <Grid>
                                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                                            <CheckBox IsChecked="{Binding IsExpanded}">
-                                                <CheckBox.LayoutTransform>
-                                                    <ScaleTransform ScaleX="0.75" ScaleY="0.75" />
-                                                </CheckBox.LayoutTransform>
-                                            </CheckBox>
-
                                             <TextBox
                                                 HorizontalAlignment="Left"
                                                 AcceptsReturn="False"
@@ -167,7 +176,6 @@
                                                 Foreground="White"
                                                 Style="{StaticResource TransparentTextBox}"
                                                 Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
                                         </StackPanel>
                                     </Grid>
                                 </DataTemplate>
@@ -219,18 +227,15 @@
                 <DataTemplate DataType="{x:Type viewmodels:ConnectionViewModel}">
                     <nodify:StepConnection
                         ArrowEnds="{Binding IsBothWays, Converter={StaticResource BoolToArrowEnds}}"
-                        Direction="{Binding Direction}"
                         IsSelectable="True"
                         OutlineBrush="Transparent"
                         OutlineThickness="3"
                         Source="{Binding From.Anchor}"
                         SourceOffsetMode="None"
-                        SourceOrientation="{Binding SourceOrientation}"
                         Spacing="0"
                         Stroke="BlueViolet"
                         Target="{Binding To.Anchor}"
                         TargetOffsetMode="None"
-                        TargetOrientation="{Binding TargetOrientation}"
                         Text="{Binding EventDisplayName}">
                         <nodify:StepConnection.ContextMenu>
                             <ContextMenu>
