@@ -1,12 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Nodify;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Text;
 using System.Text.Json.Serialization;
 using System.Windows.Controls;
 
 namespace StateGrapher.Models
 {
     public partial class Connection : Node, IEquatable<Connection> {
+        private ObservableCollection<ConnectionCondition> forwardConditions = new();
+        private ObservableCollection<ConnectionCondition> backwardsConditions = new();
+
         [ObservableProperty]
         private ConnectionDirection direction;
 
@@ -19,6 +24,13 @@ namespace StateGrapher.Models
         [NotifyPropertyChangedFor(nameof(EventDisplayName))]
         [ObservableProperty]
         private bool isBothWays;
+
+        /// <summary>
+        /// Whether to display conditions with events string in NodeEditor.
+        /// </summary>
+        [NotifyPropertyChangedFor(nameof(EventDisplayName))]
+        [ObservableProperty]
+        private bool displayConditions;
 
         /// <summary>
         /// Name of event that triggers transition from <see cref="From"/> to <see cref="To"/>.
@@ -37,24 +49,48 @@ namespace StateGrapher.Models
         public string? EventDisplayName {
             get {
                 if (IsBothWays) {
-                    if (ForwardEvent == BackEvent) return ForwardEvent;
+                    StringBuilder s = new();
 
-                    return $"{ForwardEvent} / {BackEvent}";
+                    if (DisplayConditions) s.Append(GetConditionsString(ForwardConditions));
+
+                    s.Append($"{ForwardEvent} / ");
+
+                    if (DisplayConditions) s.Append(GetConditionsString(BackwardsConditions));
+
+                    s.Append(BackEvent);
+
+                    return s.ToString();
                 }
 
-                return ForwardEvent;
+                StringBuilder st = new();
+
+                if (DisplayConditions) st.Append(GetConditionsString(ForwardConditions));
+
+                st.Append(ForwardEvent);
+
+                return st.ToString();
             }
         }
 
-        public ObservableCollection<ConnectionCondition> ForwardConditions { get; set; } = new();
-        public ObservableCollection<ConnectionCondition> BackwardsConditions { get; set; } = new();
+        public ObservableCollection<ConnectionCondition> ForwardConditions {
+            get => forwardConditions;
+            set {
+                forwardConditions = value;
+                forwardConditions.CollectionChanged += ConditionsCollectionChanged;
+            }
+        }
 
-        public Connector From { get; set; }
-        public Connector To { get; set; }
+        public ObservableCollection<ConnectionCondition> BackwardsConditions {
+            get => backwardsConditions;
+            set {
+                backwardsConditions = value;
+                backwardsConditions.CollectionChanged += ConditionsCollectionChanged;
+            }
+        }
 
-        /// <summary>
-        /// For json constructor only!
-        /// </summary>
+        public Connector? From { get; set; }
+        public Connector? To { get; set; }
+
         [JsonConstructor]
         public Connection() {
         }
@@ -62,6 +98,10 @@ namespace StateGrapher.Models
         public Connection(Connector from, Connector to) {
             From = from;
             To = to;
+        }
+
+        private void ConditionsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) {
+            OnPropertyChanged(nameof(EventDisplayName));
         }
 
         public void RemoveCondition(StateMachineBool boolean) {
@@ -77,6 +117,27 @@ namespace StateGrapher.Models
         public bool Equals(Connection? other) => other != null 
             && From == other.From 
             && To == other.To;
+
+        public string GetConditionsString(IEnumerable<ConnectionCondition> conditions) {
+            if (!conditions.Any()) return "";
+
+            StringBuilder s = new("if (");
+
+            bool firstIteration = true;
+            foreach (var condition in conditions) {
+                if (!firstIteration) s.Append(" && ");
+
+                if (!condition.ShouldBeTrue) s.Append('!');
+
+                s.Append(condition.SmBoolean.Name);
+
+                firstIteration = false;
+            }
+
+            s.Append(')');
+
+            return s.ToString();
+        }
 
         public override string? ToString() => $"{From.Container.Name} -> {To.Container.Name} using '{Name}' event";
 

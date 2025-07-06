@@ -32,6 +32,7 @@
                 </TextBlock>
 
                 <CheckBox Content="Is both ways?" IsChecked="{Binding IsBothWays}" />
+                <CheckBox Content="Display conditions?" IsChecked="{Binding DisplayConditions}" />
 
                 <StackPanel>
                     <TextBlock Foreground="White" Text="Forward event:" />
