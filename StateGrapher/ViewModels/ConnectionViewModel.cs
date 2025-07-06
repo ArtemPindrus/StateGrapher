@@ -32,6 +32,11 @@ namespace StateGrapher.ViewModels
             set => Connection.IsBothWays = value;
         }
 
+        public bool DisplayConditions {
+            get => Connection.DisplayConditions;
+            set => Connection.DisplayConditions = value;
+        }
+
         public ConnectionDirection Direction { 
             get => Connection.Direction;
             set => Connection.Direction = value;
