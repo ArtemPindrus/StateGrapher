@@ -13,6 +13,7 @@
     Width="1280"
     Height="720"
     d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+    WindowState="Maximized"
     mc:Ignorable="d">
     <Window.InputBindings>
         <KeyBinding Command="{Binding SaveToLastCommand}" Gesture="CTRL+S" />
