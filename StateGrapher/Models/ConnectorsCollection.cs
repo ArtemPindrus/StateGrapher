@@ -8,10 +8,6 @@ namespace StateGrapher.Models
         public Connector[] RightConnectors { get; set; }
         public Connector[] BottomConnectors { get; set; }
 
-        [JsonConstructor]
-        [Obsolete("This constructor is for JSON serializer.", true)]
-        public ConnectorsCollection() { }
-
         public ConnectorsCollection(Node container, int left, int top, int right, int bottom) { 
             LeftConnectors = new Connector[left];
             TopConnectors = new Connector[top];
@@ -34,6 +30,24 @@ namespace StateGrapher.Models
             Init(TopConnectors, container);
             Init(RightConnectors, container);
             Init(BottomConnectors, container);
+        }
+
+        public IEnumerable<Connector> GetAll() {
+            foreach (var c in LeftConnectors) {
+                yield return c;
+            }
+
+            foreach (var c in TopConnectors) {
+                yield return c;
+            }
+
+            foreach (var c in RightConnectors) {
+                yield return c;
+            }
+
+            foreach (var c in BottomConnectors) {
+                yield return c;
+            }
         }
 
         private static void Init(Connector[] collection, Node container) {

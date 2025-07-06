@@ -4,6 +4,17 @@ using System.Text.RegularExpressions;
 
 namespace StateGrapher.Utilities {
     public static class StateMachineUtility {
+        /// <summary>
+        /// Find Connector within immediate children.
+        /// </summary>
+        /// <param name="sm"></param>
+        /// <returns></returns>
+        public static Connector? FindChildConnector(StateMachine sm, int connectorHashCode) {
+            var enumerable = sm.Nodes.OfType<IConnectingNode>().SelectMany(x => x.GetAllConnectors());
+
+            return enumerable.FirstOrDefault(x => x.GetHashCode() == connectorHashCode);
+        }
+
         public static StateMachine? GetLeastCommonAncestor(Transition transition) {
             var fromParentTree = transition.From.GetParentTree().ToArray();
             var toParentTree = transition.To.GetParentTree().ToArray();

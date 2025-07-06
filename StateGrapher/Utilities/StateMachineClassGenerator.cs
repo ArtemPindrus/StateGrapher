@@ -214,7 +214,7 @@ namespace StateGrapher.Utilities
                 """);
 
             foreach (var transition in transitions.Where(x => x.From == sm)) {
-                sb.AppendBlock($"private void {sm.Name}_{transition.Name}()", (sb) => {
+                sb.AppendBlock($"private void {sm.Name}_{transition.Name}()", (Action<IndentedStringBuilder>)((sb) => {
                     sb.AppendLines($"""
                         // exit to the Least Common Ancestor
                         {sm.Name}_Exit();
@@ -250,7 +250,7 @@ namespace StateGrapher.Utilities
                     // enter other state
                     {enterTree}
                     """);
-                }).AppendLine($"partial void On{sm.Name}_{transition.Name}();");
+                })).AppendLine($"partial void On{sm.Name}_{transition.Name}();");
             }
 
             // close region

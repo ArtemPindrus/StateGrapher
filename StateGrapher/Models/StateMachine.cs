@@ -5,19 +5,19 @@ using System.Collections.ObjectModel;
 namespace StateGrapher.Models
 {
     [AdaptTo("[name]DTO")]
-    public partial class StateMachine : Node {
+    public partial class StateMachine : Node, IConnectingNode {
         [ObservableProperty]
         private bool isExpanded;
 
         public InitialState? InitialState { get; set; }
 
-        public ObservableCollection<Node> Nodes { get; set; } = new();
+        public ObservableCollection<Node> Nodes { get; } = [];
 
-        public ObservableCollection<Connection> Connections { get; set; } = new();
+        public ObservableCollection<Connection> Connections { get; } = [];
 
-        public ConnectorsCollection Connectors { get; set; }
+        public ConnectorsCollection Connectors { get; }
 
-        public StateMachine() {
+        public StateMachine(StateMachine? container) : base(container) {
             Connectors = new(this, 3);
         }
 
@@ -47,13 +47,11 @@ namespace StateGrapher.Models
 
             Nodes.Add(node);
 
-            node.Container = this;
-
             return this;
         }
 
         public Connection? TryAddConnection(Connector from, Connector to) {
-            Connection c = new(from, to);
+            Connection c = new(from, to, this);
 
             if (from.Container == null
                 || to.Container == null
@@ -74,8 +72,6 @@ namespace StateGrapher.Models
             from.Connections++;
             to.Connections++;
 
-            c.Container = this;
-
             return c;
         }
 
@@ -92,5 +88,7 @@ namespace StateGrapher.Models
             if (!value) Size = new(0, 0);
             else Size = DesiredSize;
         }
+
+        public IEnumerable<Connector> GetAllConnectors() => Connectors.GetAll();
     }
 }

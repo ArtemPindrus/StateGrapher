@@ -8,6 +8,9 @@ namespace StateGrapher.Models {
     public class StickyNode : Node {
         public string? Text { get; set; }
 
+        public StickyNode(StateMachine? container) : base(container) {
+        }
+
         protected override string? ValidateName(string? name) => name;
     }
 }

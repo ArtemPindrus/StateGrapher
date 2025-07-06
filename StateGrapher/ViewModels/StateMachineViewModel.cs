@@ -151,25 +151,25 @@ namespace StateGrapher.ViewModels
 
         [RelayCommand]
         private void CreateStateMachineNode(Point location) {
-            StateMachine state = new() { Location = location };
+            StateMachine state = new(Node) { Location = location };
             Node.TryAddNode(state);
         }
 
         [RelayCommand]
         private void CreateStickyNode(Point location) {
-            StickyNode sn = new() { Location = location };
+            StickyNode sn = new(Node) { Location = location };
             Node.TryAddNode(sn);
         }
 
         [RelayCommand]
         private void CreateInitialStateNode(Point location) {
-            InitialState node = new() { Location = location };
+            InitialState node = new(Node) { Location = location };
             Node.TryAddNode(node);
         }
 
         [RelayCommand]
         private void CreateExitNode(Point location) {
-            ExitNode node = new() { Location = location };
+            ExitNode node = new(Node) { Location = location };
             Node.TryAddNode(node);
         }
 

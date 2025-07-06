@@ -1,13 +1,13 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿
+using System.Runtime.CompilerServices;
 
 namespace StateGrapher.Models {
-    public partial class InitialState : Node {
-        [ObservableProperty]
-        private Connector connector;
+    public partial class InitialState : Node, IConnectingNode {
+        public Connector Connector { get; }
 
-        public Connection Connection { get; set; }
+        public Connection? Connection { get; private set; }
 
-        public InitialState() {
+        public InitialState(StateMachine container) : base(container) {
             Connector = new Connector(this);
         }
 
@@ -21,6 +21,10 @@ namespace StateGrapher.Models {
 
         public override void ReactToConnectionRemoved() {
             Connection = null;
+        }
+
+        public IEnumerable<Connector> GetAllConnectors() {
+            yield return Connector;
         }
     }
 }

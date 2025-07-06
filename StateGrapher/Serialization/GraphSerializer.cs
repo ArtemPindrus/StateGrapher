@@ -2,15 +2,13 @@
 using StateGrapher.Models;
 using StateGrapher.Serialization.DTOs;
 using StateGrapher.Utilities;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace StateGrapher.Serialization
 {
     public static class GraphSerializer {
-        private static readonly JsonSerializerOptions jsonOptions = new() { WriteIndented = true, ReferenceHandler = ReferenceHandler.Preserve };
+        private static readonly JsonSerializerOptions jsonOptions = new() { WriteIndented = true };
 
         public static string? LastSerializationPath { get; private set; }
 
@@ -22,7 +20,7 @@ namespace StateGrapher.Serialization
         }
 
         public static void SerializeToFile(string path, Graph graph) {
-            GraphDTO graphDto = graph.Adapt<GraphDTO>();
+            GraphDTO graphDto = Mapper.MapGraph(graph);
 
             string ser = JsonSerializer.Serialize(graphDto, jsonOptions);
 
@@ -45,27 +43,14 @@ namespace StateGrapher.Serialization
             string json = File.ReadAllText(path);
             var graphDto = JsonSerializer.Deserialize<GraphDTO>(json, jsonOptions);
 
-            var options = MapOptions(graphDto.Options);
+            var options = Mapper.MapOptionsBack(graphDto.Options);
+            var sm = Mapper.MapStateMachineBack(graphDto.RootStateMachine);
 
-            graph = new(null, options);
+            graph = new(sm, options);
 
             LastSerializationPath = path;
             History.LastActionHint = $"Deserialized graph \"{Path.GetFileNameWithoutExtension(path)}\"";
 
             return true;
-        }
-
-        public static Options MapOptions(OptionsDTO dto) {
-            Options options = new() {
-                ClassName = dto.ClassName,
-                NamespaceName = dto.NamespaceName
-            };
-
-            foreach (var b in dto.StateMachineBooleans) {
-                options.StateMachineBooleans.Add(b.Adapt<StateMachineBool>());
-            }
-
-            return options;
-        }
-    }
+        }    }
 }

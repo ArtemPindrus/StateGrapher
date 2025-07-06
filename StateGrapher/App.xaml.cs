@@ -52,7 +52,7 @@ namespace StateGrapher
         }
 
         public static void CreateNewGraph() {
-            StateMachine root = new() { Name = "ROOT", IsExpanded = true };
+            StateMachine root = new(null) { Name = "ROOT", IsExpanded = true };
 
             Options op = new();
 

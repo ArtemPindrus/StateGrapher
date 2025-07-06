@@ -16,14 +16,12 @@ namespace StateGrapher.Models
 
         public Node Container { get; set; }
 
-        [JsonConstructor]
-        [Obsolete("This constr is intended for JsonConstructor", true)]
-        public Connector() {
-
-        }
-
         public Connector(Node container) {
             Container = container;
+        }
+
+        public override int GetHashCode() {
+            return HashCode.Combine(Container.GetHashCode(), Anchor.GetHashCode());
         }
     }
 }

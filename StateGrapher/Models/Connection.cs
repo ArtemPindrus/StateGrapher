@@ -45,8 +45,7 @@ namespace StateGrapher.Models
             }
         }
 
-
-        public Connection(Connector from, Connector to) {
+        public Connection(Connector from, Connector to, StateMachine container) : base(container) {
             From = from;
             To = to;
         }
