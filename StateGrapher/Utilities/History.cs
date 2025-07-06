@@ -10,8 +10,8 @@ namespace StateGrapher.Utilities
         public static event EventHandler? LastSelectedObjectChanged;
 
         private static string? lastActionHint;
-        private static INodeViewModel? lastSelectedNode;
-        private static INodeViewModel? lastSelectedConnection;
+        private static NodeViewModel? lastSelectedNode;
+        private static NodeViewModel? lastSelectedConnection;
 
         public static string? LastActionHint {
             get => lastActionHint;
@@ -21,7 +21,7 @@ namespace StateGrapher.Utilities
             }
         }
 
-        public static INodeViewModel? LastSelectedNode {
+        public static NodeViewModel? LastSelectedNode {
             get => lastSelectedNode;
             set {
                 lastSelectedNode = value;
@@ -31,7 +31,7 @@ namespace StateGrapher.Utilities
             }
         }
 
-        public static INodeViewModel? LastSelectedConnection {
+        public static NodeViewModel? LastSelectedConnection {
             get => lastSelectedConnection;
             set {
                 lastSelectedConnection = value;
@@ -41,6 +41,6 @@ namespace StateGrapher.Utilities
             }
         }
 
-        public static INodeViewModel? LastSelectedObject => LastSelectedNode ?? LastSelectedConnection;
+        public static NodeViewModel? LastSelectedObject => LastSelectedNode ?? LastSelectedConnection;
     }
 }

@@ -84,23 +84,29 @@
 
                 <!--  ExitNode  -->
                 <DataTemplate DataType="{x:Type viewmodels:ExitNodeViewModel}">
-                    <DockPanel>
-                        <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top">
-                            <Run Text="exit : " />
-                            <Run Text="{Binding Name}" />
-                        </TextBlock>
+                    <nodify:Node
+                        MinWidth="60"
+                        MinHeight="60"
+                        Margin="0"
+                        Padding="0">
+                        <DockPanel>
+                            <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top">
+                                <Run Text="exit : " />
+                                <Run Text="{Binding Name}" />
+                            </TextBlock>
 
-                        <Grid>
-                            <Ellipse
-                                Width="30"
-                                Height="30"
-                                Fill="GreenYellow"
-                                Stroke="Green"
-                                StrokeThickness="2.5" />
+                            <Grid>
+                                <Ellipse
+                                    Width="30"
+                                    Height="30"
+                                    Fill="GreenYellow"
+                                    Stroke="Green"
+                                    StrokeThickness="2.5" />
 
-                            <nodify:Connector DataContext="{Binding Connector}" Style="{StaticResource ConnectorStyle}" />
-                        </Grid>
-                    </DockPanel>
+                                <nodify:Connector DataContext="{Binding Connector}" Style="{StaticResource ConnectorStyle}" />
+                            </Grid>
+                        </DockPanel>
+                    </nodify:Node>
                 </DataTemplate>
 
                 <!--  StateMachine  -->
@@ -149,7 +155,7 @@
                                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                                             <CheckBox IsChecked="{Binding IsExpanded}">
                                                 <CheckBox.LayoutTransform>
-                                                    <ScaleTransform ScaleX="0.75" ScaleY="0.75"/>
+                                                    <ScaleTransform ScaleX="0.75" ScaleY="0.75" />
                                                 </CheckBox.LayoutTransform>
                                             </CheckBox>
 

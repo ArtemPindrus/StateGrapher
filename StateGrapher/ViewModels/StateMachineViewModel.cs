@@ -10,32 +10,23 @@ using System.Windows;
 
 namespace StateGrapher.ViewModels
 {
-    public partial class StateMachineViewModel : ViewModelBase, INodeViewModel<StateMachine> {
+    public partial class StateMachineViewModel : NodeViewModel {
         [ObservableProperty]
-        private INodeViewModel? selectedNode;
+        private NodeViewModel? selectedNode;
 
         [ObservableProperty]
-        private INodeViewModel? selectedConnection;
+        private NodeViewModel? selectedConnection;
 
         [ObservableProperty]
         public bool toHightlight;
 
-        public StateMachine Node { get; }
-
-        StateMachine INodeViewModel<StateMachine>.Node => Node;
-
-        Models.Node INodeViewModel.Node => Node;
+        public new StateMachine Node { get; }
 
         public ConnectorsCollectionViewModel Connectors { get; }
 
         public string? Name {
             get => Node.Name;
             set => Node.Name = value;
-        }
-
-        public Point Location {
-            get => Node.Location;
-            set => Node.Location = value;
         }
 
         public Size Size {
@@ -48,21 +39,23 @@ namespace StateGrapher.ViewModels
             set => Node.IsExpanded = value;
         }
 
+        // TODO: why dependency property?
+
         public static readonly DependencyProperty NodesProperty =
             DependencyProperty.Register(
                 "Nodes",
-                typeof(ObservableCollection<INodeViewModel>),
+                typeof(ObservableCollection<NodeViewModel>),
                 typeof(StateMachineViewModel),
                 new PropertyMetadata(null));
 
-        public ObservableCollection<INodeViewModel> Nodes {
-            get => (ObservableCollection<INodeViewModel>)GetValue(NodesProperty);
+        public ObservableCollection<NodeViewModel> Nodes {
+            get => (ObservableCollection<NodeViewModel>)GetValue(NodesProperty);
             set => SetValue(NodesProperty, value);
         }
 
         public ObservableCollection<ConnectionViewModel> Connections { get; }
 
-        public StateMachineViewModel(StateMachine stateMachine) {
+        public StateMachineViewModel(StateMachine stateMachine) : base(stateMachine) {
             Nodes = new();
             Connections = new();
 
@@ -145,7 +138,7 @@ namespace StateGrapher.ViewModels
         }
 
         [RelayCommand]
-        private void DeleteNode(INodeViewModel nodeVM) {
+        private void DeleteNode(NodeViewModel nodeVM) {
             Node.RemoveNode(nodeVM.Node);
         }
 
@@ -173,11 +166,11 @@ namespace StateGrapher.ViewModels
             Node.TryAddNode(node);
         }
 
-        partial void OnSelectedNodeChanged(INodeViewModel? value) {
+        partial void OnSelectedNodeChanged(NodeViewModel? value) {
             History.LastSelectedNode = value;
         }
 
-        partial void OnSelectedConnectionChanged(INodeViewModel? value) {
+        partial void OnSelectedConnectionChanged(NodeViewModel? value) {
             History.LastSelectedConnection = value;
         }
     }

@@ -3,12 +3,8 @@ using System.Windows;
 
 namespace StateGrapher.ViewModels
 {
-    public class StickyNodeViewModel : ViewModelBase, INodeViewModel<StickyNode> {
+    public class StickyNodeViewModel : NodeViewModel {
         private readonly StickyNode node;
-
-        StickyNode INodeViewModel<StickyNode>.Node => node;
-
-        Node INodeViewModel.Node => node;
 
         public string? Text {
             get {
@@ -19,16 +15,7 @@ namespace StateGrapher.ViewModels
             }
         }
 
-        public Point Location {
-            get => node.Location;
-            set {
-                node.Location = value;
-            }
-        }
-
-        public bool ToHightlight => false;
-
-        public StickyNodeViewModel(StickyNode node) {
+        public StickyNodeViewModel(StickyNode node) : base(node) {
             this.node = node;
         }
     }

@@ -7,7 +7,7 @@ using ConnectionDirection = Nodify.ConnectionDirection;
 
 namespace StateGrapher.ViewModels
 {
-    public partial class ConnectionViewModel : ViewModelBase, INodeViewModel<Connection> {
+    public partial class ConnectionViewModel : NodeViewModel {
         private readonly StateMachineViewModel machineViewModel;
 
         public string? Name {
@@ -37,40 +37,17 @@ namespace StateGrapher.ViewModels
             set => Connection.DisplayConditions = value;
         }
 
-        public ConnectionDirection Direction { 
-            get => Connection.Direction;
-            set => Connection.Direction = value;
-        }
-
-        public Orientation SourceOrientation {
-            get => Connection.SourceOrientation;
-            set => Connection.SourceOrientation = value;
-        }
-
-        public Orientation TargetOrientation {
-            get => Connection.TargetOrientation;
-            set => Connection.TargetOrientation = value;
-        }
-
-        public ConnectionCondition SelectedForwardCondition { get; set; }
-        public ConnectionCondition SelectedBackwardsCondition { get; set; }
+        public ConnectionCondition? SelectedForwardCondition { get; set; }
+        public ConnectionCondition? SelectedBackwardsCondition { get; set; }
 
         public ObservableCollection<ConnectionCondition> ForwardConditions => Connection.ForwardConditions;
         public ObservableCollection<ConnectionCondition> BackwardsConditions => Connection.BackwardsConditions;
 
         public Connection Connection { get; }
-        public Connector From => Connection.From;
-        public Connector To => Connection.To;
+        public Connector? From => Connection.From;
+        public Connector? To => Connection.To;
 
-        public Point Location { get => new(0, 0); set { } }
-
-        Connection INodeViewModel<Connection>.Node => Connection;
-
-        Node INodeViewModel.Node => Connection;
-
-        public bool ToHightlight => false;
-
-        public ConnectionViewModel(Connection connection, StateMachineViewModel machineViewModel) {
+        public ConnectionViewModel(Connection connection, StateMachineViewModel machineViewModel) : base(connection) {
             Connection = connection;
             this.machineViewModel = machineViewModel;
 

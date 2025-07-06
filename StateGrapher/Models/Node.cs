@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using System.Windows;
 
@@ -8,6 +9,8 @@ namespace StateGrapher.Models {
     [JsonDerivedType(typeof(InitialState), "InitialState")]
     [JsonDerivedType(typeof(ExitNode), "ExitNode")]
     public abstract partial class Node : ObservableObject {
+        const int SnappingSize = 15;
+
         [ObservableProperty]
         private bool isVisible;
 
@@ -38,7 +41,12 @@ namespace StateGrapher.Models {
         }
 
         partial void OnSizeChanged(Size value) {
-            if (value != new Size(0,0)) DesiredSize = value;
+            if (value != new Size(0,0)) {
+                double correctedWidth = ((int)value.Width / SnappingSize) * SnappingSize;
+                double correctedHeight = ((int)value.Height / SnappingSize) * SnappingSize;
+
+                DesiredSize = new(correctedWidth, correctedHeight);
+            }
         }
 
         partial void OnNameChanged(string? value) {
