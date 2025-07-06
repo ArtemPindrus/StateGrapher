@@ -149,7 +149,7 @@
                                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                                             <CheckBox IsChecked="{Binding IsExpanded}">
                                                 <CheckBox.LayoutTransform>
-                                                    <ScaleTransform ScaleX="0.75" ScaleY="0.75"/>
+                                                    <ScaleTransform ScaleX="0.75" ScaleY="0.75" />
                                                 </CheckBox.LayoutTransform>
                                             </CheckBox>
 

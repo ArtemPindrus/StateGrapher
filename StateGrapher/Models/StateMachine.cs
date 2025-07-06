@@ -1,19 +1,35 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Text.Json.Serialization;
 
 namespace StateGrapher.Models
 {
     public partial class StateMachine : Node {
+        private readonly ObservableCollection<Node> nodes = [];
+        private readonly ObservableCollection<Connection> connections = [];
+
         [ObservableProperty]
         private bool isExpanded;
 
-        public InitialState? InitialState { get; set; }
+        public InitialState? InitialState { get; private set; }
 
-        public ObservableCollection<Node> Nodes { get; set; } = new();
+        public ObservableCollection<Node> Nodes {
+            get => nodes;
+            set {
+                RemoveAllNodes();
+                TryAddNodes(value);
+            }
+        }
 
-        public ObservableCollection<Connection> Connections { get; set; } = new();
+        public ObservableCollection<Connection> Connections {
+            get => connections;
+            set {
+                RemoveAllConnections();
+                TryAddConnections(value);
+            }
+        }
 
-        public ConnectorsCollection Connectors { get; set; }
+        public ConnectorsCollection Connectors { get; }
 
         public StateMachine() {
             Connectors = new(this, 3);
@@ -37,6 +53,14 @@ namespace StateGrapher.Models
             return this;
         }
 
+        public StateMachine RemoveAllNodes() {
+            foreach (var n in nodes) {
+                RemoveNode(n);
+            }
+
+            return this;
+        }
+
         public StateMachine TryAddNode(Node node) {
             if (node is InitialState instate) {
                 if (InitialState != null) return this;
@@ -50,8 +74,19 @@ namespace StateGrapher.Models
             return this;
         }
 
-        public Connection? TryAddConnection(Connector from, Connector to) {
-            Connection c = new(from, to);
+        public StateMachine TryAddNodes(IEnumerable<Node> nodes) {
+            foreach (var n in nodes) {
+                TryAddNode(n);
+            }
+
+            return this;
+        }
+
+        public Connection? TryAddConnection(Connector from, Connector to) => TryAddConnection(new(from, to));
+
+        public Connection? TryAddConnection(Connection c) {
+            var from = c.From;
+            var to = c.To;
 
             if (from.Container == null
                 || to.Container == null
@@ -77,13 +112,31 @@ namespace StateGrapher.Models
             return c;
         }
 
-        public void RemoveConnection(Connection c) {
+        public StateMachine TryAddConnections(IEnumerable<Connection> connections) {
+            foreach (var c in connections) {
+                TryAddConnection(c);
+            }
+
+            return this;
+        }
+
+        public StateMachine RemoveConnection(Connection c) {
             Connections.Remove(c);
             c.From.Connections--;
             c.To.Connections--;
 
             c.From.Container?.ReactToConnectionRemoved();
             c.To.Container?.ReactToConnectionRemoved();
+
+            return this;
+        }
+
+        public StateMachine RemoveAllConnections() {
+            foreach (var c in Connections) {
+                RemoveConnection(c);
+            }
+
+            return this;
         }
 
         partial void OnIsExpandedChanged(bool value) {

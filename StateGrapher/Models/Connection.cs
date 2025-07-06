@@ -52,13 +52,6 @@ namespace StateGrapher.Models
         public Connector From { get; set; }
         public Connector To { get; set; }
 
-        /// <summary>
-        /// For json constructor only!
-        /// </summary>
-        [JsonConstructor]
-        public Connection() {
-        }
-
         public Connection(Connector from, Connector to) {
             From = from;
             To = to;

@@ -8,20 +8,29 @@ namespace StateGrapher.Models {
     [JsonDerivedType(typeof(InitialState), "InitialState")]
     [JsonDerivedType(typeof(ExitNode), "ExitNode")]
     public abstract partial class Node : ObservableObject {
+        /// <summary>
+        /// Is node visible in NodeEditor?
+        /// </summary>
         [ObservableProperty]
         private bool isVisible;
+
+        /// <summary>
+        /// Position of this node.
+        /// </summary>
+        [ObservableProperty]
+        private Point location;
 
         [ObservableProperty]
         private string? name;
 
         [ObservableProperty]
-        private Point location;
-
-        [ObservableProperty]
         private Size size;
 
-        [ObservableProperty]
-        private StateMachine? container;
+        // TODO: should be of Node type?
+        /// <summary>
+        /// Node containing this node.
+        /// </summary>
+        public StateMachine? Container { get; set; }
 
         public Size DesiredSize { get; set; }
 

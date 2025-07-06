@@ -48,17 +48,7 @@ namespace StateGrapher.ViewModels
             set => Node.IsExpanded = value;
         }
 
-        public static readonly DependencyProperty NodesProperty =
-            DependencyProperty.Register(
-                "Nodes",
-                typeof(ObservableCollection<INodeViewModel>),
-                typeof(StateMachineViewModel),
-                new PropertyMetadata(null));
-
-        public ObservableCollection<INodeViewModel> Nodes {
-            get => (ObservableCollection<INodeViewModel>)GetValue(NodesProperty);
-            set => SetValue(NodesProperty, value);
-        }
+        public ObservableCollection<INodeViewModel> Nodes { get; }
 
         public ObservableCollection<ConnectionViewModel> Connections { get; }
 

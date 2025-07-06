@@ -5,7 +5,7 @@ namespace StateGrapher.Models {
         [ObservableProperty]
         private Connector connector;
 
-        public Connection Connection { get; set; }
+        public Connection? Connection { get; private set; }
 
         public InitialState() {
             Connector = new Connector(this);
