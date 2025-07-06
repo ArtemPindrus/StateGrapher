@@ -1,14 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using StateGrapher.Models;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using ConnectionDirection = Nodify.ConnectionDirection;
 
 namespace StateGrapher.ViewModels
 {
-    public partial class ConnectionViewModel : NodeViewModel {
-        private readonly StateMachineViewModel machineViewModel;
+    public partial class ConnectionViewModel : ViewModelBase {
+        public readonly Connection Connection;
 
         public string? Name {
             get => Connection.Name;
@@ -43,15 +44,15 @@ namespace StateGrapher.ViewModels
         public ObservableCollection<ConnectionCondition> ForwardConditions => Connection.ForwardConditions;
         public ObservableCollection<ConnectionCondition> BackwardsConditions => Connection.BackwardsConditions;
 
-        public Connection Connection { get; }
+        public StateMachine Container => Connection.Container;
+
         public Connector? From => Connection.From;
         public Connector? To => Connection.To;
 
-        public ConnectionViewModel(Connection connection, StateMachineViewModel machineViewModel) : base(connection) {
-            Connection = connection;
-            this.machineViewModel = machineViewModel;
+        public ConnectionViewModel(Connection connection) {
+            this.Connection = connection;
 
-            Connection.PropertyChanged += (_, e) => OnPropertyChanged(e);
+            this.Connection.PropertyChanged += (_, e) => base.OnPropertyChanged(e);
         }
 
         [RelayCommand]
@@ -80,9 +81,9 @@ namespace StateGrapher.ViewModels
             Connection.RemoveCondition(boolean);
         }
 
-            [RelayCommand]
+        [RelayCommand]
         private void Remove() {
-            machineViewModel.DeleteConnection(this);
+            Container.RemoveConnection(Connection);
         }
     }
 }

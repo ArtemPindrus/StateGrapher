@@ -67,7 +67,7 @@ namespace StateGrapher.ViewModels
             stateMachine.Connections.CollectionChanged += StateMachineConnections_CollectionChanged;
 
             foreach (var node in stateMachine.Nodes) TryAddNodeViewModel(node);
-            foreach (var connection in stateMachine.Connections) Connections.Add(new ConnectionViewModel(connection, this));
+            foreach (var connection in stateMachine.Connections) Connections.Add(new ConnectionViewModel(connection));
 
             Connectors = new(stateMachine.Connectors);
         }
@@ -77,7 +77,7 @@ namespace StateGrapher.ViewModels
                 if (e.NewItems is null) return;
 
                 foreach (var item in e.NewItems.Cast<Models.Connection>()) {
-                    Connections.Add(new(item, this));
+                    Connections.Add(new(item));
                 }
             } else if (e.Action == NotifyCollectionChangedAction.Remove) {
                 if (e.OldItems is null) return;

@@ -8,18 +8,12 @@ using System.Windows.Controls;
 
 namespace StateGrapher.Models
 {
-    public partial class Connection : Node, IEquatable<Connection> {
+    public partial class Connection : ObservableObject, IEquatable<Connection> {
         private ObservableCollection<ConnectionCondition> forwardConditions = new();
         private ObservableCollection<ConnectionCondition> backwardsConditions = new();
 
         [ObservableProperty]
-        private ConnectionDirection direction;
-
-        [ObservableProperty]
-        private Orientation sourceOrientation;
-
-        [ObservableProperty]
-        private Orientation targetOrientation;
+        private string? name;
 
         [NotifyPropertyChangedFor(nameof(EventDisplayName))]
         [ObservableProperty]
@@ -88,6 +82,8 @@ namespace StateGrapher.Models
             }
         }
 
+        public StateMachine? Container { get; set; }
+
         public Connector? From { get; set; }
         public Connector? To { get; set; }
 
@@ -118,7 +114,7 @@ namespace StateGrapher.Models
             && From == other.From 
             && To == other.To;
 
-        public string GetConditionsString(IEnumerable<ConnectionCondition> conditions) {
+        public static string GetConditionsString(IEnumerable<ConnectionCondition> conditions) {
             if (!conditions.Any()) return "";
 
             StringBuilder s = new("if (");
@@ -139,7 +135,7 @@ namespace StateGrapher.Models
             return s.ToString();
         }
 
-        public override string? ToString() => $"{From.Container.Name} -> {To.Container.Name} using '{Name}' event";
+        public override string? ToString() => $"{From?.Container.Name} -> {To?.Container.Name} using '{Name}' event";
 
         public override bool Equals(object? obj) {
             return Equals(obj as Connection);
@@ -148,7 +144,5 @@ namespace StateGrapher.Models
         public override int GetHashCode() {
             return HashCode.Combine(From, To);
         }
-
-        protected override string? ValidateName(string? name) => name;
     }
 }
