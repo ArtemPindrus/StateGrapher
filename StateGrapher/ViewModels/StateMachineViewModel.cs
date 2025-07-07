@@ -157,5 +157,7 @@ namespace StateGrapher.ViewModels
         partial void OnSelectedConnectionChanged(ConnectionViewModel? value) {
             History.LastSelectedConnection = value;
         }
+
+        public override string? ToString() => Name;
     }
 }

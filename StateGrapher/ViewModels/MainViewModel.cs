@@ -30,7 +30,7 @@ namespace StateGrapher.ViewModels {
         public string? LastActionHint => History.LastActionHint;
 
         public MainViewModel(Graph graph) {
-            History.PropertyChanged += (_, e) => OnPropertyChanged(e);
+            History.StaticPropertyChanged += (_, e) => OnPropertyChanged(e);
             App.StaticPropertyChanged += App_StaticPropertyChanged;
 
             OnNewGraphCreated(graph);
