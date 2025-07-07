@@ -12,6 +12,8 @@ namespace StateGrapher.Models
 
         public ConnectorsCollection Connectors { get; set; }
 
+        public bool IsComposite => Nodes.Count > 0;
+
         public StateMachine() {
             Connectors = new(this, 3);
         }

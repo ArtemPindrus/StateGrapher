@@ -4,6 +4,25 @@ using System.Text.RegularExpressions;
 
 namespace StateGrapher.Utilities {
     public static class StateMachineUtility {
+        /// <summary>
+        /// Gets initial state of a StateMachine based on <see cref="InitialState"/> node.
+        /// </summary>
+        /// <param name="sm"></param>
+        /// <returns></returns>
+        public static StateMachine? GetInitialState(StateMachine sm) {
+            if (sm.InitialState == null) return null;
+
+            Connector? to = sm.InitialState.Connection.To;
+
+            if (to == null) return null;
+
+            StateMachine? connected = to.Container as StateMachine;
+
+            if (connected == null) return null;
+
+            return connected.IsComposite ? GetInitialState(connected) : connected;
+        }
+
         public static StateMachine? GetLeastCommonAncestor(Transition transition) {
             var fromParentTree = transition.From.GetParentTree().ToArray();
             var toParentTree = transition.To.GetParentTree().ToArray();

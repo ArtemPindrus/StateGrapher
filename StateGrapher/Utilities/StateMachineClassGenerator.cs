@@ -138,12 +138,14 @@ namespace StateGrapher.Utilities
         }
 
         private static IndentedStringBuilder AppendStartMethod(IndentedStringBuilder sb, StateMachine rootSm) {
-            if (rootSm.InitialState == null) return sb;
+            StateMachine? initialState = StateMachineUtility.GetInitialState(rootSm);
+
+            if (initialState == null) return sb;
 
             sb.AppendLines($$"""
                 public void Start() {
                     ROOT_Enter();
-                    {{rootSm.InitialState.Connection.To.Container.Name}}_Enter();
+                    {{initialState.Name}}_Enter();
                 }
                  
                 """);
