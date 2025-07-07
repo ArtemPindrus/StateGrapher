@@ -1,4 +1,8 @@
 # StateGrapher
+THIS TOOL IS USEABLE BUT NOT STABLE!
+
+Almost every version  introduces breaking/design changes.
+
 ## Description
 This is a tool used to graph Hierarchical State Machines.
 Based on the graphs, C# state-machine classes are generated.
