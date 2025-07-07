@@ -53,3 +53,19 @@ Here, the "MoveOut" connection connects "Composite" to "Simple", but the state m
 State types:
 - Simple state - state without sub-states.
 - State Machine (Composite state) - a state containing other states.
+
+#### Initial state
+State to which InitialState node connects.
+
+When entering a Compound state this will be THE state that gets entered eventually.
+
+Here Initial state of Root is "State".
+
+![InitialState1](docs/img/InitialState1.png)
+
+Here entering Root results in:
+- Enter S1
+- Enter S2
+- Enter S3
+ 
+![InitialState2](docs/img/InitialState2.png)
