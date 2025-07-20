@@ -1,0 +1,8 @@
+- name: Introduction
+  href: introduction.md
+- name: StateMachine components
+  items:
+    - name: Connections
+      href: connections.md
+    - name: Graph options
+      href: graphoptions.md

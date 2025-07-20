@@ -1,0 +1,177 @@
+{
+  "source_base_path": "C:/Users/Artem/Documents/C#/Programs/StateGrapher/docs",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/connections.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/connections.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/graphoptions.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/graphoptions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/introduction.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docs/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/AppPreview.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/AppPreview.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/ConnectionVSTransition.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/ConnectionVSTransition.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/ConnectionVSTransition1.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/ConnectionVSTransition1.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/InitialState1.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/InitialState1.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/InitialState2.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/InitialState2.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/InitialTransition.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/InitialTransition.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/connectionConditionsInAction.gif",
+      "output": {
+        "resource": {
+          "relative_path": "images/connectionConditionsInAction.gif"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/connectionsNodes.gif",
+      "output": {
+        "resource": {
+          "relative_path": "images/connectionsNodes.gif"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/graphoptions.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/graphoptions.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/modifyConditions.gif",
+      "output": {
+        "resource": {
+          "relative_path": "images/modifyConditions.gif"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

@@ -50,6 +50,10 @@ namespace StateGrapher
             base.OnStartup(e);
         }
 
+        public static void UnselectAll() {
+
+        }
+
         public static void CreateNewGraph() {
             StateMachine root = new() { Name = "ROOT" };
 

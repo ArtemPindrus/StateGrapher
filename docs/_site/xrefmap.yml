@@ -1,0 +1,9 @@
+### YamlMime:XRefMap
+sorted: true
+references:
+- uid: connections
+  name: Connections
+  href: docs/connections.html
+- uid: graphoptions
+  name: Graph options
+  href: docs/graphoptions.html
