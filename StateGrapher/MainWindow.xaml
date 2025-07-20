@@ -9,7 +9,7 @@
     xmlns:nodify="https://miroiu.github.io/nodify"
     xmlns:viewmodels="clr-namespace:StateGrapher.ViewModels"
     xmlns:views="clr-namespace:StateGrapher.Views"
-    Title="MainWindow"
+    Title="StateGrapher"
     Width="1280"
     Height="720"
     d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
