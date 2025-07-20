@@ -5,7 +5,7 @@ uid: connections
 # Connections
 Nodes within a graph can be connected.
 
-![Connections in action](StateGrapher/images/connectionsNodes.gif)
+![Connections in action](/StateGrapher/images/connectionsNodes.gif)
 
 It's important to understand that connections between states don't necessary reflect transitions between states. (on that later)
 
@@ -13,7 +13,7 @@ It's important to understand that connections between states don't necessary ref
 
 
 ## Conditions
-See [StateMachine booleans](StateGrapher/docs/graphoptions.html#statemachine-booleans) before reading this.
+See [StateMachine booleans](/StateGrapher/docs/graphoptions.html#statemachine-booleans) before reading this.
 
 Conditions describe state of StateMachine in which events should trigger transitions.
 
