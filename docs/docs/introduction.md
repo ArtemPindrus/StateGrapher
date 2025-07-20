@@ -3,7 +3,7 @@ StateGrapher is a tool used to graph Hierarchical State Machines. Based on the g
 
 Based on the graphs, C# state-machine classes are generated.
 
-![AppPreview](/images/AppPreview.png)
+![AppPreview](/StateGrapher/images/AppPreview.png)
 
 Made with WPF with a great contribution of [nodify](https://github.com/miroiu/nodify).
 
