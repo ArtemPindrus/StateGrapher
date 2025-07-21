@@ -2,21 +2,21 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Getting Started | StateGrapher </title>
+      <title>Graph options | StateGrapher </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Getting Started | StateGrapher ">
+      <meta name="title" content="Graph options | StateGrapher ">
       
       
-      <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css">
-      <link rel="stylesheet" href="../public/main.css">
-      <meta name="docfx:navrel" content="../toc.html">
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
       <meta name="docfx:tocrel" content="toc.html">
       
+      <meta name="docfx:rel" content="../../">
       
       
-      
-      <meta name="docfx:docurl" content="https://github.com/ArtemPindrus/StateGrapher/blob/master/docs/docs/getting-started.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/ArtemPindrus/StateGrapher/blob/master/docs/docs/graphoptions.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -30,7 +30,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../public/docfx.min.js"></script>
+      <script type="module" src="./../../public/docfx.min.js"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -43,8 +43,8 @@
     <header class="bg-body border-bottom">
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
-          <a class="navbar-brand" href="../index.html">
-            <img id="logo" class="svg" src="../logo.svg" alt="StateGrapher">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="StateGrapher">
             StateGrapher
           </a>
           <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,6 +52,10 @@
           </button>
           <div class="collapse navbar-collapse" id="navpanel">
             <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
             </div>
           </div>
         </div>
@@ -80,14 +84,22 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="">
-<h1 id="getting-started">Getting Started</h1>
+        <article data-uid="graphoptions">
+<h1 id="graph-options">Graph options</h1>
 
+<p>Graph options can be accessed in the left side-panel.</p>
+<p><img src="/images/graphoptions.png" alt="Graph options"></p>
+<h2 id="class-name-and-namespace">Class name and Namespace</h2>
+<p>Those specify name and namespace of the generated class.</p>
+<h2 id="statemachine-booleans">StateMachine booleans</h2>
+<p>StateMachine booleans are utilized in multiple places across the graph (especially <a href="/docs/connections.html#conditions">Connections conditions</a>).</p>
+<p>At code level those represent public boolean fields on the generated class.</p>
+<p>&quot;Initial state&quot; describes whether the field is true or false at the construction time.</p>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/ArtemPindrus/StateGrapher/blob/master/docs/docs/getting-started.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/ArtemPindrus/StateGrapher/blob/master/docs/docs/graphoptions.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>
@@ -99,6 +111,7 @@
       </div>
     </main>
 
+    <div class="container-xxl search-results" id="search-results"></div>
 
     <footer class="border-top text-secondary">
       <div class="container-xxl">

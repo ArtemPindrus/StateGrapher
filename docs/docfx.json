@@ -6,8 +6,14 @@
         "files": [
           "**/*.{md,yml}"
         ],
+        "src": "docs",
+        "dest": "StateGrapher/docs",
         "exclude": [
           "_site/**"
+        ]
+      }, {
+        "files": [
+          "index.md"
         ]
       }
     ],

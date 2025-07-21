@@ -2,21 +2,21 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title> | StateGrapher </title>
+      <title>Introduction | StateGrapher </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content=" | StateGrapher ">
+      <meta name="title" content="Introduction | StateGrapher ">
       
       
-      <link rel="icon" href="favicon.ico">
-      <link rel="stylesheet" href="public/docfx.min.css">
-      <link rel="stylesheet" href="public/main.css">
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
       <meta name="docfx:navrel" content="">
-      <meta name="docfx:tocrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
       
-      <meta name="docfx:rel" content="">
+      <meta name="docfx:rel" content="../../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/ArtemPindrus/StateGrapher/blob/master/docs/index.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/ArtemPindrus/StateGrapher/blob/master/docs/docs/introduction.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -30,7 +30,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./public/docfx.min.js"></script>
+      <script type="module" src="./../../public/docfx.min.js"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -39,12 +39,12 @@
 
   </head>
 
-  <body class="tex2jax_ignore" data-layout="landing" data-yaml-mime="">
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
     <header class="bg-body border-bottom">
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
-          <a class="navbar-brand" href="index.html">
-            <img id="logo" class="svg" src="logo.svg" alt="StateGrapher">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="StateGrapher">
             StateGrapher
           </a>
           <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,22 +63,43 @@
     </header>
 
     <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
 
       <div class="content">
         <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
 
           <nav id="breadcrumb"></nav>
         </div>
 
         <article data-uid="">
+<h1 id="introduction">Introduction</h1>
 
-
-<p>Go to <a href="StateGrapher/docs/introduction.html">Introduction</a> for documentation.</p>
+<p>StateGrapher is a tool used to graph Hierarchical State Machines. Based on the graphs, C# state-machine classes are generated.</p>
+<p>Based on the graphs, C# state-machine classes are generated.</p>
+<p><img src="/images/AppPreview.png" alt="AppPreview"></p>
+<p>Made with WPF with a great contribution of <a href="https://github.com/miroiu/nodify">nodify</a>.</p>
+<h2 id="generated-state-machine">Generated State Machine</h2>
+<p>General structure of generated class is inspired by what <a href="https://github.com/StateSmith/StateSmith">StateSmith</a> does.
+The main difference is that the graph itself DOESN'T contain ANY code logic, only states and transitions.
+The generated class will have a bunch of partial methods without definition that can be defined to provide actual logic.</p>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/ArtemPindrus/StateGrapher/blob/master/docs/index.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/ArtemPindrus/StateGrapher/blob/master/docs/docs/introduction.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>
