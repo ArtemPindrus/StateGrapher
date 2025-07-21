@@ -1,7 +1,7 @@
 The full documentation is here: https://artempindrus.github.io/StateGrapher/docs/introduction.html.
 
 # Introduction
-StateGrapher is a tool used to graph Hierarchical State Machines. Based on the graphs, C# state-machine classes are generated.
+StateGrapher is a tool used to graph Hierarchical State Machines. 
 
 Based on the graphs, C# state-machine classes are generated.
 
