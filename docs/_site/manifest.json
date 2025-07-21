@@ -15,7 +15,7 @@
       "source_relative_path": "docs/connections.md",
       "output": {
         ".html": {
-          "relative_path": "StateGrapher/docs/connections.html"
+          "relative_path": "docs/connections.html"
         }
       },
       "version": ""
@@ -25,7 +25,7 @@
       "source_relative_path": "docs/graphoptions.md",
       "output": {
         ".html": {
-          "relative_path": "StateGrapher/docs/graphoptions.html"
+          "relative_path": "docs/graphoptions.html"
         }
       },
       "version": ""
@@ -35,7 +35,7 @@
       "source_relative_path": "docs/introduction.md",
       "output": {
         ".html": {
-          "relative_path": "StateGrapher/docs/introduction.html"
+          "relative_path": "docs/introduction.html"
         }
       },
       "version": ""
@@ -45,7 +45,7 @@
       "source_relative_path": "docs/nodes.md",
       "output": {
         ".html": {
-          "relative_path": "StateGrapher/docs/nodes.html"
+          "relative_path": "docs/nodes.html"
         }
       },
       "version": ""
@@ -55,10 +55,10 @@
       "source_relative_path": "docs/toc.yml",
       "output": {
         ".html": {
-          "relative_path": "StateGrapher/docs/toc.html"
+          "relative_path": "docs/toc.html"
         },
         ".json": {
-          "relative_path": "StateGrapher/docs/toc.json"
+          "relative_path": "docs/toc.json"
         }
       },
       "version": ""
@@ -174,11 +174,24 @@
       "version": ""
     },
     {
-      "type": "Conceptual",
+      "type": "Redirection",
       "source_relative_path": "index.md",
       "output": {
         ".html": {
           "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
         }
       },
       "version": ""

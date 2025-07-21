@@ -3,7 +3,7 @@ sorted: true
 references:
 - uid: connections
   name: Connections
-  href: StateGrapher/docs/connections.html
+  href: docs/connections.html
 - uid: graphoptions
   name: Graph options
-  href: StateGrapher/docs/graphoptions.html
+  href: docs/graphoptions.html
