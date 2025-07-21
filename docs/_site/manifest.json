@@ -22,6 +22,16 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "docs/connectionsVsTransitions.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/connectionsVsTransitions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "docs/graphoptions.md",
       "output": {
         ".html": {
@@ -64,31 +74,21 @@
       "version": ""
     },
     {
+      "type": "Conceptual",
+      "source_relative_path": "docs/transitions.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/transitions.html"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Resource",
       "source_relative_path": "images/AppPreview.png",
       "output": {
         "resource": {
           "relative_path": "images/AppPreview.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/ConnectionVSTransition.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/ConnectionVSTransition.png"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/ConnectionVSTransition1.png",
-      "output": {
-        "resource": {
-          "relative_path": "images/ConnectionVSTransition1.png"
         }
       },
       "version": ""
@@ -139,6 +139,46 @@
       "output": {
         "resource": {
           "relative_path": "images/connectionsNodes.gif"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/connectionsVsTransitions.gif",
+      "output": {
+        "resource": {
+          "relative_path": "images/connectionsVsTransitions.gif"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/connectionsVsTransitions1.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/connectionsVsTransitions1.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/connectionsVsTransitions2.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/connectionsVsTransitions2.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/creatingTransition.gif",
+      "output": {
+        "resource": {
+          "relative_path": "images/creatingTransition.gif"
         }
       },
       "version": ""

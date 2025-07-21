@@ -5,10 +5,10 @@ Connections don't necessary directly reflect Transitions.
 
 Take a look at this Graph:
 
-[](../images/connectionsVsTransitions1.png)
+[Graph](../images/connectionsVsTransitions1.png)
 
 Those are generated transitions from those connections (you can always check those in the Transitions tab by pressing Refresh button):
-[](../images/connectionsVsTransitions2.png)
+[Transitions](../images/connectionsVsTransitions2.png)
 
 Note this:
 - NotExisting connects to Alive but generated transition is NotExisting > S1. Note the InitialState node in Alive state.

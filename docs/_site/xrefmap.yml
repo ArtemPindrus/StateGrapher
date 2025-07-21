@@ -7,3 +7,6 @@ references:
 - uid: graphoptions
   name: Graph options
   href: docs/graphoptions.html
+- uid: transitions
+  name: Transitions
+  href: docs/transitions.html
