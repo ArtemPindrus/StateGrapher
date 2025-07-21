@@ -1,0 +1,27 @@
+{
+  "docs/connections.html": {
+    "href": "docs/connections.html",
+    "title": "Connections | StateGrapher",
+    "summary": "Connections Nodes within a graph can be connected. It's important to understand that connections between states don't necessary reflect transitions between states. (on that later) Forwards and backwards events Conditions See StateMachine booleans before reading this. Conditions describe state of StateMachine in which events should trigger transitions. Conditions are supported for both the forwards and backwards events and have only two states: true or false. Setting a checked condition for an event is equivalent to stating: if (condition) EventHandler(); Setting an unchecked condition for an event is equivalent to stating: if (!condition) EventHandler(); // note the !"
+  },
+  "docs/graphoptions.html": {
+    "href": "docs/graphoptions.html",
+    "title": "Graph options | StateGrapher",
+    "summary": "Graph options Graph options can be accessed in the left side-panel. Class name and Namespace Those specify name and namespace of the generated class. StateMachine booleans StateMachine booleans are utilized in multiple places across the graph (especially Connections conditions). At code level those represent public boolean fields on the generated class. \"Initial state\" describes whether the field is true or false at the construction time."
+  },
+  "docs/introduction.html": {
+    "href": "docs/introduction.html",
+    "title": "Introduction | StateGrapher",
+    "summary": "Introduction StateGrapher is a tool used to graph Hierarchical State Machines. Based on the graphs, C# state-machine classes are generated. Based on the graphs, C# state-machine classes are generated. Made with WPF with a great contribution of nodify. Generated State Machine General structure of generated class is inspired by what StateSmith does. The main difference is that the graph itself DOESN'T contain ANY code logic, only states and transitions. The generated class will have a bunch of partial methods without definition that can be defined to provide actual logic."
+  },
+  "docs/nodes.html": {
+    "href": "docs/nodes.html",
+    "title": "Nodes | StateGrapher",
+    "summary": "Nodes Nodes are elements of the State Machine Graph. Demonstrating nodes Initial State Every Composite state can have at most one Initial State node (and, in fact, SHOULD have an InitialState node) Initial State connects to a state that should be entered when entering a Composite state. Examples Here the Root of the graph contains State1 and an Initial State node connecting to it, which signifies that when Root is entered, State1 will be entered. InitialState1 Here entering Root will: Enter S1 Enter S2 Enter S3 in succession. InitialState2"
+  },
+  "index.html": {
+    "href": "index.html",
+    "title": "",
+    "summary": ""
+  }
+}

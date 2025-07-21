@@ -1,2 +1,2 @@
 
-{"items":[{"name":"Introduction","href":"introduction.html","topicHref":"introduction.html"},{"name":"StateMachine components","items":[{"name":"Connections","href":"connections.html","topicHref":"connections.html"},{"name":"Graph options","href":"graphoptions.html","topicHref":"graphoptions.html"}]}],"pdf":false}
+{"items":[{"name":"Introduction","href":"introduction.html","topicHref":"introduction.html"},{"name":"StateMachine components","items":[{"name":"Nodes","href":"nodes.html","topicHref":"nodes.html"},{"name":"Connections","href":"connections.html","topicHref":"connections.html"},{"name":"Graph options","href":"graphoptions.html","topicHref":"graphoptions.html"}]}],"pdf":false}

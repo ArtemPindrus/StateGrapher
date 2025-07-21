@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Introduction | StateGrapher </title>
+      <title>Nodes | StateGrapher </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Introduction | StateGrapher ">
+      <meta name="title" content="Nodes | StateGrapher ">
       
       
       <link rel="icon" href="../favicon.ico">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/ArtemPindrus/StateGrapher/blob/master/docs/docs/introduction.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/ArtemPindrus/StateGrapher/blob/master/docs/docs/nodes.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -85,21 +85,29 @@
         </div>
 
         <article data-uid="">
-<h1 id="introduction">Introduction</h1>
+<h1 id="nodes">Nodes</h1>
 
-<p>StateGrapher is a tool used to graph Hierarchical State Machines. Based on the graphs, C# state-machine classes are generated.</p>
-<p>Based on the graphs, C# state-machine classes are generated.</p>
-<p><img src="/StateGrapher/images/AppPreview.png" alt="AppPreview"></p>
-<p>Made with WPF with a great contribution of <a href="https://github.com/miroiu/nodify">nodify</a>.</p>
-<h2 id="generated-state-machine">Generated State Machine</h2>
-<p>General structure of generated class is inspired by what <a href="https://github.com/StateSmith/StateSmith">StateSmith</a> does.
-The main difference is that the graph itself DOESN'T contain ANY code logic, only states and transitions.
-The generated class will have a bunch of partial methods without definition that can be defined to provide actual logic.</p>
+<p>Nodes are elements of the State Machine Graph.</p>
+<p><a href="/StateGrapher/images/demonstratingNodes.gif">Demonstrating nodes</a></p>
+<h2 id="initial-state">Initial State</h2>
+<p>Every Composite state can have at most one Initial State node (and, in fact, SHOULD have an InitialState node)</p>
+<p>Initial State connects to a state that should be entered when entering a Composite state.</p>
+<h3 id="examples">Examples</h3>
+<p>Here the Root of the graph contains State1 and an Initial State node connecting to it, which signifies that when Root is entered, State1 will be entered.
+<a href="/StateGrapher/images/InitialState1.png">InitialState1</a></p>
+<p>Here entering Root will:</p>
+<ul>
+<li>Enter S1</li>
+<li>Enter S2</li>
+<li>Enter S3
+in succession.
+<a href="/StateGrapher/images/InitialState2.png">InitialState2</a></li>
+</ul>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/ArtemPindrus/StateGrapher/blob/master/docs/docs/introduction.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/ArtemPindrus/StateGrapher/blob/master/docs/docs/nodes.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

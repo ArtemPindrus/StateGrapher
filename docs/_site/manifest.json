@@ -3,6 +3,14 @@
   "xrefmap": "xrefmap.yml",
   "files": [
     {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
       "type": "Conceptual",
       "source_relative_path": "docs/connections.md",
       "output": {
@@ -28,6 +36,16 @@
       "output": {
         ".html": {
           "relative_path": "docs/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/nodes.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/nodes.html"
         }
       },
       "version": ""
@@ -127,6 +145,16 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/demonstratingNodes.gif",
+      "output": {
+        "resource": {
+          "relative_path": "images/demonstratingNodes.gif"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/graphoptions.png",
       "output": {
         "resource": {
@@ -146,7 +174,7 @@
       "version": ""
     },
     {
-      "type": "Conceptual",
+      "type": "Redirection",
       "source_relative_path": "index.md",
       "output": {
         ".html": {

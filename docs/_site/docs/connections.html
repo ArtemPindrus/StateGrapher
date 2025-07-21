@@ -13,7 +13,7 @@
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
-      
+      <meta name="docfx:rel" content="../">
       
       
       <meta name="docfx:docurl" content="https://github.com/ArtemPindrus/StateGrapher/blob/master/docs/docs/connections.md/#L1">
@@ -52,6 +52,10 @@
           </button>
           <div class="collapse navbar-collapse" id="navpanel">
             <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
             </div>
           </div>
         </div>
@@ -84,13 +88,13 @@
 <h1 id="connections">Connections</h1>
 
 <p>Nodes within a graph can be connected.</p>
-<p><img src="/images/connectionsNodes.gif" alt="Connections in action"></p>
+<p><img src="/StateGrapher/images/connectionsNodes.gif" alt="Connections in action"></p>
 <p>It's important to understand that connections between states don't necessary reflect transitions between states. (on that later)</p>
 <h2 id="forwards-and-backwards-events">Forwards and backwards events</h2>
 <h2 id="conditions">Conditions</h2>
-<p>See <a href="/docs/graphoptions.html#statemachine-booleans">StateMachine booleans</a> before reading this.</p>
+<p>See <a href="/StateGrapher/docs/graphoptions.html#statemachine-booleans">StateMachine booleans</a> before reading this.</p>
 <p>Conditions describe state of StateMachine in which events should trigger transitions.</p>
-<p><img src="/images/connectionConditionsInAction.gif" alt="Connection condition in action"></p>
+<p><img src="/StateGrapher/images/connectionConditionsInAction.gif" alt="Connection condition in action"></p>
 <p>Conditions are supported for both the forwards and backwards events and have only two states: true or false.</p>
 <p>Setting a checked condition for an event is equivalent to stating:
 if (condition) EventHandler();</p>
@@ -112,6 +116,7 @@ if (!condition) EventHandler();  // note the !</p>
       </div>
     </main>
 
+    <div class="container-xxl search-results" id="search-results"></div>
 
     <footer class="border-top text-secondary">
       <div class="container-xxl">

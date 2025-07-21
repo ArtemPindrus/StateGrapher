@@ -2,6 +2,7 @@
   href: introduction.md
 - name: StateMachine components
   items:
+    - href: nodes.md
     - name: Connections
       href: connections.md
     - name: Graph options
