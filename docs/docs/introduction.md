@@ -1,5 +1,5 @@
 # Introduction
-StateGrapher is a tool used to graph Hierarchical State Machines. Based on the graphs, C# state-machine classes are generated.
+StateGrapher is a tool used to graph Hierarchical State Machines.
 
 Based on the graphs, C# state-machine classes are generated.
 
