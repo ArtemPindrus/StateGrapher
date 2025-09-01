@@ -119,7 +119,7 @@ namespace StateGrapher.Utilities {
                 }
 
                 // back event
-                if (!string.IsNullOrEmpty(connection.BackEvent)) {
+                if (!string.IsNullOrEmpty(connection.BackEvent) && connection.IsBothWays) {
                     Try_Internal(to, from, connection.BackEvent, connection.BackwardsConditions);
                 }
 
